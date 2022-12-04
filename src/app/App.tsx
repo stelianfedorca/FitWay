@@ -1,11 +1,13 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import RootNavigator from '../navigators/RootNavigator';
 
 export function App() {
   return (
-    <View style={styles.container}>
-      <Text>asdsdasads</Text>
-    </View>
+    <NavigationContainer>
+      <RootNavigator />
+    </NavigationContainer>
   );
 }
 

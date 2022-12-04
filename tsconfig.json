@@ -5,6 +5,11 @@
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Completeness */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+    "skipLibCheck": true,
+    "types": [
+      "@types/styled-components-react-native"
+      ]                                 /* Skip type checking all .d.ts files. */
+  },
+  "include": ["**/*.ts", "**/*.tsx", "images.d.ts", "src/custom.d.ts"],
+  "exclude": ["node_modules", "jest.config.js", ],
 }
