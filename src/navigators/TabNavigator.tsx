@@ -54,12 +54,27 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarIcon: ({color, size}) => (
-          <MIcon name="home" size={size} color={color} />
-        ),
+
+        tabBarShowLabel: false,
       }}>
-      <Tab.Screen name={Tabs.Home} component={Home} />
-      <Tab.Screen name={Tabs.Profile} component={Profile} />
+      <Tab.Screen
+        name={Tabs.Home}
+        component={Home}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <MIcon name="home" size={32} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={Tabs.Profile}
+        component={Profile}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <MIcon name="account-circle" size={32} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

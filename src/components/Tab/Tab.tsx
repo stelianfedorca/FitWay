@@ -3,7 +3,7 @@ import {Pressable, TabInnerContainer, TabLabel} from './Tab.style';
 import {TabProps} from './Tab.types';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export function Tab({onPress, label, icon: Icon}: TabProps) {
+export function Tab({onPress, label}: TabProps) {
   return (
     <Pressable onPress={onPress}>
       <TabInnerContainer>
