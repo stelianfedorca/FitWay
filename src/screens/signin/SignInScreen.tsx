@@ -1,20 +1,39 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
-import {useForm, Controller} from 'react-hook-form';
-import {ScrollView, View} from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
 import {
-  BackButton,
-  Container,
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SignInBackgroundImage } from '../../assets/images';
+import {
   Title,
   TextButton,
   StyledInput,
   SignInButton,
+  SubTitle,
+  TitleContainer,
+  SubTitleContainer,
+  TitleButton,
+  TextError,
+  Container,
 } from './SignInScreen.style';
-import {SignInForm, SignInScreenNavigationProp} from './SignInScreen.types';
+import { SignInForm, SignInScreenNavigationProp } from './SignInScreen.types';
+
+import { Layout } from '../../components/Layout';
+import { SignInSchema } from './SignInScreen.schema';
 
 export function SignInScreen() {
+  const { height } = useWindowDimensions();
   const navigation = useNavigation<SignInScreenNavigationProp>();
+
+  const insets = useSafeAreaInsets();
 
   const defaultValues = {
     email: '',
@@ -29,67 +48,122 @@ export function SignInScreen() {
     control,
     handleSubmit,
     watch,
-    formState: {errors},
-  } = useForm<SignInForm>({defaultValues});
+    formState: { errors },
+  } = useForm<SignInForm>({
+    defaultValues,
+    mode: 'all',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(SignInSchema),
+  });
 
-  function onPress() {
-    navigation.goBack();
+  const email = watch('email');
+
+  function onSubmit() {
+    console.log('submited');
   }
+
+  function handleSignUpPress() {}
   return (
-    <Container>
-      <Title>{'Hello SignInScreen'}</Title>
-      <View
-        style={{
-          height: 100,
-          borderWidth: 3,
-          borderColor: 'pink',
-        }}></View>
+    <Layout
+      style={{
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        backgroundColor: 'white',
+      }}>
       <ScrollView
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          // flex: 1,
-          borderWidth: 1,
-          paddingBottom: 400,
+          flex: 1,
         }}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'space-between',
-            borderWidth: 1,
-            borderColor: 'blue',
-          }}>
+        <ImageBackground
+          source={SignInBackgroundImage}
+          style={{ height: height / 2.5 }}
+        />
+        <Container>
+          <TitleContainer>
+            <Title size={34} color="#d3bfad">
+              Welcome
+            </Title>
+          </TitleContainer>
+          <SubTitleContainer>
+            <SubTitle>Don't have an account? </SubTitle>
+            <TextButton onPress={handleSignUpPress}>
+              <Title color="#44423f">Sign Up</Title>
+            </TextButton>
+          </SubTitleContainer>
           <Controller
             control={control}
             name="email"
-            render={({field: {onChange, onBlur, value}}) => (
-              <StyledInput
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Pressable
+                style={{
+                  // paddingVertical: 18,
+                  // borderWidth: 1,
+                  height: 55,
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                }}>
+                <StyledInput
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  autoComplete="email"
+                  placeholder="Email"
+                />
+                {!!errors.email && (
+                  <View
+                    style={{
+                      bottom: -5,
+                      paddingHorizontal: 5,
+                    }}>
+                    <TextError>{errors.email.message}</TextError>
+                  </View>
+                )}
+              </Pressable>
             )}
           />
           <Controller
             control={control}
             name="password"
-            render={({field: {onChange, onBlur, value}}) => (
-              <StyledInput
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Pressable
+                style={{
+                  marginTop: 15,
+                  // paddingVertical: 18,
+                  justifyContent: 'flex-start',
+                  height: 55,
+                }}>
+                <StyledInput
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  secureTextEntry={true}
+                  placeholder="Password"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  keyboardType="default"
+                  returnKeyType="done"
+                />
+                {!!errors.password && (
+                  <View style={{ bottom: -5, paddingHorizontal: 5 }}>
+                    <TextError>{errors.password.message}</TextError>
+                  </View>
+                )}
+              </Pressable>
             )}
           />
 
-          <SignInButton>
-            <TextButton color="white">Sign In</TextButton>
+          <SignInButton onPress={handleSubmit(onSubmit)}>
+            <TitleButton>Sign in</TitleButton>
           </SignInButton>
-        </View>
+        </Container>
       </ScrollView>
-      {/* <BackButton onPress={onPress}>
-        <TextButton>Go back to Sign Up Screen</TextButton>
-      </BackButton> */}
-    </Container>
+    </Layout>
   );
 }
