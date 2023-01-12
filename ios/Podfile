@@ -5,7 +5,7 @@ $RNFirebaseAsStaticFramework = true;
 
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
-use_frameworks!
+use_frameworks! :linkage => :static
 
 target 'FitWay' do
   config = use_native_modules!
