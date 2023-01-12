@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
 import {
   ImageBackground,
   Pressable,
   ScrollView,
+  TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -29,20 +30,21 @@ import { SignInForm, SignInScreenNavigationProp } from './SignInScreen.types';
 import { Layout } from '../../components/Layout';
 import { SignInSchema } from './SignInScreen.schema';
 
+import auth from '@react-native-firebase/auth';
+
 export function SignInScreen() {
   const { height } = useWindowDimensions();
   const navigation = useNavigation<SignInScreenNavigationProp>();
 
   const insets = useSafeAreaInsets();
 
+  const emailInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<TextInput>(null);
+
   const defaultValues = {
     email: '',
     password: '',
   };
-
-  function onSubmit(data: any) {
-    console.log(data);
-  }
 
   const {
     control,
@@ -56,13 +58,21 @@ export function SignInScreen() {
     resolver: yupResolver(SignInSchema),
   });
 
-  const email = watch('email');
-
-  function onSubmit() {
-    console.log('submited');
+  async function handleSignUp({ email, password }: SignInForm) {
+    try {
+      await auth().createUserWithEmailAndPassword(email, password);
+      emailInputRef.current?.clear();
+      passwordInputRef.current?.clear();
+    } catch (error) {
+      // @ts-ignore
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+    }
   }
 
   function handleSignUpPress() {}
+
   return (
     <Layout
       style={{
@@ -109,6 +119,7 @@ export function SignInScreen() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  ref={emailInputRef}
                   keyboardType="email-address"
                   textContentType="emailAddress"
                   autoCapitalize="none"
@@ -143,6 +154,7 @@ export function SignInScreen() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  ref={passwordInputRef}
                   secureTextEntry={true}
                   placeholder="Password"
                   autoCorrect={false}
@@ -159,7 +171,7 @@ export function SignInScreen() {
             )}
           />
 
-          <SignInButton onPress={handleSubmit(onSubmit)}>
+          <SignInButton onPress={handleSubmit(handleSignUp)}>
             <TitleButton>Sign in</TitleButton>
           </SignInButton>
         </Container>
