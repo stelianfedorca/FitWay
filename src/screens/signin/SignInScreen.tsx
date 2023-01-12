@@ -31,6 +31,8 @@ import { Layout } from '../../components/Layout';
 import { SignInSchema } from './SignInScreen.schema';
 
 import auth from '@react-native-firebase/auth';
+import { Routes } from '../../navigators';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -58,20 +60,11 @@ export function SignInScreen() {
     resolver: yupResolver(SignInSchema),
   });
 
-  async function handleSignUp({ email, password }: SignInForm) {
-    try {
-      await auth().createUserWithEmailAndPassword(email, password);
-      emailInputRef.current?.clear();
-      passwordInputRef.current?.clear();
-    } catch (error) {
-      // @ts-ignore
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-    }
-  }
+  async function handleSignIn({ email, password }: SignInForm) {}
 
-  function handleSignUpPress() {}
+  function handleSignUpPress() {
+    navigation.navigate(Routes.SignUp);
+  }
 
   return (
     <Layout
@@ -91,7 +84,17 @@ export function SignInScreen() {
           source={SignInBackgroundImage}
           style={{ height: height / 2.5 }}
         />
-        <Container>
+        <KeyboardAwareScrollView
+          style={{
+            flex: 1.5,
+            borderTopLeftRadius: 55,
+            borderTopRightRadius: 55,
+            bottom: 50,
+            backgroundColor: 'white',
+            paddingBottom: 50,
+            padding: 40,
+          }}
+          contentContainerStyle={{}}>
           <TitleContainer>
             <Title size={34} color="#d3bfad">
               Welcome
@@ -171,10 +174,10 @@ export function SignInScreen() {
             )}
           />
 
-          <SignInButton onPress={handleSubmit(handleSignUp)}>
+          <SignInButton onPress={handleSubmit(handleSignIn)}>
             <TitleButton>Sign in</TitleButton>
           </SignInButton>
-        </Container>
+        </KeyboardAwareScrollView>
       </ScrollView>
     </Layout>
   );
