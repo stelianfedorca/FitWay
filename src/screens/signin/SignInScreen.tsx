@@ -33,12 +33,17 @@ import { SignInSchema } from './SignInScreen.schema';
 import auth from '@react-native-firebase/auth';
 import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useAuthStore } from '../../stores';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
   const navigation = useNavigation<SignInScreenNavigationProp>();
-
   const insets = useSafeAreaInsets();
+
+  const user = useAuthStore(state => state.user);
+  const setUser = useAuthStore(state => state.setUser);
+
+  console.log(user);
 
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
@@ -60,7 +65,10 @@ export function SignInScreen() {
     resolver: yupResolver(SignInSchema),
   });
 
-  async function handleSignIn({ email, password }: SignInForm) {}
+  async function handleSignIn({ email, password }: SignInForm) {
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
+    setUser(user);
+  }
 
   function handleSignUpPress() {
     navigation.navigate(Routes.SignUp);

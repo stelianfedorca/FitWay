@@ -1,10 +1,11 @@
 import React from 'react';
+import { useAuthStore } from '../stores';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
 
-const isSignedIn = false;
 const RootNavigator = () => {
-  return <>{isSignedIn ? <HomeStack /> : <AuthStack />}</>;
+  const user = useAuthStore(state => state.user);
+  return <>{user ? <HomeStack /> : <AuthStack />}</>;
 };
 
 export default RootNavigator;
