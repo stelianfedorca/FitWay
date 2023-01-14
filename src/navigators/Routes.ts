@@ -14,8 +14,9 @@ export enum Routes {
 }
 
 export enum Tabs {
-  Home = 'HOME_TAB',
-  Profile = 'PROFILE_TAB',
+  Home = 'Dashboard',
+  FAB = 'FAB',
+  Profile = 'Profile',
 }
 
 export enum Stacks {
