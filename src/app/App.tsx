@@ -1,8 +1,11 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import RootNavigator from '../navigators/RootNavigator';
 import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
+
+import { firebase } from '@react-native-firebase/auth';
+import { useAuthStore } from '../stores';
 
 // const theme = {
 //   ...DefaultTheme,
@@ -18,6 +21,18 @@ import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 //   },
 // };
 export function App() {
+  const setUser = useAuthStore(state => state.setUser);
+
+  useEffect(() => {
+    const subscriber = firebase
+      .app()
+      .auth()
+      .onAuthStateChanged(user => {
+        setUser(user);
+      });
+
+    return subscriber; // unsubscribe on unmount
+  }, []);
   return (
     <PaperProvider>
       <NavigationContainer>

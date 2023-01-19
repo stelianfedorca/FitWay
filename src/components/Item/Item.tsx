@@ -12,10 +12,7 @@ import {
   ProgressTitle,
   ProgressValue,
   styles,
-  SubTitleProgress,
   TitleHeader,
-  TitleProgress,
-  TitleProgressValue,
 } from './Item.style';
 import React, { ReactNode } from 'react';
 
@@ -30,7 +27,7 @@ type IconType = (props: IconTypeProps) => JSX.Element;
 export type ItemProps = {
   horizontal?: boolean;
   title: string;
-  icon?: string;
+  icon: string;
   progressTitle: string;
   progressValue: number;
 };
