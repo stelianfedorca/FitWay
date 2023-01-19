@@ -9,7 +9,7 @@ import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { View } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { FAB } from 'react-native-paper';
 
 export type HomeStackParams = {
@@ -58,22 +58,28 @@ export type TabParams = {
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigator = () => {
+  const { width } = useWindowDimensions();
   return (
-    <Tab.Navigator
-      barStyle={{ height: 100, backgroundColor: '#EDF1F9' }}
-      shifting={true}
-      labeled={false}>
-      <Tab.Screen
-        name={Tabs.Home}
-        component={Home}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="dashboard" size={32} color={color} />
-          ),
+    <>
+      <Tab.Navigator
+        barStyle={{
+          height: 100,
+          backgroundColor: '#EDF1F9',
+          width: '100%',
         }}
-      />
+        shifting={true}
+        labeled={false}>
+        <Tab.Screen
+          name={Tabs.Home}
+          component={Home}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="dashboard" size={32} color={color} />
+            ),
+          }}
+        />
 
-      <Tab.Screen
+        {/* <Tab.Screen
         name={Tabs.FAB}
         component={Fab}
         options={{
@@ -90,17 +96,31 @@ const TabNavigator = () => {
             />
           ),
         }}
-      />
-      <Tab.Screen
-        name={Tabs.Profile}
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MIcon name="account-circle" size={32} color={color} />
-          ),
+      /> */}
+        <Tab.Screen
+          name={Tabs.Profile}
+          component={Profile}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MIcon name="account-circle" size={32} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+
+      <FAB
+        icon="plus"
+        small
+        style={{
+          position: 'absolute',
+          bottom: 50,
+          left: '45%',
+          borderRadius: 30,
+          backgroundColor: '#626FB2',
         }}
+        color="white"
       />
-    </Tab.Navigator>
+    </>
   );
 };
 
