@@ -30,7 +30,11 @@ export function HomeScreen() {
 
   return (
     <Layout style={styles.container} paddingTop>
-      <View style={{ flex: 1, margin: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          margin: 10,
+        }}>
         <HeaderContainer>
           <View>
             <Text
@@ -69,41 +73,16 @@ export function HomeScreen() {
           showsVerticalScrollIndicator={false}
           style={{ marginTop: 40 }}
           contentContainerStyle={{
-            flexDirection: 'row',
+            padding: 10,
             // flexWrap: 'wrap',
             // justifyContent: 'space-between',
           }}>
-          <ItemColumn marginRight={15}>
-            <Item
-              title="Walk"
-              progressTitle="steps"
-              progressValue={3457}
-              icon="flash-outline"
-            />
-            <Item
-              horizontal
-              title="Sleep"
-              progressTitle="hour"
-              progressValue={3.45}
-              icon="moon-outline"
-            />
-          </ItemColumn>
-
-          <ItemColumn>
-            <Item
-              horizontal
-              title="Gym"
-              progressTitle="min"
-              progressValue={0}
-              icon="ios-timer-outline"
-            />
-            <Item
-              title="Calories"
-              progressTitle="kcal"
-              progressValue={345}
-              icon="flash-outline"
-            />
-          </ItemColumn>
+          <Item
+            title="Calories"
+            progressTitle="Remaining"
+            progressValue={345}
+            icon="flash-outline"
+          />
         </ScrollView>
       </View>
     </Layout>

@@ -1,6 +1,8 @@
 export enum Routes {
   // Home stack
   Home = 'HOME',
+  Diary = 'DIARY',
+  Profile = 'PROFILE',
 
   // Auth stack
   Welcome = 'WELCOME',
@@ -8,15 +10,13 @@ export enum Routes {
   SignUp = 'SIGN_UP',
   ForgotPassword = 'FORGOT_PASSWORD',
   ForgotPasswordConfirmation = 'FORGOT_PASSWORD_CONFIRMATION',
-
-  // Profile stack
-  Profile = 'PROFILE',
 }
 
 export enum Tabs {
   Home = 'Dashboard',
-  FAB = 'FAB',
   Profile = 'Profile',
+  Diary = 'Diary',
+  // FAB = 'FAB',
 }
 
 export enum Stacks {

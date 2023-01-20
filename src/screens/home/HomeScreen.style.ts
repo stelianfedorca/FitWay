@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled(View)`
   flex-direction: row;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
+  margin-horizontal: 10px;
   /* align-items: flex-start; */
 `;
 
