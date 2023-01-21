@@ -65,6 +65,7 @@ export function SignInScreen() {
 
   async function handleSignIn({ email, password }: SignInForm) {
     const { user } = await auth().signInWithEmailAndPassword(email, password);
+    console.log(user);
     setUser(user);
   }
 
