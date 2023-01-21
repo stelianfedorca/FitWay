@@ -92,12 +92,6 @@ export function ProfileScreen() {
         </ContentContainer>
         <SettingsContainer>
           <CellRow onPress={handleSignOut} />
-          <CellRow />
-          <CellRow />
-          <CellRow />
-          <CellRow />
-          <CellRow />
-          <CellRow />
         </SettingsContainer>
       </Container>
     </Layout>
