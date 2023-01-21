@@ -79,7 +79,7 @@ export function Item({
             <CircularProgress
               value={progressValue}
               radius={65}
-              duration={600}
+              duration={500}
               progressValueColor="black"
               maxValue={2000}
               activeStrokeWidth={12}

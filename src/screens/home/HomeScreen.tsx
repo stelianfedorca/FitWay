@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Avatar, Button, Surface, Text } from 'react-native-paper';
+import { Avatar, Button, FAB, Surface, Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
 import { useAuthStore } from '../../stores';
 import { HeaderContainer, ItemColumn, styles } from './HomeScreen.style';
@@ -27,6 +27,10 @@ export function HomeScreen() {
   const formatedDate = format(date, 'dd');
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
+
+  // const [isOpen, setIsOpen] = useState(false);
+
+  // const onStateChange = ({ open }) => setIsOpen(open);
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -63,19 +67,12 @@ export function HomeScreen() {
             }}
             resizeMode="contain"
           />
-          {/* <Avatar.Image
-          source={AvatarProfile}
-          size={40}
-          style={{ borderWidth: 3 }}
-        /> */}
         </HeaderContainer>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ marginTop: 40 }}
           contentContainerStyle={{
             padding: 10,
-            // flexWrap: 'wrap',
-            // justifyContent: 'space-between',
           }}>
           <Item
             title="Calories"
@@ -85,6 +82,34 @@ export function HomeScreen() {
           />
         </ScrollView>
       </View>
+      {/* <FAB.Group
+        open={isOpen}
+        visible
+        icon={isOpen ? 'plus' : 'plus'}
+        actions={[
+          {
+            icon: 'star',
+            label: 'Star',
+            onPress: () => console.log('Pressed star'),
+          },
+          {
+            icon: 'email',
+            label: 'Email',
+            onPress: () => console.log('Pressed email'),
+          },
+          {
+            icon: 'bell',
+            label: 'Remind',
+            onPress: () => console.log('Pressed notifications'),
+          },
+        ]}
+        onStateChange={onStateChange}
+        fabStyle={{
+          backgroundColor: '#4659b8',
+          borderRadius: 30,
+        }}
+        color="white"
+      /> */}
     </Layout>
   );
 }
