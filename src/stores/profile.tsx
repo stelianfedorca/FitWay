@@ -5,6 +5,12 @@ export type UserData = {
   firstName?: string;
   email: string | null;
   isSurveyCompleted: boolean;
+  gender?: string;
+  age?: string;
+  startingWeight?: string;
+  height?: string;
+  goalWeight?: string;
+  activityLevel?: string;
 };
 
 export type ProfileState = {

@@ -1,11 +1,15 @@
-import { Pressable, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { styles } from './CellRow.style';
 
 type CellRowProps = {
+  title: string;
+  hasInput?: boolean;
   onPress?: () => void;
 };
-export function CellRow({ onPress }: CellRowProps) {
+export function CellRow({ title, hasInput, onPress }: CellRowProps) {
+  const [age, setAge] = useState(0);
   return (
     <Pressable
       style={{
@@ -13,13 +17,15 @@ export function CellRow({ onPress }: CellRowProps) {
         justifyContent: 'center',
         height: 70,
         padding: 15,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.3,
+        borderBottomColor: 'grey',
       }}
       onPress={onPress}>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
         }}>
         <MaterialIcons
           name="logout"
@@ -27,8 +33,8 @@ export function CellRow({ onPress }: CellRowProps) {
           style={{ marginRight: 16 }}
           color="red"
         />
-        <Text variant="titleMedium" style={{ fontWeight: '600' }}>
-          Log Out
+        <Text style={{ fontSize: 18, fontWeight: '500', flex: 1 }}>
+          {title}
         </Text>
       </View>
     </Pressable>

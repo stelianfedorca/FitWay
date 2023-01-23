@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { HomeScreen } from '../screens/home';
+import { HomeScreen } from '../screens';
 import { ProfileScreen } from '../screens/profile';
 import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';

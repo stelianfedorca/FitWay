@@ -17,7 +17,7 @@ export enum Routes {
 }
 
 export enum Tabs {
-  Home = 'Dashboard',
+  Home = 'Home',
   Profile = 'Profile',
   Diary = 'Diary',
   // FAB = 'FAB',
