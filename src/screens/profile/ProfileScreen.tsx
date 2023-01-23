@@ -91,7 +91,7 @@ export function ProfileScreen() {
           </Chip>
         </ContentContainer>
         <SettingsContainer>
-          <CellRow onPress={handleSignOut} />
+          <CellRow title="Log Out" onPress={handleSignOut} />
         </SettingsContainer>
       </Container>
     </Layout>

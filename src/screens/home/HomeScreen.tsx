@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Avatar, Button, FAB, Surface, Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
-import { useAuthStore } from '../../stores';
+import { useAuthStore, useProfileStore } from '../../stores';
 import { HeaderContainer, ItemColumn, styles } from './HomeScreen.style';
 
 import MaterialIcons from 'react-native-vector-icons/Ionicons';
@@ -21,16 +21,14 @@ import { format, getDay } from 'date-fns';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
+  const setProfile = useProfileStore(state => state.setProfile);
+  const profile = useProfileStore(state => state.profile);
 
   const [date, setDate] = useState(new Date());
 
   const formatedDate = format(date, 'dd');
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
-
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const onStateChange = ({ open }) => setIsOpen(open);
 
   return (
     <Layout style={styles.container} paddingTop>

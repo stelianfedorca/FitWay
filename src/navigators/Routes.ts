@@ -4,6 +4,10 @@ export enum Routes {
   Diary = 'DIARY',
   Profile = 'PROFILE',
 
+  // Survey Stack
+  Survey = 'SURVEY',
+  Introduction = 'INTRODUCTION',
+
   // Auth stack
   Welcome = 'WELCOME',
   SignIn = 'SIGN_IN',
@@ -13,7 +17,7 @@ export enum Routes {
 }
 
 export enum Tabs {
-  Home = 'Dashboard',
+  Home = 'Home',
   Profile = 'Profile',
   Diary = 'Diary',
   // FAB = 'FAB',
@@ -21,4 +25,5 @@ export enum Tabs {
 
 export enum Stacks {
   Home = 'HOME_STACK',
+  Survey = 'SURVEY_STACK',
 }
