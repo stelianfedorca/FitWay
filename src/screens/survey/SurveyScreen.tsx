@@ -25,6 +25,7 @@ import { Option } from '../../components/Option';
 import { Stacks } from '../../navigators/Routes';
 import { useProfileStore } from '../../stores';
 import { UserData } from '../../stores/profile';
+import { getTDEE } from '../../utils/calculator';
 import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
 import { HomeNavigationProp } from '../home/Home.types';
 import {
@@ -35,6 +36,40 @@ import {
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
+
+export type ActivityLevelProps = {
+  id: number;
+  title: string;
+  subtitle: string;
+  value: number;
+};
+
+const activityLevelData: ActivityLevelProps[] = [
+  {
+    id: 1,
+    title: 'Sedentary',
+    subtitle: 'You spend most of your day sitting',
+    value: 1.2,
+  },
+  {
+    id: 2,
+    title: 'Lightly Active',
+    subtitle: 'You will spend a large part of your day on your feet',
+    value: 1.375,
+  },
+  {
+    id: 3,
+    title: 'Moderately Active',
+    subtitle: 'You do cardio 3 to 5 days a week',
+    value: 1.55,
+  },
+  {
+    id: 4,
+    title: 'Very Active',
+    subtitle: 'You do intentional exercise every day',
+    value: 1.9,
+  },
+];
 
 export function SurveyScreen() {
   const [genderIndex, setGenderIndex] = useState(0);
@@ -47,9 +82,18 @@ export function SurveyScreen() {
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
 
+  console.log(profile);
+
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
-  function handleContinue() {
+  async function handleContinue() {
+    const tdee = getTDEE(
+      Number(startingWeight),
+      Number(height),
+      Number(age),
+      GENDER[genderIndex],
+      activityLevelData[activityLevel].value,
+    );
     if (profile) {
       const updatedProfile: UserData = {
         ...profile,
@@ -60,9 +104,11 @@ export function SurveyScreen() {
         goalWeight: goalWeight,
         activityLevel: ACTIVITY_LEVEL[activityLevel],
         isSurveyCompleted: true,
+        tdee: tdee,
       };
       setProfile(updatedProfile);
     }
+
     navigation.replace(Stacks.Home);
   }
 
@@ -148,6 +194,7 @@ export function SurveyScreen() {
           setOptionIndex={setActivityLevel}
           dropdown
           optionIndex={activityLevel}
+          data={activityLevelData}
         />
 
         <Divider bold />

@@ -23,11 +23,12 @@ import {
   TitleButton,
 } from './SignUpScreen.style';
 import { SignUpForm, SignUpScreenNavigationProp } from './SignUpScreen.types';
-import { useProfileStore } from '../../stores';
+import { useAuthStore, useProfileStore } from '../../stores';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
   const setProfile = useProfileStore(state => state.setProfile);
+  const setUser = useAuthStore(state => state.setUser);
 
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
@@ -51,15 +52,16 @@ export function SignUpScreen() {
 
   async function handleSignUp({ email, password }: SignUpForm) {
     try {
-      const result = await auth().createUserWithEmailAndPassword(
+      const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
 
       setProfile({
-        email: result.user.email,
-        isSurveyCompleted: !result.additionalUserInfo?.isNewUser,
+        email: userCredential.user.email,
+        isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
       });
+
       emailInputRef.current?.clear();
       passwordInputRef.current?.clear();
     } catch (error) {
