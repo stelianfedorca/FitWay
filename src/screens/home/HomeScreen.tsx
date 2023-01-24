@@ -18,11 +18,14 @@ import { Header } from '@react-navigation/stack';
 import { AvatarProfile } from '../../assets/images';
 
 import { format, getDay } from 'date-fns';
+import { ACTIVITY_LEVEL } from '../../utils/consts';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
+
+  console.log(profile);
 
   const [date, setDate] = useState(new Date());
 

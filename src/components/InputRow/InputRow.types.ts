@@ -6,11 +6,11 @@ import {
   TextInputKeyPressEventData,
   ViewStyle,
 } from 'react-native';
-import { string } from 'yup';
+import { ActivityLevelProps } from '../../screens/survey/SurveyScreen';
 
 export interface InputRowProps {
   optionIndex?: number;
-  data?: string[];
+  data?: ActivityLevelProps[];
   children?: ReactNode;
   dropdown?: boolean;
   title?: string;

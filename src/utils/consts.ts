@@ -9,3 +9,5 @@ export enum ACTIVITY_LEVEL {
   'Moderately Active',
   'Very Active',
 }
+
+export const USERS_COLLECTION = 'users';

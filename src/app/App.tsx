@@ -5,7 +5,7 @@ import RootNavigator from '../navigators/RootNavigator';
 import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import { firebase } from '@react-native-firebase/auth';
-import { useAuthStore } from '../stores';
+import { useAuthStore, useProfileStore } from '../stores';
 
 // const theme = {
 //   ...DefaultTheme,
@@ -22,12 +22,14 @@ import { useAuthStore } from '../stores';
 // };
 export function App() {
   const setUser = useAuthStore(state => state.setUser);
+  const setProfile = useProfileStore(state => state.setProfile);
 
   useEffect(() => {
     const subscriber = firebase
       .app()
       .auth()
       .onAuthStateChanged(user => {
+        console.log(user);
         setUser(user);
       });
 

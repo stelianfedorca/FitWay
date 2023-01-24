@@ -33,7 +33,7 @@ import { SignInSchema } from './SignInScreen.schema';
 import auth from '@react-native-firebase/auth';
 import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useAuthStore } from '../../stores';
+import { useAuthStore, useProfileStore } from '../../stores';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -42,6 +42,7 @@ export function SignInScreen() {
 
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
+  const setProfile = useProfileStore(state => state.setProfile);
 
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
@@ -64,9 +65,18 @@ export function SignInScreen() {
   });
 
   async function handleSignIn({ email, password }: SignInForm) {
-    const { user } = await auth().signInWithEmailAndPassword(email, password);
-    console.log(user);
-    setUser(user);
+    const userCredential = await auth().signInWithEmailAndPassword(
+      email,
+      password,
+    );
+    console.log(
+      'sign in, isnewuser: ',
+      userCredential.additionalUserInfo?.isNewUser,
+    );
+    setProfile({
+      email: userCredential.user.email,
+      isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
+    });
   }
 
   function handleSignUpPress() {

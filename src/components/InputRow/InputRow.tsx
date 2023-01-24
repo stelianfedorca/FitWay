@@ -12,28 +12,28 @@ import { Option } from '../Option';
 import { ExpandedItem } from './InputRow.style';
 import { useProfileStore } from '../../stores';
 
-const activityLevelData = [
-  {
-    id: 1,
-    title: 'Sedentary',
-    subtitle: 'You spend most of your day sitting',
-  },
-  {
-    id: 2,
-    title: 'Lightly Active',
-    subtitle: 'You will spend a large part of your day on your feet',
-  },
-  {
-    id: 3,
-    title: 'Moderately Active',
-    subtitle: 'You do cardio 3 to 5 days a week',
-  },
-  {
-    id: 4,
-    title: 'Very Active',
-    subtitle: 'You do intentional exercise every day',
-  },
-];
+// const activityLevelData = [
+//   {
+//     id: 1,
+//     title: 'Sedentary',
+//     subtitle: 'You spend most of your day sitting',
+//   },
+//   {
+//     id: 2,
+//     title: 'Lightly Active',
+//     subtitle: 'You will spend a large part of your day on your feet',
+//   },
+//   {
+//     id: 3,
+//     title: 'Moderately Active',
+//     subtitle: 'You do cardio 3 to 5 days a week',
+//   },
+//   {
+//     id: 4,
+//     title: 'Very Active',
+//     subtitle: 'You do intentional exercise every day',
+//   },
+// ];
 export const InputRow = forwardRef<TextInput, InputRowProps>(
   (
     {
@@ -85,14 +85,14 @@ export const InputRow = forwardRef<TextInput, InputRowProps>(
           ) : (
             <>
               <Text style={{ fontSize: 18, fontWeight: '400' }}>
-                {activityLevelData[optionIndex!].title}
+                {data![optionIndex!].title}
               </Text>
             </>
           )}
         </Pressable>
         {dropdown && isExpanded && (
           <ExpandedItem>
-            {activityLevelData.map((activity, index) => (
+            {data!.map((activity, index) => (
               <Option
                 title={activity.title}
                 subtitle={activity.subtitle}

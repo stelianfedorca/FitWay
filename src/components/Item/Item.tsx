@@ -19,14 +19,13 @@ import {
 } from './Item.style';
 import React, { ReactNode } from 'react';
 import { ItemDetails } from '../ItemDetails';
+import { useProfileStore } from '../../stores';
 
 interface IconTypeProps {
   name?: string;
   size?: number;
   color?: string;
 }
-
-type IconType = (props: IconTypeProps) => JSX.Element;
 
 export type ItemProps = {
   horizontal?: boolean;
@@ -44,6 +43,8 @@ export function Item({
   progressTitle,
   progressValue,
 }: ItemProps) {
+  const profile = useProfileStore(state => state.profile);
+
   return (
     <>
       {horizontal ? (
@@ -99,7 +100,7 @@ export function Item({
             <DetailsContainer>
               <ItemDetails
                 title="Base Goal"
-                value={2000}
+                value={profile?.tdee ?? 0}
                 icon="flag"
                 iconColor="grey"
               />
