@@ -11,3 +11,4 @@ export enum ACTIVITY_LEVEL {
 }
 
 export const USERS_COLLECTION = 'users';
+export const FOOD_COLLECTION = 'food';

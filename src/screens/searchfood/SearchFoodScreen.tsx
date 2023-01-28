@@ -1,5 +1,7 @@
 import { Layout } from '../../components/Layout';
+import { useFoodCollection } from '../../hooks';
 
 export function SearchFoodScreen() {
-  return <Layout paddingBottom paddingTop style={{ borderWidth: 2 }}></Layout>;
+  useFoodCollection();
+  return <Layout paddingBottom paddingTop></Layout>;
 }
