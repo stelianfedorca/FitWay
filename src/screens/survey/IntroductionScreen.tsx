@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
+import { useProfileStore } from '../../stores';
 import {
   ButtonsContainer,
   PrimaryButton,
@@ -13,6 +14,9 @@ import { IntroductionScreenNavigationProp } from './IntroductionScreen.types';
 
 export function IntroductionScreen() {
   const navigation = useNavigation<IntroductionScreenNavigationProp>();
+  const profile = useProfileStore(state => state.profile);
+
+  console.log('profile: ', profile);
 
   function handleContinue() {
     navigation.navigate(Routes.Survey);

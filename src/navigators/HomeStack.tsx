@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useAuthStore, useProfileStore } from '../stores';
 import { Routes, Stacks, Tabs } from './Routes';
@@ -41,9 +41,10 @@ function Survey() {
 const HomeStack = () => {
   const user = useAuthStore(state => state.user);
   const profile = useProfileStore(state => state.profile);
+  const survey = !profile?.isSurveyCompleted;
+  console.log('survey_completed: ', profile?.isSurveyCompleted);
 
-  const [survey] = useState(!profile?.isSurveyCompleted);
-
+  console.log(profile);
   return (
     <Stack.Navigator
       screenOptions={{

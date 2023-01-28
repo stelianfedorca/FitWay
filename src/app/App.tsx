@@ -23,15 +23,13 @@ import { useAuthStore, useProfileStore } from '../stores';
 export function App() {
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
+  const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
 
   useEffect(() => {
     const subscriber = firebase
       .app()
       .auth()
-      .onAuthStateChanged(user => {
-        console.log(user);
-        setUser(user);
-      });
+      .onAuthStateChanged(onAuthStateChanged);
 
     return subscriber; // unsubscribe on unmount
   }, []);

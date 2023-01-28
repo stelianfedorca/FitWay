@@ -4,9 +4,9 @@ import React, { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
   ImageBackground,
+  Keyboard,
   Pressable,
   ScrollView,
-  TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -24,6 +24,12 @@ import {
   TitleButton,
   TextError,
   Container,
+  SignUpButton,
+  TitleSignUp,
+  Link,
+  LinkText,
+  BottomTextContainer,
+  styles,
 } from './SignInScreen.style';
 import { SignInForm, SignInScreenNavigationProp } from './SignInScreen.types';
 
@@ -34,6 +40,7 @@ import auth from '@react-native-firebase/auth';
 import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuthStore, useProfileStore } from '../../stores';
+import { Text, TextInput } from 'react-native-paper';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -43,9 +50,6 @@ export function SignInScreen() {
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
-
-  const emailInputRef = useRef<TextInput>(null);
-  const passwordInputRef = useRef<TextInput>(null);
 
   const defaultValues = {
     email: '',
@@ -73,10 +77,10 @@ export function SignInScreen() {
       'sign in, isnewuser: ',
       userCredential.additionalUserInfo?.isNewUser,
     );
-    setProfile({
-      email: userCredential.user.email,
-      isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
-    });
+    // setProfile({
+    //   email: userCredential.user.email,
+    //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
+    // });
   }
 
   function handleSignUpPress() {
@@ -89,7 +93,7 @@ export function SignInScreen() {
         paddingBottom: insets.bottom,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-        backgroundColor: 'white',
+        backgroundColor: '#f2f2f3',
       }}>
       <ScrollView
         scrollEnabled={false}
@@ -101,100 +105,121 @@ export function SignInScreen() {
           source={SignInBackgroundImage}
           style={{ height: height / 2.5 }}
         />
-        <KeyboardAwareScrollView
+        <Pressable
           style={{
-            flex: 1.5,
-            borderTopLeftRadius: 55,
-            borderTopRightRadius: 55,
-            bottom: 50,
-            backgroundColor: 'white',
-            paddingBottom: 50,
-            padding: 40,
+            flex: 1,
+            backgroundColor: '#f2f2f3',
           }}
-          contentContainerStyle={{}}>
-          <TitleContainer>
-            <Title size={34} color="#d3bfad">
-              Welcome
-            </Title>
-          </TitleContainer>
-          <SubTitleContainer>
-            <SubTitle>Don't have an account? </SubTitle>
-            <TextButton onPress={handleSignUpPress}>
-              <Title color="#44423f">Sign Up</Title>
-            </TextButton>
-          </SubTitleContainer>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Pressable
-                style={{
-                  // paddingVertical: 18,
-                  // borderWidth: 1,
-                  height: 55,
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                }}>
-                <StyledInput
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  ref={emailInputRef}
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  autoComplete="email"
-                  placeholder="Email"
-                />
-                {!!errors.email && (
-                  <View
-                    style={{
-                      bottom: -5,
-                      paddingHorizontal: 5,
-                    }}>
-                    <TextError>{errors.email.message}</TextError>
-                  </View>
-                )}
-              </Pressable>
-            )}
-          />
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Pressable
-                style={{
-                  marginTop: 15,
-                  // paddingVertical: 18,
-                  justifyContent: 'flex-start',
-                  height: 55,
-                }}>
-                <StyledInput
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  ref={passwordInputRef}
-                  secureTextEntry={true}
-                  placeholder="Password"
-                  autoCorrect={false}
-                  textContentType="newPassword"
-                  keyboardType="default"
-                  returnKeyType="done"
-                />
-                {!!errors.password && (
-                  <View style={{ bottom: -5, paddingHorizontal: 5 }}>
-                    <TextError>{errors.password.message}</TextError>
-                  </View>
-                )}
-              </Pressable>
-            )}
-          />
+          onPress={Keyboard.dismiss}
+          accessible={false}>
+          <KeyboardAwareScrollView
+            style={{
+              flex: 1.5,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              bottom: 150,
+              backgroundColor: '#f2f2f3',
+              paddingBottom: 50,
+              // paddingVertical: 40,
+            }}
+            scrollEnabled={false}
+            contentContainerStyle={{
+              paddingVertical: 50,
+              paddingHorizontal: 15,
+              justifyContent: 'space-evenly',
+            }}>
+            <TitleContainer>
+              <Text variant="headlineLarge" style={{ fontWeight: '500' }}>
+                Welcome back
+              </Text>
+            </TitleContainer>
+            <SubTitleContainer>
+              <SubTitle>Please enter your details.</SubTitle>
+            </SubTitleContainer>
 
-          <SignInButton onPress={handleSubmit(handleSignIn)}>
-            <TitleButton>Sign in</TitleButton>
-          </SignInButton>
-        </KeyboardAwareScrollView>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Pressable
+                  style={{
+                    height: 55,
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                  }}>
+                  <StyledInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoComplete="email"
+                    label="Email"
+                    mode="outlined"
+                    theme={{ roundness: 15 }}
+                  />
+                  {!!errors.email && (
+                    <View
+                      style={{
+                        bottom: -5,
+                        paddingHorizontal: 5,
+                      }}>
+                      <TextError>{errors.email.message}</TextError>
+                    </View>
+                  )}
+                </Pressable>
+              )}
+            />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Pressable
+                  style={{
+                    marginTop: 30,
+                    justifyContent: 'flex-start',
+                    height: 55,
+                  }}>
+                  <StyledInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    secureTextEntry={true}
+                    autoCorrect={false}
+                    textContentType="newPassword"
+                    keyboardType="default"
+                    returnKeyType="done"
+                    placeholderTextColor="#323437"
+                    label="Password"
+                    mode="outlined"
+                    theme={{ roundness: 15 }}
+                  />
+                  {!!errors.password && (
+                    <View style={{ bottom: -5, paddingHorizontal: 5 }}>
+                      <TextError>{errors.password.message}</TextError>
+                    </View>
+                  )}
+                </Pressable>
+              )}
+            />
+
+            <SignInButton
+              style={styles.shadowButton}
+              onPress={handleSubmit(handleSignIn)}>
+              <TitleButton>Sign in</TitleButton>
+            </SignInButton>
+            <BottomTextContainer>
+              <Text style={{ fontWeight: '600', fontSize: 16 }}>
+                Don't have an account?
+              </Text>
+              <Link onPress={handleSignUpPress}>
+                <LinkText>Sign Up</LinkText>
+              </Link>
+            </BottomTextContainer>
+          </KeyboardAwareScrollView>
+        </Pressable>
       </ScrollView>
     </Layout>
   );

@@ -23,7 +23,8 @@ import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
 import { Option } from '../../components/Option';
 import { Stacks } from '../../navigators/Routes';
-import { useProfileStore } from '../../stores';
+import { createUserInFirestore } from '../../services/auth.service';
+import { useAuthStore, useProfileStore } from '../../stores';
 import { UserData } from '../../stores/profile';
 import { getTDEE } from '../../utils/calculator';
 import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
@@ -36,6 +37,7 @@ import {
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
+import auth from '@react-native-firebase/auth';
 
 export type ActivityLevelProps = {
   id: number;
@@ -82,7 +84,8 @@ export function SurveyScreen() {
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
 
-  console.log(profile);
+  const user = useAuthStore(state => state.user);
+  console.log(user);
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
@@ -104,12 +107,21 @@ export function SurveyScreen() {
         goalWeight: goalWeight,
         activityLevel: ACTIVITY_LEVEL[activityLevel],
         isSurveyCompleted: true,
-        tdee: tdee,
+        tdee: Number(tdee),
       };
       setProfile(updatedProfile);
-    }
 
-    navigation.replace(Stacks.Home);
+      if (user) {
+        await createUserInFirestore(
+          user.uid,
+          updatedProfile.firstName,
+          updatedProfile.email!,
+          updatedProfile.isSurveyCompleted,
+          updatedProfile.tdee,
+        );
+      }
+    }
+    navigation.navigate(Stacks.Home);
   }
 
   return (
