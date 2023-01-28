@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { FOOD_COLLECTION } from '../utils/consts';
+import { FoodData, useFoodStore } from '../stores/food';
+import { useAuthStore } from '../stores';
 
 // custom hook
 export function useFoodCollection() {
+  const { user } = useAuthStore();
+  const setFood = useFoodStore(state => state.setFood);
+
   useEffect(() => {
+    if (!user) return;
     const subscriber = firestore()
       .collection(FOOD_COLLECTION)
       .onSnapshot(querySnapshot => {
-        const food = [];
+        const food: FoodData[] = [];
 
         querySnapshot.forEach(documentSnapshot => {
           food.push({
@@ -16,8 +22,7 @@ export function useFoodCollection() {
             key: documentSnapshot.id,
           });
         });
-
-        console.log(food);
+        setFood(food);
       });
 
     // unsubscribe from events when no longer in use
