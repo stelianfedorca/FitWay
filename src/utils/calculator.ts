@@ -1,5 +1,3 @@
-import { act } from 'react-test-renderer';
-
 export type CalculatorProps = {
   weight: number;
   height: number;
@@ -59,5 +57,6 @@ export const getTDEE = (
   activityLevel: number,
 ) => {
   // const multiplier = activityLevel[activityLevelKey];
-  return getBMR(weight, height, age, gender) * activityLevel;
+  const result = getBMR(weight, height, age, gender) * activityLevel;
+  return result.toFixed(0);
 };

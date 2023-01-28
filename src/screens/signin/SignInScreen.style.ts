@@ -1,11 +1,12 @@
 import {
+  Pressable,
   StyleSheet,
-  Text,
-  TextInput,
+  Touchable,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Text, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
@@ -20,9 +21,11 @@ export const Layout = styled(View)`
 // `;
 
 export const TitleContainer = styled(View)<{ margin?: number }>`
+  align-self: center;
   margin-bottom: ${({ margin }) => (margin ? margin : 0)}px;
 `;
 export const SubTitleContainer = styled(View)<{ margin?: number }>`
+  align-self: center;
   flex-direction: row;
   margin-top: 4px;
   padding-bottom: ${({ margin }) => (margin ? margin : 0)}px;
@@ -43,6 +46,7 @@ export const TextError = styled(Text)`
 export const TitleButton = styled(Text)`
   color: white;
   font-size: 18px;
+  font-weight: 500;
 `;
 export const SubTitle = styled(Text)``;
 
@@ -55,26 +59,54 @@ export const BackButton = styled(Text)`
 export const TextButton = styled(TouchableOpacity)<{ color?: string }>`
   color: ${({ color }) => color};
   font-size: 16px;
+  /* font-weight: 600; */
 `;
 
 export const StyledInput = styled(TextInput)`
   width: 100%;
-  padding-horizontal: 5px;
-  padding-vertical: 5px;
-  border-bottom-width: 1.5px;
+  /* padding: 15px; */
+  /* height: 30px; */
   border-radius: 10px;
-  border-color: #7f6853;
+  background-color: #f2f2f3;
+  /* border-color: #7f6853; */
 `;
 
 export const SignInButton = styled(TouchableOpacity)`
   height: 50px;
-  background-color: #614f3f;
+  background-color: #465cc9;
   border-radius: 15px;
-  border-color: green;
   padding: 10px;
   align-items: center;
   justify-content: center;
   margin-top: 50px;
+`;
+
+export const TitleSignUp = styled(Text)`
+  color: #4a9cef;
+  font-size: 18px;
+`;
+export const SignUpButton = styled(TouchableOpacity)`
+  position: absolute;
+  top: 20px;
+  right: 50px;
+`;
+
+export const LinkText = styled(Text)`
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a9cef;
+  padding-horizontal: 5px;
+`;
+
+export const Link = styled(TouchableOpacity)``;
+
+export const BottomTextContainer = styled(View)`
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin-top: 15px;
 `;
 
 export const Container = styled(View)`
@@ -91,4 +123,14 @@ export const Container = styled(View)`
 
 // `
 
-export const styles = StyleSheet.create({});
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});
