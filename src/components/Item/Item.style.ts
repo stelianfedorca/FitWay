@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Pressable, StyleSheet, View, Text } from 'react-native';
+// import { Text } from 'react-native-paper';
 import styled from 'styled-components';
 
 export const Container = styled(Pressable)``;
@@ -29,9 +29,8 @@ export const DetailsContainer = styled(View)`
 `;
 
 export const TitleHeader = styled(Text)`
-  font-size: 18px;
-  font-weight: 700;
-  /* color: #c3c4c7; */
+  font-size: 22px;
+  font-weight: 600;
 `;
 
 export const SubTitleHeader = styled(Text)`
@@ -75,7 +74,7 @@ export const styles = StyleSheet.create({
       width: 2,
       height: 1,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
 });

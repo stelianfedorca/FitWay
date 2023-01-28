@@ -1,0 +1,1 @@
+export { CircularProgressComponent } from './CircularProgressComponent';

@@ -17,9 +17,11 @@ export type UserData = {
   startingWeight?: string;
   height?: string;
   activityLevel?: string;
-  tdee?: number;
   goalWeight?: string;
   isSurveyCompleted: boolean;
+  tdee?: number;
+  food?: number;
+  exercise?: number;
 };
 // startingInformation?: UserStartingInformation;
 
@@ -43,7 +45,6 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       .collection<UserData>(USERS_COLLECTION)
       .doc(uid)
       .get();
-    console.log('data in refresh: ', profile.data());
     const userData = profile.data();
 
     userData && setProfile(userData);

@@ -33,6 +33,7 @@ export type ItemProps = {
   icon: string;
   progressTitle: string;
   progressValue: number;
+  max?: number;
 };
 // icon: React.ComponentProps<typeof Ionicons>['name'];
 
@@ -42,6 +43,7 @@ export function Item({
   icon,
   progressTitle,
   progressValue,
+  max,
 }: ItemProps) {
   const profile = useProfileStore(state => state.profile);
 
@@ -79,11 +81,11 @@ export function Item({
           <InfoContainer>
             <CircularProgress
               value={progressValue}
+              progressValueFontSize={24}
               radius={65}
               duration={500}
               progressValueColor="black"
-              maxValue={2000}
-              activeStrokeWidth={12}
+              maxValue={max ?? 2000}
               inActiveStrokeColor="#EDF1F9"
               activeStrokeColor="#465cc9"
               title={progressTitle}
@@ -96,6 +98,7 @@ export function Item({
                 fontSize: 22,
                 fontWeight: '500',
               }}
+              clockwise={false}
             />
             <DetailsContainer>
               <ItemDetails
@@ -106,13 +109,13 @@ export function Item({
               />
               <ItemDetails
                 title="Food"
-                value={1348}
+                value={profile?.food ?? 0}
                 icon="fastfood"
                 iconColor="#465cc9"
               />
               <ItemDetails
                 title="Exercise"
-                value={0}
+                value={profile?.exercise ?? 0}
                 icon="local-fire-department"
                 iconColor="orange"
               />

@@ -60,3 +60,13 @@ export const getTDEE = (
   const result = getBMR(weight, height, age, gender) * activityLevel;
   return result.toFixed(0);
 };
+
+export function getRemainingCalories(
+  foodCalories: number,
+  tdee?: number,
+  exercise?: number,
+) {
+  if (tdee === undefined) return 0;
+
+  return tdee - foodCalories + (exercise ?? 0);
+}
