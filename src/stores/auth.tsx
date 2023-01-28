@@ -23,7 +23,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   onAuthStateChanged: async (currentUser: FirebaseAuthTypes.User | null) => {
     const { setUser } = get();
     const { refreshProfile } = useProfileStore.getState();
-    console.log('??');
     await refreshProfile();
     setUser(currentUser);
   },

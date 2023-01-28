@@ -19,33 +19,41 @@ import { AvatarProfile } from '../../assets/images';
 
 import { format, getDay } from 'date-fns';
 import { ACTIVITY_LEVEL } from '../../utils/consts';
+import { getRemainingCalories } from '../../utils/calculator';
+import { ItemStatistics } from '../../components/ItemStatistics';
+import { CircularProgressComponent } from '../../components/CircularProgressComponent';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
 
-  console.log(profile);
-
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
 
   const formatedDate = format(date, 'dd');
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
+
+  const remainingCalories = getRemainingCalories(
+    0,
+    profile?.tdee,
+    profile?.exercise,
+  );
 
   return (
     <Layout style={styles.container} paddingTop>
       <View
         style={{
           flex: 1,
-          margin: 10,
+          marginTop: 10,
+          // margin: 10,
         }}>
         <HeaderContainer>
           <View>
             <Text
               variant="titleMedium"
               style={{ fontWeight: '500', fontSize: 18, letterSpacing: 0.8 }}>
-              {`Hi, Stelian`}
+              {`Hi, ${profile?.firstName}`}
             </Text>
             <Text
               variant="labelLarge"
@@ -74,13 +82,41 @@ export function HomeScreen() {
           style={{ marginTop: 40 }}
           contentContainerStyle={{
             padding: 10,
-          }}>
+          }}
+          bounces={false}>
           <Item
             title="Calories"
             progressTitle="Remaining"
-            progressValue={345}
+            progressValue={remainingCalories}
             icon="flash-outline"
+            max={profile?.tdee}
           />
+          <ItemStatistics title="Macros">
+            <CircularProgressComponent
+              progressValue={245.9}
+              max={245.9}
+              progressTitle="Grams"
+              textTop="Carbs"
+              textBottom="40%"
+              activeStrokeColor="#3db9d5"
+            />
+            <CircularProgressComponent
+              progressValue={50}
+              max={68.3055555556}
+              progressTitle="Grams"
+              textTop="Fat"
+              textBottom="25%"
+              activeStrokeColor="#4a62d8"
+            />
+            <CircularProgressComponent
+              progressValue={50}
+              max={215.1625}
+              progressTitle="Grams"
+              textTop="Protein"
+              textBottom="35%"
+              activeStrokeColor="#d38723"
+            />
+          </ItemStatistics>
         </ScrollView>
       </View>
       {/* <FAB.Group
