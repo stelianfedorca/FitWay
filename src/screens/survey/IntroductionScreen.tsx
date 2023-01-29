@@ -16,8 +16,6 @@ export function IntroductionScreen() {
   const navigation = useNavigation<IntroductionScreenNavigationProp>();
   const profile = useProfileStore(state => state.profile);
 
-  console.log('profile: ', profile);
-
   function handleContinue() {
     navigation.navigate(Routes.Survey);
   }

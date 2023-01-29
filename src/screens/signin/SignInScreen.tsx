@@ -73,10 +73,7 @@ export function SignInScreen() {
       email,
       password,
     );
-    console.log(
-      'sign in, isnewuser: ',
-      userCredential.additionalUserInfo?.isNewUser,
-    );
+
     // setProfile({
     //   email: userCredential.user.email,
     //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,

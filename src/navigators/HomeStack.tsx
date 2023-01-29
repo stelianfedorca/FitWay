@@ -44,9 +44,7 @@ const HomeStack = () => {
   const user = useAuthStore(state => state.user);
   const profile = useProfileStore(state => state.profile);
   const survey = !profile?.isSurveyCompleted;
-  console.log('survey_completed: ', profile?.isSurveyCompleted);
 
-  console.log(profile);
   return (
     <Stack.Navigator
       screenOptions={{
