@@ -1,10 +1,22 @@
-import { FlatList, ListRenderItemInfo, Text, View } from 'react-native';
+import {
+  FlatList,
+  ListRenderItemInfo,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useFoodStore, useSearchStore } from '../../stores';
 import { FoodData } from '../../stores/food';
 import { ItemList } from '../ItemList';
 import { Container } from './List.style';
 
-export function List() {
+export type ListProps = {
+  style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
+};
+
+export function List({ style, contentStyle }: ListProps) {
   const food = useFoodStore(state => state.food);
   const searchFilter = useSearchStore(state => state.search);
 
@@ -20,6 +32,7 @@ export function List() {
         )}
         renderItem={_renderItem}
         keyExtractor={(item, index) => item.key ?? index.toString()}
+        contentContainerStyle={contentStyle}
       />
     </Container>
   );

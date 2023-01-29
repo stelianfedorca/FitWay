@@ -10,12 +10,12 @@ export function SearchFoodScreen() {
   useFoodCollection();
   return (
     <Layout paddingBottom style={styles.container}>
-      <Pressable style={{ flex: 1 }}>
+      <Pressable style={{}}>
         <SearchBar style={{ paddingHorizontal: 10, marginBottom: 20 }} />
         <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
           <Text style={{ fontSize: 18, fontWeight: '500' }}>Search result</Text>
         </View>
-        <List />
+        <List contentStyle={{ paddingHorizontal: 10 }} />
       </Pressable>
     </Layout>
   );
