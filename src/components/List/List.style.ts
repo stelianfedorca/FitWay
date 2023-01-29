@@ -1,3 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import styled from 'styled-components';
+
+export const Container = styled(SafeAreaView)`
+  flex: 1;
+`;
 
 export const styles = StyleSheet.create({});

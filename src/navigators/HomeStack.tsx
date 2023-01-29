@@ -61,6 +61,7 @@ const HomeStack = () => {
         component={SearchFoodScreen}
         options={{
           headerShown: true,
+          headerShadowVisible: false,
         }}
       />
     </Stack.Navigator>
