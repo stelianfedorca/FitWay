@@ -7,13 +7,7 @@ import TabNavigator from './TabNavigator';
 
 import { SurveyScreen } from '../screens';
 import { IntroductionScreen } from '../screens/survey';
-
-export type RootStackParams = {
-  [Stacks.Home]: { screens: Tabs } | undefined;
-  [Stacks.Survey]: undefined;
-};
-
-const Stack = createNativeStackNavigator<RootStackParams>();
+import { SearchFoodScreen } from '../screens/searchfood';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -38,6 +32,14 @@ function Survey() {
   );
 }
 
+export type RootStackParams = {
+  [Stacks.Home]: { screens: Tabs } | undefined;
+  [Stacks.Survey]: undefined;
+  [Routes.Search]: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParams>();
+
 const HomeStack = () => {
   const user = useAuthStore(state => state.user);
   const profile = useProfileStore(state => state.profile);
@@ -54,6 +56,14 @@ const HomeStack = () => {
       }}>
       {survey && <Stack.Screen name={Stacks.Survey} component={Survey} />}
       <Stack.Screen name={Stacks.Home} component={TabNavigator} />
+      <Stack.Screen
+        name={Routes.Search}
+        component={SearchFoodScreen}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

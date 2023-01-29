@@ -1,0 +1,1 @@
+export { SearchFoodScreen } from './SearchFoodScreen';

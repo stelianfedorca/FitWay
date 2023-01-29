@@ -1,0 +1,1 @@
+export { useFoodCollection } from './useFoodCollection';

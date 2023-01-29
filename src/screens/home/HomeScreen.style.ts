@@ -5,8 +5,7 @@ export const HeaderContainer = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-horizontal: 10px;
-  /* align-items: flex-start; */
+  margin-horizontal: 20px;
 `;
 
 export const ItemColumn = styled(View)<{ marginRight?: number }>`

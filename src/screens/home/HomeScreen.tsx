@@ -22,13 +22,22 @@ import { ACTIVITY_LEVEL } from '../../utils/consts';
 import { getRemainingCalories } from '../../utils/calculator';
 import { ItemStatistics } from '../../components/ItemStatistics';
 import { CircularProgressComponent } from '../../components/CircularProgressComponent';
+import { useNavigation } from '@react-navigation/native';
+import { HomeNavigationProp } from './Home.types';
+import { Routes } from '../../navigators';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
+  const navigation = useNavigation<HomeNavigationProp>();
 
   const [date] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleStateChange() {
+    setIsOpen(!isOpen);
+  }
 
   const formatedDate = format(date, 'dd');
   const day = format(date, 'EEEE');
@@ -119,10 +128,10 @@ export function HomeScreen() {
           </ItemStatistics>
         </ScrollView>
       </View>
-      {/* <FAB.Group
+      <FAB.Group
         open={isOpen}
         visible
-        icon={isOpen ? 'plus' : 'plus'}
+        icon={'plus'}
         actions={[
           {
             icon: 'star',
@@ -130,23 +139,19 @@ export function HomeScreen() {
             onPress: () => console.log('Pressed star'),
           },
           {
-            icon: 'email',
-            label: 'Email',
-            onPress: () => console.log('Pressed email'),
-          },
-          {
-            icon: 'bell',
-            label: 'Remind',
-            onPress: () => console.log('Pressed notifications'),
+            icon: 'food',
+            label: 'Search for a food',
+            onPress: () => navigation.navigate(Routes.Search),
           },
         ]}
-        onStateChange={onStateChange}
+        onStateChange={handleStateChange}
         fabStyle={{
           backgroundColor: '#4659b8',
           borderRadius: 30,
         }}
         color="white"
-      /> */}
+        style={{ bottom: -20, opacity: isOpen ? 1 : 1 }}
+      />
     </Layout>
   );
 }
