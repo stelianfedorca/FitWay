@@ -118,7 +118,7 @@ export function SignUpScreen() {
             paddingHorizontal: 15,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            // justifyContent: 'center',
+            justifyContent: 'center',
           }}
           scrollEnabled={false}>
           <HeaderContainer>
@@ -131,7 +131,7 @@ export function SignUpScreen() {
               <Pressable
                 style={{
                   height: 55,
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
                 }}>
                 <StyledInput
                   ref={nameInputRef}

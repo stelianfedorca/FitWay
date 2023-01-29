@@ -91,8 +91,7 @@ export function HomeScreen() {
           style={{ marginTop: 40 }}
           contentContainerStyle={{
             padding: 10,
-          }}
-          bounces={false}>
+          }}>
           <Item
             title="Calories"
             progressTitle="Remaining"

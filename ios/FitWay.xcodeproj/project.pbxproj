@@ -11,9 +11,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		18EF9A68706A2BF7CD383BAE /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553178AA03BF507839A0F5E8 /* ExpoModulesProvider.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A0AE6D13EDF0447DEDF947B0 /* Pods_FitWay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7CF47DE5192590C753F8AE /* Pods_FitWay.framework */; };
 		DFF6538218E8DF273F7BABFD /* Pods_FitWay_FitWayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8BDDC52FF3DD0910EA1103F /* Pods_FitWay_FitWayTests.framework */; };
+		E8E1E156D70CE426EAC26476 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1637EE320CD0B36168CCBD /* ExpoModulesProvider.swift */; };
 		FA7DCB46296F67E900D2AEAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA7DCB45296F67E800D2AEAE /* GoogleService-Info.plist */; };
 		FAF6AE4E293D0F3E00815CCE /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = FAF6AE4D293D0F3E00815CCE /* fonts */; };
 /* End PBXBuildFile section */
@@ -39,10 +41,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FitWay/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FitWay/main.m; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-FitWay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitWay.debug.xcconfig"; path = "Target Support Files/Pods-FitWay/Pods-FitWay.debug.xcconfig"; sourceTree = "<group>"; };
+		553178AA03BF507839A0F5E8 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FitWay/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-FitWay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitWay.release.xcconfig"; path = "Target Support Files/Pods-FitWay/Pods-FitWay.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-FitWay-FitWayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitWay-FitWayTests.debug.xcconfig"; path = "Target Support Files/Pods-FitWay-FitWayTests/Pods-FitWay-FitWayTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FitWay/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-FitWay-FitWayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitWay-FitWayTests.release.xcconfig"; path = "Target Support Files/Pods-FitWay-FitWayTests/Pods-FitWay-FitWayTests.release.xcconfig"; sourceTree = "<group>"; };
+		DC1637EE320CD0B36168CCBD /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FitWay-FitWayTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		EA7CF47DE5192590C753F8AE /* Pods_FitWay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FitWay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F8BDDC52FF3DD0910EA1103F /* Pods_FitWay_FitWayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FitWay_FitWayTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +115,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6E0A311384BE0F72733AB91B /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				FE127A691BDAC970A8EC9F21 /* FitWay */,
+				CE96775C909CDE4358301678 /* FitWayTests */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +141,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				6E0A311384BE0F72733AB91B /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -152,6 +166,22 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-FitWay-FitWayTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CE96775C909CDE4358301678 /* FitWayTests */ = {
+			isa = PBXGroup;
+			children = (
+				DC1637EE320CD0B36168CCBD /* ExpoModulesProvider.swift */,
+			);
+			name = FitWayTests;
+			sourceTree = "<group>";
+		};
+		FE127A691BDAC970A8EC9F21 /* FitWay */ = {
+			isa = PBXGroup;
+			children = (
+				553178AA03BF507839A0F5E8 /* ExpoModulesProvider.swift */,
+			);
+			name = FitWay;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -427,6 +457,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* FitWayTests.m in Sources */,
+				E8E1E156D70CE426EAC26476 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +467,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				18EF9A68706A2BF7CD383BAE /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +492,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = FitWayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -471,6 +503,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitWay.app/FitWay";
@@ -484,7 +517,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = FitWayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -495,6 +528,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitWay.app/FitWay";
@@ -520,6 +554,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FitWay;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -546,6 +581,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FitWay;
 				SWIFT_VERSION = 5.0;
@@ -602,7 +638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -667,7 +703,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",

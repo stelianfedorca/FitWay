@@ -85,7 +85,6 @@ export function SurveyScreen() {
   const profile = useProfileStore(state => state.profile);
 
   const user = useAuthStore(state => state.user);
-  console.log(user);
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
