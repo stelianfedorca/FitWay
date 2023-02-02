@@ -101,7 +101,7 @@ export function HomeScreen() {
           />
           <ItemStatistics title="Macros">
             <CircularProgressComponent
-              progressValue={245.9}
+              progressValue={220}
               max={245.9}
               progressTitle="Grams"
               textTop="Carbs"

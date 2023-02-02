@@ -1,5 +1,6 @@
 import {
   FlatList,
+  GestureResponderEvent,
   ListRenderItemInfo,
   StyleProp,
   Text,
@@ -14,25 +15,32 @@ import { Container } from './List.style';
 export type ListProps = {
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
+  data: FoodData[] | null;
+  onItemPress?: (event: GestureResponderEvent) => void;
 };
 
-export function List({ style, contentStyle }: ListProps) {
-  const food = useFoodStore(state => state.food);
+export function List({ contentStyle, data, onItemPress }: ListProps) {
+  const { food, setSelectedFood } = useFoodStore.getState();
   const searchFilter = useSearchStore(state => state.search);
 
   function _renderItem(item: ListRenderItemInfo<FoodData>) {
-    return <ItemList item={item.item} />;
+    function handleItemPress(event: GestureResponderEvent) {
+      setSelectedFood(item.item);
+      onItemPress?.(event);
+    }
+    return <ItemList item={item.item} onPress={handleItemPress} />;
   }
 
   return (
     <Container>
       <FlatList
-        data={food?.filter(data =>
+        data={data?.filter(data =>
           data.name?.includes(searchFilter ?? data.name),
         )}
         renderItem={_renderItem}
         keyExtractor={(item, index) => item.key ?? index.toString()}
         contentContainerStyle={contentStyle}
+        bounces={false}
       />
     </Container>
   );

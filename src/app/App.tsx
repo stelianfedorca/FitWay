@@ -1,6 +1,6 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import RootNavigator from '../navigators/RootNavigator';
 import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 
@@ -21,8 +21,6 @@ import { useAuthStore, useProfileStore } from '../stores';
 //   },
 // };
 export function App() {
-  const setUser = useAuthStore(state => state.setUser);
-  const setProfile = useProfileStore(state => state.setProfile);
   const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
 
   useEffect(() => {
@@ -32,7 +30,7 @@ export function App() {
       .onAuthStateChanged(onAuthStateChanged);
 
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [onAuthStateChanged]);
   return (
     <PaperProvider>
       <NavigationContainer>

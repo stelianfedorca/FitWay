@@ -106,7 +106,7 @@ export const BottomTextContainer = styled(View)`
   justify-content: center;
   align-items: center;
   align-self: center;
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 
 export const Container = styled(View)`

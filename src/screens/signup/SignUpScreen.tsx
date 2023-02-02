@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 
 import { Controller, useForm } from 'react-hook-form';
 import {
+  ActivityIndicator,
   ImageBackground,
   Pressable,
   ScrollView,
@@ -37,12 +38,15 @@ import { useAuthStore, useProfileStore } from '../../stores';
 import { SignUpBackgroundImage } from '../../assets/images';
 import { Layout } from '../../components/Layout';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
   const setProfile = useProfileStore(state => state.setProfile);
   const setUser = useAuthStore(state => state.setUser);
-
   const { height } = useWindowDimensions();
+
+  const [loading, setLoading] = useState(false);
 
   const nameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
@@ -66,6 +70,7 @@ export function SignUpScreen() {
   });
 
   async function handleSignUp({ firstName, email, password }: SignUpForm) {
+    setLoading(true);
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
@@ -78,6 +83,8 @@ export function SignUpScreen() {
         isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
       });
 
+      AsyncStorage.setItem('userId', JSON.stringify(userCredential.user.uid));
+
       nameInputRef.current?.clear();
       emailInputRef.current?.clear();
       passwordInputRef.current?.clear();
@@ -87,6 +94,8 @@ export function SignUpScreen() {
         console.log('That email address is already in use!');
       }
     }
+
+    setLoading(false);
   }
 
   function handleSignInPress() {
@@ -230,7 +239,11 @@ export function SignUpScreen() {
           <SignUpButton
             onPress={handleSubmit(handleSignUp)}
             style={styles.shadowButton}>
-            <TitleButton>Sign Up</TitleButton>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <TitleButton>Sign Up</TitleButton>
+            )}
           </SignUpButton>
 
           <SignInContainer>
