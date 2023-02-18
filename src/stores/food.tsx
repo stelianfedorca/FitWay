@@ -1,5 +1,12 @@
 import create from 'zustand';
 
+export enum FoodType {
+  breakfast = 'breakfast',
+  lunch = 'lunch',
+  dinner = 'dinner',
+  snacks = 'snacks',
+}
+
 export type FoodData = {
   name?: string;
   manufacturer?: string;
@@ -10,6 +17,7 @@ export type FoodData = {
   servingSize?: number;
   numberOfServings?: number;
   key?: string;
+  type?: FoodType;
 };
 
 export type FoodState = {

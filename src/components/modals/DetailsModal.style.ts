@@ -7,7 +7,8 @@ export const HeaderContainer = styled(View)`
   width: 100%;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding-horizontal: 10px;
+  padding-vertical: 15px;
 `;
 
 export const TitleHeader = styled(Text)`
@@ -19,7 +20,7 @@ export const TitleHeader = styled(Text)`
 export const ContentContainer = styled(View)`
   flex: 1;
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 25px;
 `;
 
 export const QuantityContainer = styled(View)`
@@ -66,5 +67,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
+  },
+  addIcon: {
+    position: 'absolute',
+    top: 7,
+    right: 20,
+  },
+  indicator: {
+    position: 'absolute',
+    top: 50,
   },
 });

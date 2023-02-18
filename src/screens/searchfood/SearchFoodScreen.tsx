@@ -36,8 +36,10 @@ export function SearchFoodScreen() {
           useNativeDriver
           backdropOpacity={0.3}
           onBackdropPress={() => setIsVisible(false)}
+          animationOutTiming={700}
+          animationInTiming={350}
           style={styles.modal}>
-          <DetailsModal />
+          <DetailsModal setModalVisible={setIsVisible} />
         </Modal>
       </Pressable>
     </Layout>

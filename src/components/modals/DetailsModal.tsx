@@ -5,6 +5,8 @@ import {
   Keyboard,
   KeyboardEventName,
   Pressable,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useFoodStore } from '../../stores';
@@ -22,11 +24,35 @@ import {
   TitleHeader,
 } from './DetailsModal.style';
 
-export function DetailsModal() {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { addMeal, MealData } from '../../services/meals.service';
+import { useState } from 'react';
+import { FoodType } from '../../stores/food';
+
+export type DetailsModal = {
+  setModalVisible: (isVisible: boolean) => void;
+};
+
+export function DetailsModal({ setModalVisible }: DetailsModal) {
   const selectedFood = useFoodStore(state => state.selectedFood);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleAddMeal() {
+    setIsLoading(true);
+    const { key, ...food } = selectedFood!;
+    const meal: MealData = {
+      ...food,
+      type: FoodType.breakfast,
+    };
+    await addMeal(meal);
+
+    setIsLoading(false);
+    setModalVisible(false);
+  }
 
   return (
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
+      {isLoading && <ActivityIndicator size="large" style={styles.indicator} />}
       <HeaderContainer>
         <TitleHeader>Add Food</TitleHeader>
       </HeaderContainer>
@@ -86,6 +112,10 @@ export function DetailsModal() {
           </View>
         </MacrosDetails>
       </ContentContainer>
+
+      <TouchableOpacity style={styles.addIcon} onPress={handleAddMeal}>
+        <Ionicons name="add-circle" size={38} color="#4a9cef" />
+      </TouchableOpacity>
     </Pressable>
   );
 }

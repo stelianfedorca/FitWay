@@ -12,6 +12,7 @@ export enum ACTIVITY_LEVEL {
 
 export const USERS_COLLECTION = 'users';
 export const FOOD_COLLECTION = 'food';
+export const MEALS_COLLECTION = 'meals';
 
 export const CARBS_CALORIES_PER_1G = 4;
 export const FAT_CALORIES_PER_1G = 9;
