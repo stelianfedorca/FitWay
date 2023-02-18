@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
 import {
+  ActivityIndicator,
   ImageBackground,
   Keyboard,
   Pressable,
@@ -47,6 +48,8 @@ export function SignInScreen() {
   const navigation = useNavigation<SignInScreenNavigationProp>();
   const insets = useSafeAreaInsets();
 
+  const [loading, setLoading] = useState(false);
+
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
@@ -69,10 +72,13 @@ export function SignInScreen() {
   });
 
   async function handleSignIn({ email, password }: SignInForm) {
+    setLoading(true);
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
       password,
     );
+
+    setLoading(false);
 
     // setProfile({
     //   email: userCredential.user.email,
@@ -205,10 +211,15 @@ export function SignInScreen() {
             <SignInButton
               style={styles.shadowButton}
               onPress={handleSubmit(handleSignIn)}>
-              <TitleButton>Sign in</TitleButton>
+              {loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <TitleButton>Sign in</TitleButton>
+              )}
             </SignInButton>
+
             <BottomTextContainer>
-              <Text style={{ fontWeight: '600', fontSize: 16 }}>
+              <Text style={{ fontWeight: '500', fontSize: 16 }}>
                 Don't have an account?
               </Text>
               <Link onPress={handleSignUpPress}>

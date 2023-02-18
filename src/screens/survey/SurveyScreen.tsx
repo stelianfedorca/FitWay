@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
+  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -81,6 +82,8 @@ export function SurveyScreen() {
   const [goalWeight, setGoalWeight] = useState('');
   const [activityLevel, setActivityLevel] = useState(0);
 
+  const [loading, setLoading] = useState(false);
+
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
 
@@ -89,6 +92,7 @@ export function SurveyScreen() {
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
   async function handleContinue() {
+    setLoading(true);
     const tdee = getTDEE(
       Number(startingWeight),
       Number(height),
@@ -108,7 +112,6 @@ export function SurveyScreen() {
         isSurveyCompleted: true,
         tdee: Number(tdee),
       };
-      setProfile(updatedProfile);
 
       if (user) {
         await createUserInFirestore(
@@ -119,7 +122,9 @@ export function SurveyScreen() {
           updatedProfile.tdee,
         );
       }
+      setProfile(updatedProfile);
     }
+    setLoading(false);
     navigation.navigate(Stacks.Home);
   }
 
@@ -213,7 +218,11 @@ export function SurveyScreen() {
 
         <ButtonContainer>
           <PrimaryButton onPress={handleContinue}>
-            <TitleButton>Continue</TitleButton>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <TitleButton>Continue</TitleButton>
+            )}
           </PrimaryButton>
         </ButtonContainer>
       </Container>
