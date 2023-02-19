@@ -82,6 +82,8 @@ export function SignUpScreen() {
         password,
       );
 
+      dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
+
       // setProfile({
       //   firstName: firstName,
       //   email: userCredential.user.email,

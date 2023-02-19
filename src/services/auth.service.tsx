@@ -10,12 +10,15 @@ export async function createUserInFirestore(
   firstName?: string,
   tdee?: number,
 ) {
-  await firestore().collection(USERS_COLLECTION).doc(uid).set({
-    email,
-    firstName,
-    isSurveyCompleted,
-    tdee,
-  });
+  try {
+    await firestore().collection(USERS_COLLECTION).doc(uid).set({
+      email,
+      firstName,
+      isSurveyCompleted,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function signOut() {

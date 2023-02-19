@@ -10,7 +10,7 @@ export function useFoodCollection() {
   const [food, setFood] = useState<FoodData[] | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    // if (!user) return;
     const subscriber = firestore()
       .collection(FOOD_COLLECTION)
       .onSnapshot(querySnapshot => {

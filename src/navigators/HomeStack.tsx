@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useAuthStore, useProfileStore } from '../stores';
 import { Routes, Stacks, Tabs } from './Routes';
@@ -49,9 +49,11 @@ const HomeStack = () => {
 
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
-  const showSurvey = !isSurveyCompleted;
+  const [showSurvey] = useState(!isSurveyCompleted);
 
-  console.log('isSurveyCompleted: ', isSurveyCompleted);
+  console.log(showSurvey);
+
+  // console.log('isSurveyCompleted: ', isSurveyCompleted);
 
   return (
     <Stack.Navigator

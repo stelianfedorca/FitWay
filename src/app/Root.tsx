@@ -13,6 +13,9 @@ import firestore from '@react-native-firebase/firestore';
 import { USERS_COLLECTION } from '../utils/consts';
 import { setIsSurveyCompleted } from '../redux/slices/profileSlice';
 import { UserProfile } from '../screens/survey/SurveyScreen';
+import AuthStack from '../navigators/AuthStack';
+
+import auth from '@react-native-firebase/auth';
 
 export function Root() {
   const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
@@ -22,30 +25,30 @@ export function Root() {
     const subscriber = firebase
       .app()
       .auth()
-      .onAuthStateChanged(user => {
+      .onAuthStateChanged(async user => {
         if (user) {
-          async function refreshProfile() {
-            const userId = user?.uid;
-            const userProfile = await firestore()
-              .collection(USERS_COLLECTION)
-              .doc(userId)
-              .get();
+          // check if it is a newly created user
+          const isNewUser =
+            user.metadata.creationTime === user.metadata.lastSignInTime;
 
-            const data = userProfile.data() as UserProfile;
-            dispatch(
-              setIsSurveyCompleted({
-                isSurveyCompleted: data.isSurveyCompleted,
-              }),
-            );
+          isNewUser &&
+            dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
+          console.log('se apeleaza dupa sign in');
+          async function refreshProfile() {
+            // const userId = user?.uid;
+            // const userProfile = await firestore()
+            //   .collection<UserProfile>(USERS_COLLECTION)
+            //   .doc(userId)
+            //   .get();
+            // const data = userProfile.data() as UserProfile;
+            // dispatch(
+            //   setIsSurveyCompleted({
+            //     isSurveyCompleted: false,
+            //   }),
+            // );
           }
-          refreshProfile();
+          // refreshProfile();
           dispatch(login({ email: user.email, uid: user.uid }));
-        } else {
-          dispatch(
-            setIsSurveyCompleted({
-              isSurveyCompleted: false,
-            }),
-          );
         }
       });
 

@@ -115,38 +115,40 @@ export function SurveyScreen() {
 
   async function handleContinue() {
     setLoading(true);
-    const tdee = getTDEE(
-      Number(startingWeight),
-      Number(height),
-      Number(age),
-      GENDER[genderIndex],
-      activityLevelData[activityLevel].value,
-    );
+    // const tdee = getTDEE(
+    //   Number(startingWeight),
+    //   Number(height),
+    //   Number(age),
+    //   GENDER[genderIndex],
+    //   activityLevelData[activityLevel].value,
+    // );
     // if (profile) {
-    const userProfile: UserProfile = {
-      gender: GENDER[genderIndex],
-      age: age,
-      startingWeight: startingWeight,
-      height: height,
-      goalWeight: goalWeight,
-      activityLevel: ACTIVITY_LEVEL[activityLevel],
-      isSurveyCompleted: true,
-      tdee: Number(tdee),
-      email: user,
-    };
+    // const userProfile: UserProfile = {
+    //   gender: GENDER[genderIndex],
+    //   age: age,
+    //   startingWeight: startingWeight,
+    //   height: height,
+    //   goalWeight: goalWeight,
+    //   activityLevel: ACTIVITY_LEVEL[activityLevel],
+    //   isSurveyCompleted: true,
+    //   tdee: Number(tdee),
+    //   email: user,
+    // };
 
     if (user) {
       await createUserInFirestore(
+        'stelian.fedorca+47@gmail.com',
         user.uid,
-        // updatedProfile.firstName,
-        userProfile.email!,
-        userProfile.isSurveyCompleted!,
+        true,
+        'Steli',
         // userProfile.tdee
       );
     }
+
+    // console.log('in survey screen: ', userProfile.isSurveyCompleted);
     dispatch(
       setIsSurveyCompleted({
-        isSurveyCompleted: userProfile.isSurveyCompleted,
+        isSurveyCompleted: true,
       }),
     );
     // setProfile(updatedProfile);

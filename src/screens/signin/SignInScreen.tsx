@@ -84,15 +84,18 @@ export function SignInScreen() {
       password,
     );
 
-    dispatch(
-      login({ email: userCredential.user.email, uid: userCredential.user.uid }),
-    );
-    setLoading(false);
+    console.log(userCredential);
 
-    // setProfile({
-    //   email: userCredential.user.email,
-    //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
-    // });
+    // if (userCredential) {
+    //   dispatch(
+    //     login({
+    //       email: userCredential.user.email,
+    //       uid: userCredential.user.uid,
+    //     }),
+    //   );
+    // }
+
+    setLoading(false);
   }
 
   function handleSignUpPress() {

@@ -25,12 +25,17 @@ import { CircularProgressComponent } from '../../components/CircularProgressComp
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
+import { useSelector } from 'react-redux';
+import { selectIsSurveyCompleted } from '../../redux/slices/profileSlice';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
+
+  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
+  console.log(isSurveyCompleted);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
