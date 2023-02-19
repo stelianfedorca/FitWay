@@ -1,12 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
 import { UserData } from '../stores/profile';
 import { USERS_COLLECTION } from '../utils/consts';
+import auth from '@react-native-firebase/auth';
 
 export async function createUserInFirestore(
-  uid: string,
-  firstName: string,
   email: string,
+  uid: string,
   isSurveyCompleted: boolean,
+  firstName?: string,
   tdee?: number,
 ) {
   await firestore().collection(USERS_COLLECTION).doc(uid).set({
@@ -15,4 +16,8 @@ export async function createUserInFirestore(
     isSurveyCompleted,
     tdee,
   });
+}
+
+export async function signOut() {
+  await auth().signOut();
 }

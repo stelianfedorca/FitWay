@@ -26,7 +26,6 @@ import { Option } from '../../components/Option';
 import { Stacks } from '../../navigators/Routes';
 import { createUserInFirestore } from '../../services/auth.service';
 import { useAuthStore, useProfileStore } from '../../stores';
-import { UserData } from '../../stores/profile';
 import { getTDEE } from '../../utils/calculator';
 import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
 import { HomeNavigationProp } from '../home/Home.types';
@@ -39,6 +38,12 @@ import {
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
 import auth from '@react-native-firebase/auth';
+import {
+  ProfileState,
+  setIsSurveyCompleted,
+} from '../../redux/slices/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/userSlice';
 
 export type ActivityLevelProps = {
   id: number;
@@ -74,7 +79,23 @@ const activityLevelData: ActivityLevelProps[] = [
   },
 ];
 
+export type UserProfile = {
+  email?: string | null;
+  firstName?: string;
+  gender?: string;
+  age?: string;
+  startingWeight?: string;
+  height?: string;
+  activityLevel?: string;
+  goalWeight?: string;
+  isSurveyCompleted?: boolean;
+  tdee?: number;
+  food?: number;
+  exercise?: number;
+};
+
 export function SurveyScreen() {
+  const dispatch = useDispatch();
   const [genderIndex, setGenderIndex] = useState(0);
   const [age, setAge] = useState('');
   const [startingWeight, setStartingWeight] = useState('');
@@ -87,7 +108,8 @@ export function SurveyScreen() {
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
 
-  const user = useAuthStore(state => state.user);
+  // const user = useAuthStore(state => state.user);
+  const user = useSelector(selectUser);
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
@@ -100,30 +122,35 @@ export function SurveyScreen() {
       GENDER[genderIndex],
       activityLevelData[activityLevel].value,
     );
-    if (profile) {
-      const updatedProfile: UserData = {
-        ...profile,
-        gender: GENDER[genderIndex],
-        age: age,
-        startingWeight: startingWeight,
-        height: height,
-        goalWeight: goalWeight,
-        activityLevel: ACTIVITY_LEVEL[activityLevel],
-        isSurveyCompleted: true,
-        tdee: Number(tdee),
-      };
+    // if (profile) {
+    const userProfile: UserProfile = {
+      gender: GENDER[genderIndex],
+      age: age,
+      startingWeight: startingWeight,
+      height: height,
+      goalWeight: goalWeight,
+      activityLevel: ACTIVITY_LEVEL[activityLevel],
+      isSurveyCompleted: true,
+      tdee: Number(tdee),
+      email: user,
+    };
 
-      if (user) {
-        await createUserInFirestore(
-          user.uid,
-          updatedProfile.firstName,
-          updatedProfile.email!,
-          updatedProfile.isSurveyCompleted,
-          updatedProfile.tdee,
-        );
-      }
-      setProfile(updatedProfile);
+    if (user) {
+      await createUserInFirestore(
+        user.uid,
+        // updatedProfile.firstName,
+        userProfile.email!,
+        userProfile.isSurveyCompleted!,
+        // userProfile.tdee
+      );
     }
+    dispatch(
+      setIsSurveyCompleted({
+        isSurveyCompleted: userProfile.isSurveyCompleted,
+      }),
+    );
+    // setProfile(updatedProfile);
+    // }
     setLoading(false);
     navigation.navigate(Stacks.Home);
   }

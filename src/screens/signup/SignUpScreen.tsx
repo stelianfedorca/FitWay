@@ -39,6 +39,9 @@ import { SignUpBackgroundImage } from '../../assets/images';
 import { Layout } from '../../components/Layout';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { signup } from '../../redux/slices/userSlice';
+import { setIsSurveyCompleted } from '../../redux/slices/profileSlice';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
@@ -51,6 +54,8 @@ export function SignUpScreen() {
   const nameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
+  const dispatch = useDispatch();
 
   const defaultValues = {
     email: '',
@@ -77,13 +82,13 @@ export function SignUpScreen() {
         password,
       );
 
-      setProfile({
-        firstName: firstName,
-        email: userCredential.user.email,
-        isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
-      });
+      // setProfile({
+      //   firstName: firstName,
+      //   email: userCredential.user.email,
+      //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
+      // });
 
-      AsyncStorage.setItem('userId', JSON.stringify(userCredential.user.uid));
+      // AsyncStorage.setItem('userId', JSON.stringify(userCredential.user.uid));
 
       nameInputRef.current?.clear();
       emailInputRef.current?.clear();

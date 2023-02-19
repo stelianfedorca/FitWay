@@ -21,10 +21,16 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { CellRow } from '../../components/CellRow';
 import { useAuthStore } from '../../stores';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/userSlice';
+
+import { signOut } from '../../services/auth.service';
 export function ProfileScreen() {
-  const { logout } = useAuthStore.getState();
+  const dispatch = useDispatch();
+  // const { logout } = useAuthStore.getState();
   async function handleSignOut() {
-    logout();
+    signOut();
+    dispatch(logout());
   }
   return (
     <Layout style={styles.layout} paddingTop>
