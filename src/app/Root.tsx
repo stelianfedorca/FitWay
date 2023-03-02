@@ -15,6 +15,7 @@ import {
   ProfileState,
   setFirstName,
   setIsSurveyCompleted,
+  setProfile,
 } from '../redux/slices/profileSlice';
 // import { UserProfile } from '../screens/survey/SurveyScreen';
 import AuthStack from '../navigators/AuthStack';
@@ -37,17 +38,18 @@ export function Root() {
           async function refreshProfile() {
             const userId = user?.uid;
             const userProfile = await firestore()
-              .collection<ProfileState>(USERS_COLLECTION)
+              .collection<Partial<ProfileState>>(USERS_COLLECTION)
               .doc(userId)
               .get();
-            const data = userProfile.data() as ProfileState;
+            const data = userProfile.data();
             data &&
               dispatch(
-                setIsSurveyCompleted({
-                  isSurveyCompleted: data.isSurveyCompleted,
+                setProfile({
+                  isSurveyCompleted: data.isSurveyCompleted ?? false,
+                  firstName: data.firstName ?? undefined,
+                  email: data.email ?? undefined,
                 }),
               );
-            dispatch(setFirstName({ firstName: data.firstName }));
           }
           refreshProfile();
           isNewUser &&

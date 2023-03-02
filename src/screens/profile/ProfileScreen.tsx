@@ -21,12 +21,14 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { CellRow } from '../../components/CellRow';
 import { useAuthStore } from '../../stores';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/userSlice';
 
 import { signOut } from '../../services/auth.service';
+import { selectProfile } from '../../redux/slices/profileSlice';
 export function ProfileScreen() {
   const dispatch = useDispatch();
+  const profile = useSelector(selectProfile);
   // const { logout } = useAuthStore.getState();
   async function handleSignOut() {
     signOut();
@@ -65,7 +67,7 @@ export function ProfileScreen() {
               Stelian Fedorca
             </Text>
             <Text variant="titleSmall" style={{ marginTop: 5, opacity: 0.8 }}>
-              stelian.fedorca@gmail.com
+              {profile.email}
             </Text>
           </DetailsContainer>
           <IconButton
