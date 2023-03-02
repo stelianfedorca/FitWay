@@ -43,7 +43,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useAuthStore, useProfileStore } from '../../stores';
 import { Text, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, selectUser } from '../../redux/slices/userSlice';
+import { login, selectEmail } from '../../redux/slices/userSlice';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -56,8 +56,7 @@ export function SignInScreen() {
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
 
-  const email = useSelector(selectUser);
-  console.log('user email: ', email);
+  const email = useSelector(selectEmail);
   const dispatch = useDispatch();
 
   const defaultValues = {
@@ -83,8 +82,6 @@ export function SignInScreen() {
       email,
       password,
     );
-
-    console.log(userCredential);
 
     // if (userCredential) {
     //   dispatch(

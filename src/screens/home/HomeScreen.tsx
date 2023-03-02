@@ -26,7 +26,10 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
 import { useSelector } from 'react-redux';
-import { selectIsSurveyCompleted } from '../../redux/slices/profileSlice';
+import {
+  selectFirstName,
+  selectIsSurveyCompleted,
+} from '../../redux/slices/profileSlice';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
@@ -35,7 +38,7 @@ export function HomeScreen() {
   const navigation = useNavigation<HomeNavigationProp>();
 
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
-  console.log(isSurveyCompleted);
+  const userProfileName = useSelector(selectFirstName);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +70,7 @@ export function HomeScreen() {
             <Text
               variant="titleMedium"
               style={{ fontWeight: '500', fontSize: 18, letterSpacing: 0.8 }}>
-              {`Hi, ${profile?.firstName}`}
+              {`Hi, ${userProfileName}`}
             </Text>
             <Text
               variant="labelLarge"

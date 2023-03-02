@@ -43,7 +43,7 @@ import {
   setIsSurveyCompleted,
 } from '../../redux/slices/profileSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/userSlice';
+import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 
 export type ActivityLevelProps = {
   id: number;
@@ -109,7 +109,8 @@ export function SurveyScreen() {
   const profile = useProfileStore(state => state.profile);
 
   // const user = useAuthStore(state => state.user);
-  const user = useSelector(selectUser);
+  const email = useSelector(selectEmail);
+  const uid = useSelector(selectUid);
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
@@ -135,10 +136,10 @@ export function SurveyScreen() {
     //   email: user,
     // };
 
-    if (user) {
+    if (email) {
       await createUserInFirestore(
-        'stelian.fedorca+47@gmail.com',
-        user.uid,
+        email,
+        uid,
         true,
         'Steli',
         // userProfile.tdee
@@ -146,11 +147,7 @@ export function SurveyScreen() {
     }
 
     // console.log('in survey screen: ', userProfile.isSurveyCompleted);
-    dispatch(
-      setIsSurveyCompleted({
-        isSurveyCompleted: true,
-      }),
-    );
+    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
     // setProfile(updatedProfile);
     // }
     setLoading(false);

@@ -37,6 +37,7 @@ export const userSlice = createSlice({
 export const { login, logout, signup } = userSlice.actions;
 
 // selectors
-export const selectUser = (state: RootState) => state.user.email;
+export const selectEmail = (state: RootState) => state.user.email;
+export const selectUid = (state: RootState) => state.user.uid;
 
 export default userSlice.reducer;

@@ -11,14 +11,18 @@ import { login } from '../redux/slices/userSlice';
 
 import firestore from '@react-native-firebase/firestore';
 import { USERS_COLLECTION } from '../utils/consts';
-import { setIsSurveyCompleted } from '../redux/slices/profileSlice';
-import { UserProfile } from '../screens/survey/SurveyScreen';
+import {
+  ProfileState,
+  setFirstName,
+  setIsSurveyCompleted,
+} from '../redux/slices/profileSlice';
+// import { UserProfile } from '../screens/survey/SurveyScreen';
 import AuthStack from '../navigators/AuthStack';
 
 import auth from '@react-native-firebase/auth';
 
 export function Root() {
-  const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
+  // const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,24 +34,25 @@ export function Root() {
           // check if it is a newly created user
           const isNewUser =
             user.metadata.creationTime === user.metadata.lastSignInTime;
-
+          async function refreshProfile() {
+            const userId = user?.uid;
+            const userProfile = await firestore()
+              .collection<ProfileState>(USERS_COLLECTION)
+              .doc(userId)
+              .get();
+            const data = userProfile.data() as ProfileState;
+            data &&
+              dispatch(
+                setIsSurveyCompleted({
+                  isSurveyCompleted: data.isSurveyCompleted,
+                }),
+              );
+            dispatch(setFirstName({ firstName: data.firstName }));
+          }
+          refreshProfile();
           isNewUser &&
             dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
-          console.log('se apeleaza dupa sign in');
-          async function refreshProfile() {
-            // const userId = user?.uid;
-            // const userProfile = await firestore()
-            //   .collection<UserProfile>(USERS_COLLECTION)
-            //   .doc(userId)
-            //   .get();
-            // const data = userProfile.data() as UserProfile;
-            // dispatch(
-            //   setIsSurveyCompleted({
-            //     isSurveyCompleted: false,
-            //   }),
-            // );
-          }
-          // refreshProfile();
+
           dispatch(login({ email: user.email, uid: user.uid }));
         }
       });

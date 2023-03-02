@@ -51,10 +51,6 @@ const HomeStack = () => {
 
   const [showSurvey] = useState(!isSurveyCompleted);
 
-  console.log(showSurvey);
-
-  // console.log('isSurveyCompleted: ', isSurveyCompleted);
-
   return (
     <Stack.Navigator
       screenOptions={{
