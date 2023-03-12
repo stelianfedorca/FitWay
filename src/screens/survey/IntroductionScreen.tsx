@@ -4,21 +4,16 @@ import { Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
-import { selectIsSurveyCompleted } from '../../redux/slices/profileSlice';
-import { useProfileStore } from '../../stores';
 import {
   ButtonsContainer,
   PrimaryButton,
-  SecondaryButton,
   TitleButton,
 } from './IntroductionScreen.style';
 import { IntroductionScreenNavigationProp } from './IntroductionScreen.types';
 
 export function IntroductionScreen() {
   const navigation = useNavigation<IntroductionScreenNavigationProp>();
-  const profile = useProfileStore(state => state.profile);
 
-  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
   function handleContinue() {
     navigation.navigate(Routes.Survey);
   }

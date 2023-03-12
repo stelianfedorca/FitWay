@@ -42,6 +42,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { signup } from '../../redux/slices/userSlice';
 import { setIsSurveyCompleted } from '../../redux/slices/profileSlice';
+import { createUserInFirestore } from '../../services/auth.service';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
@@ -82,15 +83,14 @@ export function SignUpScreen() {
         password,
       );
 
-      dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
-
-      // setProfile({
-      //   firstName: firstName,
-      //   email: userCredential.user.email,
-      //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
-      // });
-
-      // AsyncStorage.setItem('userId', JSON.stringify(userCredential.user.uid));
+      if (userCredential && userCredential.user) {
+        await createUserInFirestore(
+          email,
+          userCredential.user.uid,
+          false,
+          firstName,
+        );
+      }
 
       nameInputRef.current?.clear();
       emailInputRef.current?.clear();

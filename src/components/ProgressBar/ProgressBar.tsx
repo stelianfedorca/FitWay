@@ -29,7 +29,7 @@ export function ProgressBar({ maxWidth, style, onComplete }: ProgressBarProps) {
       withTiming(
         maxWidth - 40,
         {
-          duration: 3500,
+          duration: 3000,
         },
         finished => {
           onProgressBarCompleted();

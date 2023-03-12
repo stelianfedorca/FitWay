@@ -110,6 +110,10 @@ export function SurveyScreen() {
 
   const [loading, setLoading] = useState(false);
 
+  const email = useSelector(selectEmail);
+  const uid = useSelector(selectUid);
+  const name = useSelector(selectFirstName);
+
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
   async function generateGoals() {
@@ -134,6 +138,7 @@ export function SurveyScreen() {
   }
 
   async function handleContinue() {
+    setLoading(true);
     dispatch(
       setProfile({
         gender: GENDER[genderIndex].toLowerCase(),
@@ -143,6 +148,16 @@ export function SurveyScreen() {
       }),
     );
 
+    // email &&
+    //   (await createUserInFirestore(
+    //     email,
+    //     uid,
+    //     true,
+    //     name ?? '',
+    //     // userProfile.tdee
+    //   ));
+    setLoading(false);
+    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
     navigation.navigate(Routes.Loading);
     // setLoading(true);
 
@@ -155,16 +170,6 @@ export function SurveyScreen() {
     //   activityLevelData[activityLevel].value,
     // );
 
-    // email &&
-    //   (await createUserInFirestore(
-    //     email,
-    //     uid,
-    //     true,
-    //     name ?? '',
-    //     // userProfile.tdee
-    //   ));
-
-    // dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
     // setProfile(updatedProfile);
     // }
     // setLoading(false);
