@@ -11,6 +11,7 @@ import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { SearchFoodScreen } from '../screens/searchfood';
 import { useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
+import { selectUid } from '../redux/slices/userSlice';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -46,7 +47,8 @@ export type RootStackParams = {
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 const HomeStack = () => {
-  const user = useAuthStore(state => state.user);
+  console.log('homestack');
+  const user = useSelector(selectUid);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
   const [showSurvey] = useState(!isSurveyCompleted);
@@ -54,20 +56,28 @@ const HomeStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        // animationTypeForReplace: user ? 'push' : 'pop',
+        animationTypeForReplace: user ? 'push' : 'pop',
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
-      {showSurvey && <Stack.Screen name={Stacks.Survey} component={Survey} />}
-      <Stack.Screen name={Stacks.Home} component={TabNavigator} />
-      <Stack.Screen
-        name={Routes.Search}
-        component={SearchFoodScreen}
-        options={{
-          headerShown: true,
-          headerShadowVisible: false,
-        }}
-      />
+      {isSurveyCompleted ? (
+        <>
+          <Stack.Screen name={Stacks.Home} component={TabNavigator} />
+          <Stack.Screen
+            name={Routes.Search}
+            component={SearchFoodScreen}
+            options={{
+              headerShown: true,
+              headerShadowVisible: false,
+            }}
+          />
+        </>
+      ) : (
+        <>
+          {console.log('aici ????')}
+          <Stack.Screen name={Stacks.Survey} component={Survey} />
+        </>
+      )}
     </Stack.Navigator>
   );
 };

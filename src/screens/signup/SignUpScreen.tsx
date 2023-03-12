@@ -42,7 +42,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { signup } from '../../redux/slices/userSlice';
 import { setIsSurveyCompleted } from '../../redux/slices/profileSlice';
-import { createUserInFirestore } from '../../services/auth.service';
+import { createUserInFirestore } from '../../services/user.service';
+
+import database from '@react-native-firebase/database';
+import { firebase } from '@react-native-firebase/database';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();

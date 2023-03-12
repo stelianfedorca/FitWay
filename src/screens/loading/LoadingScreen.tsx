@@ -21,13 +21,25 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { SurveyScreenNavigationProp } from '../survey/SurveyScreen.types';
 import { Stacks } from '../../navigators/Routes';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCaloriesGoals,
+  selectTdee,
+  setIsSurveyCompleted,
+  setProfile,
+  setTdee,
+} from '../../redux/slices/profileSlice';
 
 export function LoadingScreen() {
   useCalories();
   const { width } = useWindowDimensions();
+  const dispatch = useDispatch();
   const navigation = useNavigation<SurveyScreenNavigationProp>();
   const [isButtonShowing, setIsButtonShowing] = useState(false);
   const textOpacity = useSharedValue(0);
+
+  const caloriesGoals = useSelector(selectCaloriesGoals);
+  const tdee = useSelector(selectTdee);
 
   useEffect(() => {
     textOpacity.value = withTiming(1, { duration: 1300 });
@@ -38,7 +50,7 @@ export function LoadingScreen() {
   });
 
   function handleContinuePress() {
-    navigation.navigate(Stacks.Home);
+    navigation.replace(Stacks.Home);
   }
 
   return (
@@ -50,7 +62,7 @@ export function LoadingScreen() {
         <ProgressBar maxWidth={width} onComplete={setIsButtonShowing} />
         {isButtonShowing && (
           <AnimatedPrimaryButton
-            entering={FadeIn.delay(300)}
+            entering={FadeIn.delay(200)}
             exiting={FadeOut}
             onPress={handleContinuePress}>
             <TextContinue>Continue</TextContinue>

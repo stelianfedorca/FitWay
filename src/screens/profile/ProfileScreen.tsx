@@ -24,7 +24,7 @@ import { useAuthStore } from '../../stores';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/userSlice';
 
-import { signOut } from '../../services/auth.service';
+import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
 export function ProfileScreen() {
   const dispatch = useDispatch();

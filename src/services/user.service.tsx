@@ -24,3 +24,14 @@ export async function createUserInFirestore(
 export async function signOut() {
   await auth().signOut();
 }
+
+export async function updateUserInFirestore(uid: string) {
+  try {
+    await firestore()
+      .collection(USERS_COLLECTION)
+      .doc(uid)
+      .update({ isSurveyCompleted: true });
+  } catch (error) {
+    console.log(error);
+  }
+}

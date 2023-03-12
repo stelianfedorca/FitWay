@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import {
   selectFirstName,
   selectIsSurveyCompleted,
+  selectTdee,
 } from '../../redux/slices/profileSlice';
 
 export function HomeScreen() {
@@ -37,8 +38,8 @@ export function HomeScreen() {
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
 
-  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
   const userProfileName = useSelector(selectFirstName);
+  const tdee = useSelector(selectTdee);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);

@@ -24,7 +24,10 @@ import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
 import { Option } from '../../components/Option';
 import { Routes, Stacks } from '../../navigators/Routes';
-import { createUserInFirestore } from '../../services/auth.service';
+import {
+  createUserInFirestore,
+  updateUserInFirestore,
+} from '../../services/user.service';
 import { useAuthStore, useProfileStore } from '../../stores';
 import { getTDEE } from '../../utils/calculator';
 import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
@@ -145,19 +148,14 @@ export function SurveyScreen() {
         age: age,
         height: height,
         startingWeight: startingWeight,
+        isSurveyCompleted: true,
       }),
     );
 
-    // email &&
-    //   (await createUserInFirestore(
-    //     email,
-    //     uid,
-    //     true,
-    //     name ?? '',
-    //     // userProfile.tdee
-    //   ));
-    setLoading(false);
+    await updateUserInFirestore(uid);
     dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
+    setLoading(false);
+
     navigation.navigate(Routes.Loading);
     // setLoading(true);
 
