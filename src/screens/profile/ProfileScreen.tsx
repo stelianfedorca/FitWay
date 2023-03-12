@@ -29,7 +29,7 @@ import { selectProfile } from '../../redux/slices/profileSlice';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
-  // const { logout } = useAuthStore.getState();
+
   async function handleSignOut() {
     signOut();
     dispatch(logout());

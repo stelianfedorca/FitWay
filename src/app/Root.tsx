@@ -37,11 +37,11 @@ export function Root() {
             user.metadata.creationTime === user.metadata.lastSignInTime;
           async function refreshProfile() {
             const userId = user?.uid;
-            const userProfile = await firestore()
+            const userFound = await firestore()
               .collection<Partial<ProfileState>>(USERS_COLLECTION)
               .doc(userId)
               .get();
-            const data = userProfile.data();
+            const data = userFound.data();
             data &&
               dispatch(
                 setProfile({

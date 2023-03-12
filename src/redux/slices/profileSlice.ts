@@ -16,6 +16,7 @@ export interface ProfileState {
   food?: number;
   exercise?: number;
   isSurveyCompleted?: boolean;
+  dataCalories?: any;
 }
 
 const initialState: Partial<ProfileState> = {
@@ -38,10 +39,13 @@ export const profileSlice = createSlice({
     setFirstName: (state, action: PayloadAction<ProfileState>) => {
       state.firstName = action.payload.firstName;
     },
+    setData: (state, action: PayloadAction<ProfileState>) => {
+      state.dataCalories = action.payload.dataCalories;
+    },
   },
 });
 
-export const { setProfile, setIsSurveyCompleted, setFirstName } =
+export const { setProfile, setIsSurveyCompleted, setFirstName, setData } =
   profileSlice.actions;
 
 export const selectIsSurveyCompleted = (state: RootState) =>
@@ -50,5 +54,7 @@ export const selectIsSurveyCompleted = (state: RootState) =>
 export const selectFirstName = (state: RootState) => state.profile.firstName;
 
 export const selectProfile = (state: RootState) => state.profile;
+
+export const selectData = (state: RootState) => state.dataCalories;
 
 export default profileSlice.reducer;

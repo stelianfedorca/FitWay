@@ -23,7 +23,7 @@ import { InputRow } from '../../components/InputRow';
 import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
 import { Option } from '../../components/Option';
-import { Stacks } from '../../navigators/Routes';
+import { Routes, Stacks } from '../../navigators/Routes';
 import { createUserInFirestore } from '../../services/auth.service';
 import { useAuthStore, useProfileStore } from '../../stores';
 import { getTDEE } from '../../utils/calculator';
@@ -40,10 +40,15 @@ import { SurveyScreenNavigationProp } from './SurveyScreen.types';
 import auth from '@react-native-firebase/auth';
 import {
   ProfileState,
+  selectFirstName,
   setIsSurveyCompleted,
+  setProfile,
 } from '../../redux/slices/profileSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEmail, selectUid } from '../../redux/slices/userSlice';
+import axios from 'axios';
+import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
+import { LoadingScreen } from '../loading/LoadingScreen';
 
 export type ActivityLevelProps = {
   id: number;
@@ -105,17 +110,43 @@ export function SurveyScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  const setProfile = useProfileStore(state => state.setProfile);
-  const profile = useProfileStore(state => state.profile);
-
-  // const user = useAuthStore(state => state.user);
-  const email = useSelector(selectEmail);
-  const uid = useSelector(selectUid);
-
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
+  async function generateGoals() {
+    const response = await axios.get(
+      'https://fitness-calculator.p.rapidapi.com/dailycalorie',
+      {
+        headers: {
+          'X-RapidAPI-Key': RAPIDAPI_KEY,
+          'X-RapidAPI-Host': RAPIDAPI_HOST,
+        },
+        params: {
+          age: '25',
+          gender: 'male',
+          height: '179',
+          weight: '75',
+          activitylevel: 'level_2',
+        },
+      },
+    );
+
+    console.log(response);
+  }
+
   async function handleContinue() {
-    setLoading(true);
+    dispatch(
+      setProfile({
+        gender: GENDER[genderIndex].toLowerCase(),
+        age: age,
+        height: height,
+        startingWeight: startingWeight,
+      }),
+    );
+
+    navigation.navigate(Routes.Loading);
+    // setLoading(true);
+
+    // setLoading(false);
     // const tdee = getTDEE(
     //   Number(startingWeight),
     //   Number(height),
@@ -123,35 +154,21 @@ export function SurveyScreen() {
     //   GENDER[genderIndex],
     //   activityLevelData[activityLevel].value,
     // );
-    // if (profile) {
-    // const userProfile: UserProfile = {
-    //   gender: GENDER[genderIndex],
-    //   age: age,
-    //   startingWeight: startingWeight,
-    //   height: height,
-    //   goalWeight: goalWeight,
-    //   activityLevel: ACTIVITY_LEVEL[activityLevel],
-    //   isSurveyCompleted: true,
-    //   tdee: Number(tdee),
-    //   email: user,
-    // };
 
-    if (email) {
-      await createUserInFirestore(
-        email,
-        uid,
-        true,
-        'Steli',
-        // userProfile.tdee
-      );
-    }
+    // email &&
+    //   (await createUserInFirestore(
+    //     email,
+    //     uid,
+    //     true,
+    //     name ?? '',
+    //     // userProfile.tdee
+    //   ));
 
-    // console.log('in survey screen: ', userProfile.isSurveyCompleted);
-    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
+    // dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
     // setProfile(updatedProfile);
     // }
-    setLoading(false);
-    navigation.navigate(Stacks.Home);
+    // setLoading(false);
+    // navigation.navigate(Stacks.Home);
   }
 
   return (

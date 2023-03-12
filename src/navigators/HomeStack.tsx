@@ -7,6 +7,7 @@ import TabNavigator from './TabNavigator';
 
 import { SurveyScreen } from '../screens';
 import { IntroductionScreen } from '../screens/survey';
+import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { SearchFoodScreen } from '../screens/searchfood';
 import { useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
@@ -14,6 +15,7 @@ import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
   [Routes.Introduction]: undefined;
+  [Routes.Loading]: undefined;
 };
 
 const SurveyStack = createNativeStackNavigator<SurveyStackParams>();
@@ -30,6 +32,7 @@ function Survey() {
         component={IntroductionScreen}
       />
       <SurveyStack.Screen name={Routes.Survey} component={SurveyScreen} />
+      <SurveyStack.Screen name={Routes.Loading} component={LoadingScreen} />
     </SurveyStack.Navigator>
   );
 }
@@ -44,9 +47,6 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 
 const HomeStack = () => {
   const user = useAuthStore(state => state.user);
-  // const profile = useProfileStore(state => state.profile);
-  // const survey = !profile?.isSurveyCompleted;
-
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
   const [showSurvey] = useState(!isSurveyCompleted);
