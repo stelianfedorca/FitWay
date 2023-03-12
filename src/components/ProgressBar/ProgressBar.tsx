@@ -1,16 +1,9 @@
 import React, { useEffect } from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, {
-  Easing,
   runOnJS,
   useSharedValue,
-  withSpring,
+  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 import { useAnimatedStyle } from 'react-native-reanimated';
@@ -21,8 +14,6 @@ export type ProgressBarProps = {
   onComplete?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export function ProgressBar({ maxWidth, style, onComplete }: ProgressBarProps) {
-  const { width } = useWindowDimensions();
-
   const progress = useSharedValue(0);
 
   async function onProgressBarCompleted() {
@@ -33,14 +24,17 @@ export function ProgressBar({ maxWidth, style, onComplete }: ProgressBarProps) {
   }
 
   useEffect(() => {
-    progress.value = withTiming(
-      maxWidth - 40,
-      {
-        duration: 3500,
-      },
-      finished => {
-        onProgressBarCompleted();
-      },
+    progress.value = withDelay(
+      1000,
+      withTiming(
+        maxWidth - 40,
+        {
+          duration: 3500,
+        },
+        finished => {
+          onProgressBarCompleted();
+        },
+      ),
     );
   }, []);
 

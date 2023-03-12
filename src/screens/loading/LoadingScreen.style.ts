@@ -1,8 +1,9 @@
-import { TouchableOpacity, View, Text, Pressable } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components';
 
-const AnimatedButton = Animated.createAnimatedComponent(Pressable);
+const AnimatedButton = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedText = Animated.createAnimatedComponent(Text);
 
 export const Container = styled(View)`
   flex: 1;
@@ -12,7 +13,7 @@ export const Container = styled(View)`
   background-color: #f3f3f3;
 `;
 
-export const PrimaryButton = styled(AnimatedButton)`
+export const AnimatedPrimaryButton = styled(AnimatedButton)`
   height: 50px;
   border-radius: 30px;
   background-color: #457ad7;
@@ -28,4 +29,10 @@ export const TextContinue = styled(Text)`
   color: white;
   font-size: 16px;
   font-weight: 700;
+`;
+
+export const AnimatedHeaderText = styled(AnimatedText)`
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 50px;
 `;
