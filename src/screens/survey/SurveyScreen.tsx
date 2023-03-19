@@ -142,22 +142,11 @@ export function SurveyScreen() {
 
   async function handleContinue() {
     setLoading(true);
-    dispatch(
-      setProfile({
-        gender: GENDER[genderIndex].toLowerCase(),
-        age: age,
-        height: height,
-        startingWeight: startingWeight,
-        isSurveyCompleted: true,
-      }),
-    );
+    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
 
     await updateUserInFirestore(uid);
-    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
-    setLoading(false);
-
     navigation.navigate(Routes.Loading);
-    // setLoading(true);
+    setLoading(false);
 
     // setLoading(false);
     // const tdee = getTDEE(

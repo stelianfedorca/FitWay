@@ -11,11 +11,16 @@ import { login } from '../redux/slices/userSlice';
 
 import { store } from '../redux/store';
 import { Root } from './Root';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
+const persistor = persistStore(store);
 export function App() {
   return (
     <StoreProvider store={store}>
-      <Root />
+      <PersistGate persistor={persistor}>
+        <Root />
+      </PersistGate>
     </StoreProvider>
   );
 }

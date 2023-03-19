@@ -25,12 +25,12 @@ export interface ProfileState {
   tdee?: number;
   food?: number;
   exercise?: number;
-  isSurveyCompleted?: boolean;
+  isSurveyCompleted: boolean;
   caloriesGoals?: CaloriesGoals;
 }
 
 const initialState: Partial<ProfileState> = {
-  isSurveyCompleted: true,
+  isSurveyCompleted: false,
   tdee: 0,
 };
 
@@ -39,8 +39,6 @@ export const profileSlice = createSlice({
   initialState,
   reducers: {
     setProfile: (state, action: PayloadAction<ProfileState>) => {
-      console.log('state: ', state);
-      console.log('payload: ', action.payload);
       return {
         ...state,
         ...action.payload,

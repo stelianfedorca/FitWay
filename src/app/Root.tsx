@@ -42,14 +42,14 @@ export function Root() {
       .auth()
       .onAuthStateChanged(async user => {
         if (user) {
-          console.log('survey: ', survey);
+          console.log('user...');
           // check if it is a newly created user
 
           //FIXME: Find a way to check if user is newly created
           //PROBLEM: When the user creates an account and goes through the survey, closes the app and enters again, it brings him back to the survey (not expected)
           //CAUSE: the condition for checking if the user is newly created consists of comparing the date between account creation and latest login date (it checks for last 3 minutes or so)
-          const isNewUser =
-            user.metadata.creationTime === user.metadata.lastSignInTime;
+          // const isNewUser =
+          //   user.metadata.creationTime === user.metadata.lastSignInTime;
           async function refreshProfile() {
             const userId = user?.uid;
             const userFound = await firestore()
@@ -58,15 +58,18 @@ export function Root() {
               .get();
             const data = userFound.data();
 
-            data &&
+            if (data) {
+              console.log('firestore data');
               dispatch(
                 setProfile({
-                  isSurveyCompleted: data.isSurveyCompleted,
+                  isSurveyCompleted: data.isSurveyCompleted ?? false,
                   firstName: data.firstName ?? undefined,
                   email: data.email ?? undefined,
                 }),
               );
+            }
           }
+          //FIXME: Nu cred ca mai trebuie
           //FIXME: Find a way to check if user is newly created
           //PROBLEM: When the user creates an account and goes through the survey, closes the app and enters again, it brings him back to the survey (not expected)
           //CAUSE: the condition for checking if the user is newly created consists of comparing the date between account creation and latest login date (it checks for last 3 minutes or so)
@@ -74,7 +77,7 @@ export function Root() {
           //   console.log('aici mai intra? ');
           //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
           // }
-          refreshProfile();
+          await refreshProfile();
           dispatch(login({ email: user.email, uid: user.uid }));
         }
       });
@@ -82,19 +85,24 @@ export function Root() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
+  //FIXME:
+  //PROBLEM: this listener is not updated on time
+  // if I already signed up and then I log out and immediately I signed up again with another account,
+  // the survey doesn't show up because it reads from firestore collection with the id from the previous account
+
   // listen to realtime updates on user document in firestore
-  useEffect(() => {
-    firestore()
-      .collection(USERS_COLLECTION)
-      .doc(currentUser?.uid)
-      .onSnapshot(documentSnapshot => {
-        dispatch(
-          setIsSurveyCompleted({
-            isSurveyCompleted: documentSnapshot.data()?.isSurveyCompleted,
-          }),
-        );
-      });
-  }, [currentUser?.uid]);
+  // useEffect(() => {
+  //   firestore()
+  //     .collection(USERS_COLLECTION)
+  //     .doc(currentUser?.uid)
+  //     .onSnapshot(documentSnapshot => {
+  //       dispatch(
+  //         setIsSurveyCompleted({
+  //           isSurveyCompleted: documentSnapshot.data()?.isSurveyCompleted,
+  //         }),
+  //       );
+  //     });
+  // });
 
   return (
     <PaperProvider>

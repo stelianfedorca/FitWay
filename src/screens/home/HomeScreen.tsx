@@ -31,6 +31,7 @@ import {
   selectIsSurveyCompleted,
   selectTdee,
 } from '../../redux/slices/profileSlice';
+import { selectLoading } from '../../redux/slices/loadingSlice';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
@@ -40,6 +41,10 @@ export function HomeScreen() {
 
   const userProfileName = useSelector(selectFirstName);
   const tdee = useSelector(selectTdee);
+  const loadingState = useSelector(selectLoading);
+  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
+
+  console.log('isSurveyCompleted: ', isSurveyCompleted);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -106,7 +111,7 @@ export function HomeScreen() {
             progressTitle="Remaining"
             progressValue={remainingCalories}
             icon="flash-outline"
-            max={profile?.tdee}
+            max={tdee}
           />
           <ItemStatistics title="Macros">
             <CircularProgressComponent

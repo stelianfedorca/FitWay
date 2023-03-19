@@ -12,6 +12,7 @@ import { SearchFoodScreen } from '../screens/searchfood';
 import { useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
 import { selectUid } from '../redux/slices/userSlice';
+import { selectLoading } from '../redux/slices/loadingSlice';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -47,11 +48,18 @@ export type RootStackParams = {
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 const HomeStack = () => {
-  console.log('homestack');
   const user = useSelector(selectUid);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
-
+  const loadingState = useSelector(selectLoading);
+  console.log('isSurveyCompleted homestack: ', isSurveyCompleted);
   const [showSurvey] = useState(!isSurveyCompleted);
+
+  // const [showSurvey, setShowSurvey] = useState(false);
+  // useLayoutEffect(() => {
+  //   setShowSurvey(!isSurveyCompleted);
+  // }, [isSurveyCompleted]);
+
+  console.log('showSurvey: ', showSurvey);
 
   return (
     <Stack.Navigator
@@ -60,24 +68,18 @@ const HomeStack = () => {
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
-      {isSurveyCompleted ? (
-        <>
-          <Stack.Screen name={Stacks.Home} component={TabNavigator} />
-          <Stack.Screen
-            name={Routes.Search}
-            component={SearchFoodScreen}
-            options={{
-              headerShown: true,
-              headerShadowVisible: false,
-            }}
-          />
-        </>
-      ) : (
-        <>
-          {console.log('aici ????')}
-          <Stack.Screen name={Stacks.Survey} component={Survey} />
-        </>
+      {showSurvey && loadingState && (
+        <Stack.Screen name={Stacks.Survey} component={Survey} />
       )}
+      <Stack.Screen name={Stacks.Home} component={TabNavigator} />
+      <Stack.Screen
+        name={Routes.Search}
+        component={SearchFoodScreen}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

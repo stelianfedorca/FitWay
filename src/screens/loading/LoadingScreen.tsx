@@ -32,6 +32,7 @@ import {
 
 export function LoadingScreen() {
   useCalories();
+  
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const navigation = useNavigation<SurveyScreenNavigationProp>();
@@ -52,6 +53,8 @@ export function LoadingScreen() {
   function handleContinuePress() {
     navigation.replace(Stacks.Home);
   }
+
+  console.log('loading screen...');
 
   return (
     <Layout>

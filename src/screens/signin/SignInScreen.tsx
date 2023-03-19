@@ -44,6 +44,12 @@ import { useAuthStore, useProfileStore } from '../../stores';
 import { Text, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, selectEmail } from '../../redux/slices/userSlice';
+import { selectLoading } from '../../redux/slices/loadingSlice';
+import { setLoading as setLoadingState } from '../../redux/slices/loadingSlice';
+import {
+  selectProfile,
+  setIsSurveyCompleted,
+} from '../../redux/slices/profileSlice';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -52,12 +58,18 @@ export function SignInScreen() {
 
   const [loading, setLoading] = useState(false);
 
+  const loadingState = useSelector(selectLoading);
+
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
 
   const email = useSelector(selectEmail);
   const dispatch = useDispatch();
+
+  const profilestate = useSelector(selectProfile);
+
+  console.log('profilestate: ', profilestate);
 
   const defaultValues = {
     email: '',
@@ -77,11 +89,16 @@ export function SignInScreen() {
   });
 
   async function handleSignIn({ email, password }: SignInForm) {
+    // dispatch(setLoadingState({ loading: false }));
     setLoading(true);
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
       password,
     );
+
+    // if (userCredential) {
+    //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
+    // }
 
     // if (userCredential) {
     //   dispatch(

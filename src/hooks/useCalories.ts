@@ -13,6 +13,10 @@ export function useCalories() {
   const [response, setResponse] = useState({});
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // dispatch(setProfile(state => { ...state, tdee: 2100 }));
+  }, []);
+
   // useEffect(() => {
   //   async function generateGoals() {
   //     const response = await axios.get(
@@ -32,11 +36,9 @@ export function useCalories() {
   //       },
   //     );
 
-  //     const caloriesGoals = response.data.data;
+  //     response.data.data;
   //   }
 
   //   generateGoals();
   // }, []);
-
-  return 2100;
 }
