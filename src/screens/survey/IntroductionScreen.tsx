@@ -1,20 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
-import { useProfileStore } from '../../stores';
 import {
   ButtonsContainer,
   PrimaryButton,
-  SecondaryButton,
   TitleButton,
 } from './IntroductionScreen.style';
 import { IntroductionScreenNavigationProp } from './IntroductionScreen.types';
 
 export function IntroductionScreen() {
   const navigation = useNavigation<IntroductionScreenNavigationProp>();
-  const profile = useProfileStore(state => state.profile);
 
   function handleContinue() {
     navigation.navigate(Routes.Survey);

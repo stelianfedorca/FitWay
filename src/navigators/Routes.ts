@@ -9,6 +9,9 @@ export enum Routes {
   Survey = 'SURVEY',
   Introduction = 'INTRODUCTION',
 
+  // Loading Stack
+  Loading = 'LOADING',
+
   // Auth stack
   Welcome = 'WELCOME',
   SignIn = 'SIGN_IN',

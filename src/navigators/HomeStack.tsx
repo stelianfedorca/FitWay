@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useAuthStore, useProfileStore } from '../stores';
 import { Routes, Stacks, Tabs } from './Routes';
@@ -7,11 +7,17 @@ import TabNavigator from './TabNavigator';
 
 import { SurveyScreen } from '../screens';
 import { IntroductionScreen } from '../screens/survey';
+import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { SearchFoodScreen } from '../screens/searchfood';
+import { useSelector } from 'react-redux';
+import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
+import { selectUid } from '../redux/slices/userSlice';
+import { selectLoading } from '../redux/slices/loadingSlice';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
   [Routes.Introduction]: undefined;
+  [Routes.Loading]: undefined;
 };
 
 const SurveyStack = createNativeStackNavigator<SurveyStackParams>();
@@ -28,6 +34,7 @@ function Survey() {
         component={IntroductionScreen}
       />
       <SurveyStack.Screen name={Routes.Survey} component={SurveyScreen} />
+      <SurveyStack.Screen name={Routes.Loading} component={LoadingScreen} />
     </SurveyStack.Navigator>
   );
 }
@@ -41,9 +48,15 @@ export type RootStackParams = {
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 const HomeStack = () => {
-  const user = useAuthStore(state => state.user);
-  const profile = useProfileStore(state => state.profile);
-  const survey = !profile?.isSurveyCompleted;
+  const user = useSelector(selectUid);
+  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
+  const loadingState = useSelector(selectLoading);
+  const [showSurvey] = useState(!isSurveyCompleted);
+
+  // const [showSurvey, setShowSurvey] = useState(false);
+  // useLayoutEffect(() => {
+  //   setShowSurvey(!isSurveyCompleted);
+  // }, [isSurveyCompleted]);
 
   return (
     <Stack.Navigator
@@ -52,7 +65,7 @@ const HomeStack = () => {
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
-      {survey && <Stack.Screen name={Stacks.Survey} component={Survey} />}
+      {showSurvey && <Stack.Screen name={Stacks.Survey} component={Survey} />}
       <Stack.Screen name={Stacks.Home} component={TabNavigator} />
       <Stack.Screen
         name={Routes.Search}

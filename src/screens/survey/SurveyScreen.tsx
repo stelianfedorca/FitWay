@@ -23,10 +23,12 @@ import { InputRow } from '../../components/InputRow';
 import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
 import { Option } from '../../components/Option';
-import { Stacks } from '../../navigators/Routes';
-import { createUserInFirestore } from '../../services/auth.service';
+import { Routes, Stacks } from '../../navigators/Routes';
+import {
+  createUserInFirestore,
+  updateUserInFirestore,
+} from '../../services/user.service';
 import { useAuthStore, useProfileStore } from '../../stores';
-import { UserData } from '../../stores/profile';
 import { getTDEE } from '../../utils/calculator';
 import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
 import { HomeNavigationProp } from '../home/Home.types';
@@ -39,6 +41,17 @@ import {
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
 import auth from '@react-native-firebase/auth';
+import {
+  ProfileState,
+  selectFirstName,
+  setIsSurveyCompleted,
+  setProfile,
+} from '../../redux/slices/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectEmail, selectUid } from '../../redux/slices/userSlice';
+import axios from 'axios';
+import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
+import { LoadingScreen } from '../loading/LoadingScreen';
 
 export type ActivityLevelProps = {
   id: number;
@@ -74,7 +87,23 @@ const activityLevelData: ActivityLevelProps[] = [
   },
 ];
 
+export type UserProfile = {
+  email?: string | null;
+  firstName?: string;
+  gender?: string;
+  age?: string;
+  startingWeight?: string;
+  height?: string;
+  activityLevel?: string;
+  goalWeight?: string;
+  isSurveyCompleted?: boolean;
+  tdee?: number;
+  food?: number;
+  exercise?: number;
+};
+
 export function SurveyScreen() {
+  const dispatch = useDispatch();
   const [genderIndex, setGenderIndex] = useState(0);
   const [age, setAge] = useState('');
   const [startingWeight, setStartingWeight] = useState('');
@@ -84,48 +113,54 @@ export function SurveyScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  const setProfile = useProfileStore(state => state.setProfile);
-  const profile = useProfileStore(state => state.profile);
-
-  const user = useAuthStore(state => state.user);
+  const email = useSelector(selectEmail);
+  const uid = useSelector(selectUid);
+  const name = useSelector(selectFirstName);
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
+  async function generateGoals() {
+    const response = await axios.get(
+      'https://fitness-calculator.p.rapidapi.com/dailycalorie',
+      {
+        headers: {
+          'X-RapidAPI-Key': RAPIDAPI_KEY,
+          'X-RapidAPI-Host': RAPIDAPI_HOST,
+        },
+        params: {
+          age: '25',
+          gender: 'male',
+          height: '179',
+          weight: '75',
+          activitylevel: 'level_2',
+        },
+      },
+    );
+
+    console.log(response);
+  }
+
   async function handleContinue() {
     setLoading(true);
-    const tdee = getTDEE(
-      Number(startingWeight),
-      Number(height),
-      Number(age),
-      GENDER[genderIndex],
-      activityLevelData[activityLevel].value,
-    );
-    if (profile) {
-      const updatedProfile: UserData = {
-        ...profile,
-        gender: GENDER[genderIndex],
-        age: age,
-        startingWeight: startingWeight,
-        height: height,
-        goalWeight: goalWeight,
-        activityLevel: ACTIVITY_LEVEL[activityLevel],
-        isSurveyCompleted: true,
-        tdee: Number(tdee),
-      };
+    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
 
-      if (user) {
-        await createUserInFirestore(
-          user.uid,
-          updatedProfile.firstName,
-          updatedProfile.email!,
-          updatedProfile.isSurveyCompleted,
-          updatedProfile.tdee,
-        );
-      }
-      setProfile(updatedProfile);
-    }
+    await updateUserInFirestore(uid);
+    navigation.navigate(Routes.Loading);
     setLoading(false);
-    navigation.navigate(Stacks.Home);
+
+    // setLoading(false);
+    // const tdee = getTDEE(
+    //   Number(startingWeight),
+    //   Number(height),
+    //   Number(age),
+    //   GENDER[genderIndex],
+    //   activityLevelData[activityLevel].value,
+    // );
+
+    // setProfile(updatedProfile);
+    // }
+    // setLoading(false);
+    // navigation.navigate(Stacks.Home);
   }
 
   return (

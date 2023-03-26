@@ -42,6 +42,14 @@ import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuthStore, useProfileStore } from '../../stores';
 import { Text, TextInput } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectEmail } from '../../redux/slices/userSlice';
+import { selectLoading } from '../../redux/slices/loadingSlice';
+import { setLoading as setLoadingState } from '../../redux/slices/loadingSlice';
+import {
+  selectProfile,
+  setIsSurveyCompleted,
+} from '../../redux/slices/profileSlice';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();
@@ -50,9 +58,16 @@ export function SignInScreen() {
 
   const [loading, setLoading] = useState(false);
 
+  const loadingState = useSelector(selectLoading);
+
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const setProfile = useProfileStore(state => state.setProfile);
+
+  const email = useSelector(selectEmail);
+  const dispatch = useDispatch();
+
+  const profilestate = useSelector(selectProfile);
 
   const defaultValues = {
     email: '',
@@ -72,18 +87,26 @@ export function SignInScreen() {
   });
 
   async function handleSignIn({ email, password }: SignInForm) {
-    setLoading(true);
+    // dispatch(setLoadingState({ loading: false }));
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
       password,
     );
 
-    setLoading(false);
+    // if (userCredential) {
+    //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
+    // }
 
-    // setProfile({
-    //   email: userCredential.user.email,
-    //   isSurveyCompleted: !userCredential.additionalUserInfo?.isNewUser,
-    // });
+    // if (userCredential) {
+    //   dispatch(
+    //     login({
+    //       email: userCredential.user.email,
+    //       uid: userCredential.user.uid,
+    //     }),
+    //   );
+    // }
+
+    setLoading(false);
   }
 
   function handleSignUpPress() {

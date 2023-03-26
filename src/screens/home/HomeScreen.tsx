@@ -25,12 +25,24 @@ import { CircularProgressComponent } from '../../components/CircularProgressComp
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
+import { useSelector } from 'react-redux';
+import {
+  selectFirstName,
+  selectIsSurveyCompleted,
+  selectTdee,
+} from '../../redux/slices/profileSlice';
+import { selectLoading } from '../../redux/slices/loadingSlice';
 
 export function HomeScreen() {
   const user = useAuthStore(state => state.user);
   const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
+
+  const userProfileName = useSelector(selectFirstName);
+  const tdee = useSelector(selectTdee);
+  const loadingState = useSelector(selectLoading);
+  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +74,7 @@ export function HomeScreen() {
             <Text
               variant="titleMedium"
               style={{ fontWeight: '500', fontSize: 18, letterSpacing: 0.8 }}>
-              {`Hi, ${profile?.firstName}`}
+              {`Hi, ${userProfileName}`}
             </Text>
             <Text
               variant="labelLarge"
@@ -97,7 +109,7 @@ export function HomeScreen() {
             progressTitle="Remaining"
             progressValue={remainingCalories}
             icon="flash-outline"
-            max={profile?.tdee}
+            max={tdee}
           />
           <ItemStatistics title="Macros">
             <CircularProgressComponent

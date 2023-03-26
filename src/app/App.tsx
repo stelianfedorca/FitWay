@@ -6,37 +6,22 @@ import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import { firebase } from '@react-native-firebase/auth';
 import { useAuthStore, useProfileStore } from '../stores';
+import { Provider as StoreProvider, useDispatch } from 'react-redux';
+import { login } from '../redux/slices/userSlice';
 
-// const theme = {
-//   ...DefaultTheme,
-//   roundness: 2,
-//   version: 3,
-//   colors: {
-//     ...DefaultTheme.colors,
-//     primary: '#3498db',
-//     secondary: '#f1c40f',
-//     tertiary: '#a1b2c3',
-//     tertiaryContainer: 'red',
-//     primaryContainer: 'red',
-//   },
-// };
+import { store } from '../redux/store';
+import { Root } from './Root';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+
+const persistor = persistStore(store);
 export function App() {
-  const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
-
-  useEffect(() => {
-    const subscriber = firebase
-      .app()
-      .auth()
-      .onAuthStateChanged(onAuthStateChanged);
-
-    return subscriber; // unsubscribe on unmount
-  }, [onAuthStateChanged]);
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </PaperProvider>
+    <StoreProvider store={store}>
+      <PersistGate persistor={persistor}>
+        <Root />
+      </PersistGate>
+    </StoreProvider>
   );
 }
 
