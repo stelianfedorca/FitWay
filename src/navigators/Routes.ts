@@ -4,6 +4,7 @@ export enum Routes {
   Diary = 'DIARY',
   Profile = 'PROFILE',
   Search = 'SEARCH',
+  Recommendation = 'RECOMMENDATION',
 
   // Survey Stack
   Survey = 'SURVEY',

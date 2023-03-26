@@ -1,6 +1,6 @@
-import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 import { Text } from 'react-native-paper';
-import { FoodData, useFoodStore } from '../../stores/food';
+import { FoodData } from '../../stores/food';
 import { Container, DetailsContainer } from './ItemList.style';
 
 type ItemProps = {

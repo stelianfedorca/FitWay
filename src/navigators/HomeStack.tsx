@@ -9,6 +9,7 @@ import { SurveyScreen } from '../screens';
 import { IntroductionScreen } from '../screens/survey';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { SearchFoodScreen } from '../screens/searchfood';
+import { SearchRecommendation } from '../screens/searchfood';
 import { useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
 import { selectUid } from '../redux/slices/userSlice';
@@ -43,6 +44,7 @@ export type RootStackParams = {
   [Stacks.Home]: { screens: Tabs } | undefined;
   [Stacks.Survey]: undefined;
   [Routes.Search]: undefined;
+  [Routes.Recommendation]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -70,6 +72,14 @@ const HomeStack = () => {
       <Stack.Screen
         name={Routes.Search}
         component={SearchFoodScreen}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={Routes.Recommendation}
+        component={SearchRecommendation}
         options={{
           headerShown: true,
           headerShadowVisible: false,

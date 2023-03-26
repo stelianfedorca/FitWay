@@ -145,9 +145,9 @@ export function HomeScreen() {
         icon={'plus'}
         actions={[
           {
-            icon: 'star',
-            label: 'Star',
-            onPress: () => console.log('Pressed star'),
+            icon: 'food',
+            label: 'Recommendation',
+            onPress: () => navigation.navigate(Routes.Recommendation),
           },
           {
             icon: 'food',
@@ -161,7 +161,7 @@ export function HomeScreen() {
           borderRadius: 30,
         }}
         color="white"
-        style={{ bottom: -20, opacity: isOpen ? 1 : 1 }}
+        style={{ bottom: -20, opacity: 1 }}
       />
     </Layout>
   );
