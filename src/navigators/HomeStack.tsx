@@ -51,15 +51,12 @@ const HomeStack = () => {
   const user = useSelector(selectUid);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
   const loadingState = useSelector(selectLoading);
-  console.log('isSurveyCompleted homestack: ', isSurveyCompleted);
   const [showSurvey] = useState(!isSurveyCompleted);
 
   // const [showSurvey, setShowSurvey] = useState(false);
   // useLayoutEffect(() => {
   //   setShowSurvey(!isSurveyCompleted);
   // }, [isSurveyCompleted]);
-
-  console.log('showSurvey: ', showSurvey);
 
   return (
     <Stack.Navigator
@@ -68,9 +65,7 @@ const HomeStack = () => {
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
-      {showSurvey && loadingState && (
-        <Stack.Screen name={Stacks.Survey} component={Survey} />
-      )}
+      {showSurvey && <Stack.Screen name={Stacks.Survey} component={Survey} />}
       <Stack.Screen name={Stacks.Home} component={TabNavigator} />
       <Stack.Screen
         name={Routes.Search}

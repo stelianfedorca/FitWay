@@ -69,8 +69,6 @@ export function SignInScreen() {
 
   const profilestate = useSelector(selectProfile);
 
-  console.log('profilestate: ', profilestate);
-
   const defaultValues = {
     email: '',
     password: '',
@@ -90,7 +88,6 @@ export function SignInScreen() {
 
   async function handleSignIn({ email, password }: SignInForm) {
     // dispatch(setLoadingState({ loading: false }));
-    setLoading(true);
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
       password,

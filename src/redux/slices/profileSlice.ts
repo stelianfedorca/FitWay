@@ -54,7 +54,6 @@ export const profileSlice = createSlice({
       state.caloriesGoals = action.payload.caloriesGoals;
     },
     setTdee: (state, action: PayloadAction<ProfileState>) => {
-      console.log('actionpayload: ', action.payload.tdee);
       state.tdee = action.payload.tdee;
     },
   },

@@ -44,8 +44,6 @@ export function HomeScreen() {
   const loadingState = useSelector(selectLoading);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
-  console.log('isSurveyCompleted: ', isSurveyCompleted);
-
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 

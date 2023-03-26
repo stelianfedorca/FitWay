@@ -42,7 +42,6 @@ export function Root() {
       .auth()
       .onAuthStateChanged(async user => {
         if (user) {
-          console.log('user...');
           // check if it is a newly created user
 
           //FIXME: Find a way to check if user is newly created
@@ -59,7 +58,6 @@ export function Root() {
             const data = userFound.data();
 
             if (data) {
-              console.log('firestore data');
               dispatch(
                 setProfile({
                   isSurveyCompleted: data.isSurveyCompleted ?? false,
@@ -74,7 +72,6 @@ export function Root() {
           //PROBLEM: When the user creates an account and goes through the survey, closes the app and enters again, it brings him back to the survey (not expected)
           //CAUSE: the condition for checking if the user is newly created consists of comparing the date between account creation and latest login date (it checks for last 3 minutes or so)
           // if (isNewUser) {
-          //   console.log('aici mai intra? ');
           //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: false }));
           // }
           await refreshProfile();
