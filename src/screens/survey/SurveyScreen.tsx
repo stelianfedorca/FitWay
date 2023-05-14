@@ -142,7 +142,7 @@ export function SurveyScreen() {
 
   async function handleContinue() {
     setLoading(true);
-    dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
+    dispatch(setIsSurveyCompleted(true));
 
     await updateUserInFirestore(uid);
     navigation.navigate(Routes.Loading);

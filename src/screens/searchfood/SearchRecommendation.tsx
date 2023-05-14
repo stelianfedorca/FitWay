@@ -1,16 +1,16 @@
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { Layout } from '../../components/Layout';
-import { List } from '../../components/List';
 import { SearchBar } from '../../components/SearchBar';
-import { useFoodCollection } from '../../hooks';
-import { useFoodStore } from '../../stores';
 import { styles } from './SearchFoodScreen.style';
 
-import Modal from 'react-native-modal';
-import { DetailsModal } from '../../components/modals';
 import { useEffect, useState } from 'react';
 import { ListRecommendation } from '../../components/ListRecommendation';
 import axios from 'axios';
+
+const ENDPOINT_SEARCH_RECIPES_BY_INGREDIENTS =
+  'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients';
+const API_KEY = '7ec3a999fdmsh6d184896218e6f1p1288c3jsn80b38429ed37';
+const API_HOST = 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com';
 
 export function SearchRecommendation() {
   const [data, setData] = useState([]);
@@ -24,20 +24,27 @@ export function SearchRecommendation() {
   }
 
   useEffect(() => {
+    console.log('called...');
     axios
-      .get('https://edamam-recipe-search.p.rapidapi.com/search', {
+      .get(ENDPOINT_SEARCH_RECIPES_BY_INGREDIENTS, {
         headers: {
-          'X-RapidAPI-Key':
-            '7ec3a999fdmsh6d184896218e6f1p1288c3jsn80b38429ed37',
-          'X-RapidAPI-Host': 'edamam-recipe-search.p.rapidapi.com',
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': API_HOST,
         },
-        params: { q: 'vegetables beef' },
+        params: {
+          ingredients: 'chicken,rice,beans',
+          number: '5',
+          ignorePantry: 'true',
+          ranking: '1',
+        },
       })
       .then(response => {
         setData(response.data);
         setIsLoading(false);
       });
   }, []);
+
+  console.log('data: ', data);
 
   return (
     <Layout paddingBottom style={styles.container}>

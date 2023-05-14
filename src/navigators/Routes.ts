@@ -25,6 +25,7 @@ export enum Tabs {
   Home = 'Home',
   Profile = 'Profile',
   Diary = 'Diary',
+  MealPlans = 'Meal Plans',
   // FAB = 'FAB',
 }
 

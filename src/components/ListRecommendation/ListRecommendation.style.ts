@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Pressable, View } from 'react-native';
 import styled from 'styled-components';
 
 export const Container = styled(SafeAreaView)`
@@ -7,7 +7,7 @@ export const Container = styled(SafeAreaView)`
   /* flex-grow: 1; */
 `;
 
-export const ItemContainer = styled(TouchableOpacity)`
+export const ItemContainer = styled(Pressable)`
   background-color: #f8f8f8;
   height: 200px;
   justify-content: center;

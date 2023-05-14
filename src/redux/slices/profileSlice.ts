@@ -23,7 +23,7 @@ export interface ProfileState {
   activityLevel?: string;
   goalWeight?: string;
   tdee?: number;
-  food?: number;
+  caloricIntake: number;
   exercise?: number;
   isSurveyCompleted: boolean;
   caloriesGoals?: CaloriesGoals;
@@ -32,6 +32,7 @@ export interface ProfileState {
 const initialState: Partial<ProfileState> = {
   isSurveyCompleted: false,
   tdee: 0,
+  caloricIntake: 0,
 };
 
 export const profileSlice = createSlice({
@@ -44,17 +45,24 @@ export const profileSlice = createSlice({
         ...action.payload,
       };
     },
-    setIsSurveyCompleted: (state, action: PayloadAction<ProfileState>) => {
-      state.isSurveyCompleted = action.payload.isSurveyCompleted;
+    setIsSurveyCompleted: (state, action: PayloadAction<boolean>) => {
+      state.isSurveyCompleted = action.payload;
     },
-    setFirstName: (state, action: PayloadAction<ProfileState>) => {
-      state.firstName = action.payload.firstName;
+    setFirstName: (state, action: PayloadAction<string>) => {
+      state.firstName = action.payload;
     },
     setCaloriesGoals: (state, action: PayloadAction<ProfileState>) => {
       state.caloriesGoals = action.payload.caloriesGoals;
     },
-    setTdee: (state, action: PayloadAction<ProfileState>) => {
-      state.tdee = action.payload.tdee;
+    setTdee: (state, action: PayloadAction<number>) => {
+      state.caloricIntake = 1;
+      state.tdee = action.payload;
+    },
+
+    addCaloricIntake: (state, action: PayloadAction<number>) => {
+      if (state.caloricIntake) {
+        state.caloricIntake += action.payload;
+      }
     },
   },
 });
@@ -65,6 +73,7 @@ export const {
   setFirstName,
   setTdee,
   setCaloriesGoals,
+  addCaloricIntake,
 } = profileSlice.actions;
 
 export const selectIsSurveyCompleted = (state: RootState) =>
@@ -77,5 +86,8 @@ export const selectProfile = (state: RootState) => state.profile;
 export const selectCaloriesGoals = (state: RootState) => state.caloriesGoals;
 
 export const selectTdee = (state: RootState) => state.profile.tdee;
+
+export const selectCaloricIntake = (state: RootState) =>
+  state.profile.caloricIntake;
 
 export default profileSlice.reducer;
