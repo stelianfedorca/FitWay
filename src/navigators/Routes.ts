@@ -4,6 +4,7 @@ export enum Routes {
   Diary = 'DIARY',
   Profile = 'PROFILE',
   Search = 'SEARCH',
+  Recommendation = 'RECOMMENDATION',
 
   // Survey Stack
   Survey = 'SURVEY',
@@ -24,6 +25,7 @@ export enum Tabs {
   Home = 'Home',
   Profile = 'Profile',
   Diary = 'Diary',
+  MealPlans = 'Meal Plans',
   // FAB = 'FAB',
 }
 

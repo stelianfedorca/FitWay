@@ -15,7 +15,6 @@ import {
   FadeOut,
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -25,14 +24,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCaloriesGoals,
   selectTdee,
-  setIsSurveyCompleted,
   setProfile,
   setTdee,
 } from '../../redux/slices/profileSlice';
+import { getTDEE } from '../../utils/calculator';
 
 export function LoadingScreen() {
-  useCalories();
-  
+  // useCalories();
+
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const navigation = useNavigation<SurveyScreenNavigationProp>();
@@ -46,6 +45,10 @@ export function LoadingScreen() {
     textOpacity.value = withTiming(1, { duration: 1300 });
   }, []);
 
+  useEffect(() => {
+    dispatch(setTdee(getTDEE(79, 179, 23, 'male', 2)));
+  }, []);
+
   const textAnimatedStyle = useAnimatedStyle(() => {
     return { opacity: textOpacity.value };
   });
@@ -53,8 +56,6 @@ export function LoadingScreen() {
   function handleContinuePress() {
     navigation.replace(Stacks.Home);
   }
-
-  console.log('loading screen...');
 
   return (
     <Layout>

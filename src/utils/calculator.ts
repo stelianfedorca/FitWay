@@ -56,17 +56,18 @@ export const getTDEE = (
   gender: string,
   activityLevel: number,
 ) => {
-  // const multiplier = activityLevel[activityLevelKey];
-  const result = getBMR(weight, height, age, gender) * activityLevel;
-  return result.toFixed(0);
+  const bmr = getBMR(weight, height, age, gender);
+  const tdee = Number((bmr * activityLevel).toFixed(0));
+  console.log('tdee: ', tdee);
+  return tdee;
 };
 
 export function getRemainingCalories(
-  foodCalories: number,
+  caloricIntake: number,
   tdee?: number,
   exercise?: number,
 ) {
   if (tdee === undefined) return 0;
 
-  return tdee - foodCalories + (exercise ?? 0);
+  return tdee - caloricIntake + (exercise ?? 0);
 }

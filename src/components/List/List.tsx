@@ -3,8 +3,6 @@ import {
   GestureResponderEvent,
   ListRenderItemInfo,
   StyleProp,
-  Text,
-  View,
   ViewStyle,
 } from 'react-native';
 import { useFoodStore, useSearchStore } from '../../stores';
@@ -20,7 +18,7 @@ export type ListProps = {
 };
 
 export function List({ contentStyle, data, onItemPress }: ListProps) {
-  const { food, setSelectedFood } = useFoodStore.getState();
+  const { setSelectedFood } = useFoodStore.getState();
   const searchFilter = useSearchStore(state => state.search);
 
   function _renderItem(item: ListRenderItemInfo<FoodData>) {
@@ -34,8 +32,8 @@ export function List({ contentStyle, data, onItemPress }: ListProps) {
   return (
     <Container>
       <FlatList
-        data={data?.filter(data =>
-          data.name?.includes(searchFilter ?? data.name),
+        data={data?.filter(dataItem =>
+          dataItem.name?.includes(searchFilter ?? dataItem.name),
         )}
         renderItem={_renderItem}
         keyExtractor={(item, index) => item.key ?? index.toString()}

@@ -3,12 +3,11 @@ import { Layout } from '../../components/Layout';
 import { List } from '../../components/List';
 import { SearchBar } from '../../components/SearchBar';
 import { useFoodCollection } from '../../hooks';
-import { useFoodStore } from '../../stores';
 import { styles } from './SearchFoodScreen.style';
 
 import Modal from 'react-native-modal';
 import { DetailsModal } from '../../components/modals';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function SearchFoodScreen() {
   const result = useFoodCollection();

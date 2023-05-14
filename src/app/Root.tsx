@@ -63,6 +63,7 @@ export function Root() {
                   isSurveyCompleted: data.isSurveyCompleted ?? false,
                   firstName: data.firstName ?? undefined,
                   email: data.email ?? undefined,
+                  caloricIntake: data.caloricIntake ?? 0,
                 }),
               );
             }

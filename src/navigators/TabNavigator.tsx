@@ -4,16 +4,16 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomeScreen } from '../screens';
-import { ProfileScreen } from '../screens/profile';
 import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';
 import { useWindowDimensions } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { DiaryScreen } from '../screens';
+import { DiaryScreen, ProfileScreen, MealPlan } from '../screens';
 
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export type HomeStackParams = {
   [Routes.Home]: undefined;
@@ -71,6 +71,7 @@ export type TabParams = {
   [Tabs.Home]: undefined;
   [Tabs.Diary]: undefined;
   [Tabs.Profile]: undefined;
+  [Tabs.MealPlans]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParams>();
@@ -115,7 +116,17 @@ const TabNavigator = () => {
           component={Diary}
           options={{
             tabBarIcon: ({ color }) => (
-              <MaterialIcons name="menu-book" size={30} color={color} />
+              <MIcon name="book-open-page-variant" size={30} color={color} />
+            ),
+          }}
+        />
+
+        <Tab.Screen
+          name={Tabs.MealPlans}
+          component={MealPlan}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="ios-newspaper" size={30} color={color} />
             ),
           }}
         />

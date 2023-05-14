@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Avatar, Button, FAB, Surface, Text } from 'react-native-paper';
+import { Image, ScrollView, View } from 'react-native';
+import { FAB, Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
-import { useAuthStore, useProfileStore } from '../../stores';
-import { HeaderContainer, ItemColumn, styles } from './HomeScreen.style';
+import { useProfileStore } from '../../stores';
+import { HeaderContainer, styles } from './HomeScreen.style';
 
-import MaterialIcons from 'react-native-vector-icons/Ionicons';
 import { Item } from '../../components/Item';
-import { Header } from '@react-navigation/stack';
 import { AvatarProfile } from '../../assets/images';
 
-import { format, getDay } from 'date-fns';
-import { ACTIVITY_LEVEL } from '../../utils/consts';
+import { format } from 'date-fns';
 import { getRemainingCalories } from '../../utils/calculator';
 import { ItemStatistics } from '../../components/ItemStatistics';
 import { CircularProgressComponent } from '../../components/CircularProgressComponent';
@@ -26,23 +16,14 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
 import { useSelector } from 'react-redux';
-import {
-  selectFirstName,
-  selectIsSurveyCompleted,
-  selectTdee,
-} from '../../redux/slices/profileSlice';
-import { selectLoading } from '../../redux/slices/loadingSlice';
+import { selectFirstName, selectTdee } from '../../redux/slices/profileSlice';
 
 export function HomeScreen() {
-  const user = useAuthStore(state => state.user);
-  const setProfile = useProfileStore(state => state.setProfile);
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
 
   const userProfileName = useSelector(selectFirstName);
   const tdee = useSelector(selectTdee);
-  const loadingState = useSelector(selectLoading);
-  const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -55,11 +36,7 @@ export function HomeScreen() {
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
 
-  const remainingCalories = getRemainingCalories(
-    0,
-    profile?.tdee,
-    profile?.exercise,
-  );
+  const remainingCalories = getRemainingCalories(1111, tdee, profile?.exercise);
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -142,12 +119,12 @@ export function HomeScreen() {
       <FAB.Group
         open={isOpen}
         visible
-        icon={'plus'}
+        icon={isOpen ? 'close' : 'plus'}
         actions={[
           {
-            icon: 'star',
-            label: 'Star',
-            onPress: () => console.log('Pressed star'),
+            icon: 'food',
+            label: 'Recommend meals',
+            onPress: () => navigation.navigate(Routes.Recommendation),
           },
           {
             icon: 'food',
@@ -161,7 +138,7 @@ export function HomeScreen() {
           borderRadius: 30,
         }}
         color="white"
-        style={{ bottom: -20, opacity: isOpen ? 1 : 1 }}
+        style={{ bottom: -20 }}
       />
     </Layout>
   );
