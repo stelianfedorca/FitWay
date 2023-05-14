@@ -10,7 +10,7 @@ import {
 
 export type OptionProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   style?: StyleProp<ViewStyle>;
   isSelected?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
@@ -26,8 +26,8 @@ export function Option({
     <Pressable
       style={[
         styles.container,
-        style,
         { backgroundColor: isSelected ? '#457ad7' : '#eef4fe' },
+        style,
       ]}
       onPress={onPress}>
       <Text

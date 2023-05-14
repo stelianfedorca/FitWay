@@ -1,1 +1,2 @@
-export { MealPlan } from './MealPlanScreen';
+export { CustomizeMealPlanScreen } from './CustomizeMealPlanScreen';
+export { MealPlansScreen } from './MealPlansScreen';

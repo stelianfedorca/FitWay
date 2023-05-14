@@ -2164,6 +2164,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@miblanchard/react-native-slider@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@miblanchard/react-native-slider/-/react-native-slider-2.3.1.tgz#79e0f1f9b1ce43ef25ee51ee9256c012e5dfa412"
+  integrity sha512-J/hZDBWmXq8fJeOnTVHqIUVDHshqMSpJVxJ4WqwuCBKl5Rke9OBYXIdkSlgi75OgtScAr8FKK5KNkDKHUf6JIg==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -8541,10 +8546,10 @@ react-native-dotenv@~3.4.8:
   dependencies:
     dotenv "^16.0.3"
 
-react-native-dropdown-picker@^5.4.4:
-  version "5.4.4"
-  resolved "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.4.tgz"
-  integrity sha512-MGsFc3Oi6Rc94WoJk3oOGfPe6IVscCrWn1DRCUDB508U4Wmd2b+EYONpsgiXQ89ESoBcOE3qQR6gkY2CVxoC+Q==
+react-native-dropdown-picker@^5.4.6:
+  version "5.4.6"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.6.tgz#3736fc468de4a295e4df8d1f65ed2eadaf9b445f"
+  integrity sha512-T1XBHbE++M6aRU3wFYw3MvcOuabhWZ29RK/Ivdls2r1ZkZ62iEBZknLUPeVLMX3x6iUxj4Zgr3X2DGlEGXeHsA==
 
 react-native-flex-layout@^0.1.5:
   version "0.1.5"

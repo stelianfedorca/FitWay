@@ -2,6 +2,8 @@ export enum Routes {
   // Home stack
   Home = 'HOME',
   Diary = 'DIARY',
+  CustomizeMealPlans = 'CUSTOMIZE_MEAL_PLANS',
+  MealPlans = 'MEAL_PLANS',
   Profile = 'PROFILE',
   Search = 'SEARCH',
   Recommendation = 'RECOMMENDATION',

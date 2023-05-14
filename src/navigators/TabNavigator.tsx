@@ -8,7 +8,11 @@ import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';
 import { useWindowDimensions } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { DiaryScreen, ProfileScreen, MealPlan } from '../screens';
+import {
+  DiaryScreen,
+  ProfileScreen,
+  CustomizeMealPlanScreen,
+} from '../screens';
 
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -43,6 +47,24 @@ function Diary() {
     <DiaryStack.Navigator screenOptions={{ headerShown: false }}>
       <DiaryStack.Screen name={Routes.Diary} component={DiaryScreen} />
     </DiaryStack.Navigator>
+  );
+}
+
+export type MealPlansStackParams = {
+  [Routes.CustomizeMealPlans]: undefined;
+  [Routes.MealPlans]: undefined;
+};
+
+const MealPlansStack = createNativeStackNavigator<MealPlansStackParams>();
+
+function MealPlans() {
+  return (
+    <MealPlansStack.Navigator screenOptions={{ headerShown: false }}>
+      <MealPlansStack.Screen
+        name={Routes.CustomizeMealPlans}
+        component={CustomizeMealPlanScreen}
+      />
+    </MealPlansStack.Navigator>
   );
 }
 
@@ -123,7 +145,7 @@ const TabNavigator = () => {
 
         <Tab.Screen
           name={Tabs.MealPlans}
-          component={MealPlan}
+          component={MealPlans}
           options={{
             tabBarIcon: ({ color }) => (
               <Ionicons name="ios-newspaper" size={30} color={color} />
