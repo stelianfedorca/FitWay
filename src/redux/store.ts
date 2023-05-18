@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import userReducer from './slices/userSlice';
 import profileReducer from './slices/profileSlice';
 import loadingSlice from './slices/loadingSlice';
+import mealPlanSlice from './slices/mealPlanSlice';
 
 const persistConfig = {
   key: 'root',
@@ -30,6 +31,7 @@ const combinedReducers = combineReducers({
   user: userReducer,
   profile: profileReducer,
   loading: loadingSlice,
+  mealPlan: mealPlanSlice,
 });
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
