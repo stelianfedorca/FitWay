@@ -5,4 +5,4 @@ export { SurveyScreen } from './survey';
 export { HomeScreen } from './home';
 export { ProfileScreen } from './profile';
 export { CustomizeMealPlanScreen } from './mealplan';
-export { MealPlansScreen } from './mealplan';
+export { MealPlanScreen } from './mealplan';

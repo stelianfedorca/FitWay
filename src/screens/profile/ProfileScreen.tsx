@@ -26,6 +26,7 @@ import { logout } from '../../redux/slices/userSlice';
 
 import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
+import { reset } from '../../redux/slices/mealPlanSlice';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
@@ -33,6 +34,7 @@ export function ProfileScreen() {
   async function handleSignOut() {
     signOut();
     dispatch(logout());
+    dispatch(reset());
   }
   return (
     <Layout style={styles.layout} paddingTop>

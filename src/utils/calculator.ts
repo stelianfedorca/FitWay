@@ -58,7 +58,6 @@ export const getTDEE = (
 ) => {
   const bmr = getBMR(weight, height, age, gender);
   const tdee = Number((bmr * activityLevel).toFixed(0));
-  console.log('tdee: ', tdee);
   return tdee;
 };
 

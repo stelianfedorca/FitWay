@@ -1,21 +1,63 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { Card, PrimaryButton } from '../../components';
 import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Option, OptionGroup } from '../../components';
-import { styles, Title } from './CustomizeMealPlanScreen.style';
+import { ButtonTitle, styles, Title } from './CustomizeMealPlanScreen.style';
 import { useEffect, useState } from 'react';
 
 import { Slider } from '@miblanchard/react-native-slider';
-import DropDownPicker from 'react-native-dropdown-picker';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import { MealPlanScreenNavigationProp } from './MealPlan.types';
+import { TimeFrame } from '../../utils/consts';
+import { Routes } from '../../navigators';
+import { useProfileStore } from '../../stores';
+import { getMealPlan } from '../../services/mealplan.service';
+import { useDispatch } from 'react-redux';
+import {
+  setMealPlan,
+  setMealPlanPerDay,
+} from '../../redux/slices/mealPlanSlice';
+
+const mappedTimeFrame: Record<number, TimeFrame> = {
+  0: 'day',
+  1: 'week',
+};
+
+// const mappedTimeFrame = ['day', 'week'];
 
 export function CustomizeMealPlanScreen() {
-  const [timeframeOption, setTimeframeOption] = useState(0);
-  const [targetCalories, setTargetCalories] = useState(2000);
+  const profile = useProfileStore(state => state.profile);
 
-  function getMealPlan() {}
+  const [timeframeOption, setTimeframeOption] = useState(0);
+  const [targetCalories, setTargetCalories] = useState(profile?.tdee || 2000);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigation = useNavigation<MealPlanScreenNavigationProp>();
+  const dispatch = useDispatch();
+
+  async function fetchMealPlan() {
+    setIsLoading(true);
+    const mealPlanData = await getMealPlan(
+      mappedTimeFrame[timeframeOption],
+      2000,
+    );
+
+    if (mealPlanData) {
+      setIsLoading(false);
+      dispatch(setMealPlan({ mealPlanPerDay: mealPlanData }));
+      navigation.navigate(Routes.MealPlan);
+    }
+  }
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -48,7 +90,7 @@ export function CustomizeMealPlanScreen() {
               borderBottomRightRadius: 0,
               alignItems: 'center',
               marginBottom: 0,
-              borderBottomWidth: 0.5,
+              borderBottomWidth: 0.3,
             }}
             isSelected={timeframeOption === 0 ? true : false}
             onPress={() => setTimeframeOption(0)}
@@ -60,7 +102,7 @@ export function CustomizeMealPlanScreen() {
               borderBottomLeftRadius: 0,
               alignItems: 'center',
               marginBottom: 0,
-              borderBottomWidth: 0.5,
+              borderBottomWidth: 0.3,
             }}
             isSelected={timeframeOption === 1 ? true : false}
             onPress={() => setTimeframeOption(1)}
@@ -80,9 +122,10 @@ export function CustomizeMealPlanScreen() {
               fontWeight: '400',
               marginRight: 10,
             }}>
-            What are the target calories ?
+            What is the caloric target ?
           </Text>
           <Option
+            disabled
             title={String(targetCalories)}
             style={{
               borderTopLeftRadius: 0,
@@ -103,12 +146,18 @@ export function CustomizeMealPlanScreen() {
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <PrimaryButton
-          title="Get the meal plan"
+          // title="Get the meal plan"
           icon={
             <MaterialIcons name="arrow-forward-ios" size={18} color="white" />
           }
-          onPress={getMealPlan}
-        />
+          style={styles.shadowButton}
+          onPress={fetchMealPlan}>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <ButtonTitle>Get the meal plan</ButtonTitle>
+          )}
+        </PrimaryButton>
       </View>
     </Layout>
   );

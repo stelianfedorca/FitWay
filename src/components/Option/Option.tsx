@@ -13,6 +13,7 @@ export type OptionProps = {
   subtitle?: string;
   style?: StyleProp<ViewStyle>;
   isSelected?: boolean;
+  disabled?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
 };
 export function Option({
@@ -20,10 +21,12 @@ export function Option({
   subtitle,
   style,
   isSelected,
+  disabled,
   onPress,
 }: OptionProps) {
   return (
-    <Pressable
+    <TouchableOpacity
+      disabled={disabled}
       style={[
         styles.container,
         { backgroundColor: isSelected ? '#457ad7' : '#eef4fe' },
@@ -39,7 +42,7 @@ export function Option({
         {title}
       </Text>
       {/* <Text style={{ fontSize: 12, fontWeight: '400' }}>{subtitle}</Text> */}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

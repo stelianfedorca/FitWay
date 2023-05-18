@@ -10,15 +10,17 @@ import {
 import { IconProps } from 'react-native-vector-icons/Icon';
 
 type PrimaryButtonProps = {
-  title: string;
+  title?: string;
   style?: StyleProp<ViewStyle>;
   icon?: React.ReactNode;
+  children?: React.ReactNode;
   onPress: (event: GestureResponderEvent) => void;
 };
 export function PrimaryButton({
   title,
   style,
   icon,
+  children,
   onPress,
 }: PrimaryButtonProps) {
   const Icon = icon;
@@ -38,6 +40,7 @@ export function PrimaryButton({
       ]}
       onPress={onPress}>
       <>
+        {children}
         <Text
           style={{
             textAlign: 'center',

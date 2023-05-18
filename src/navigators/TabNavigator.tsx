@@ -6,12 +6,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens';
 import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';
-import { useWindowDimensions } from 'react-native';
+import {
+  Button,
+  Image,
+  Pressable,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { FAB } from 'react-native-paper';
 import {
   DiaryScreen,
   ProfileScreen,
   CustomizeMealPlanScreen,
+  MealPlanScreen,
 } from '../screens';
 
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -50,21 +57,37 @@ function Diary() {
   );
 }
 
-export type MealPlansStackParams = {
-  [Routes.CustomizeMealPlans]: undefined;
-  [Routes.MealPlans]: undefined;
+export type MealPlanStackParams = {
+  [Routes.CustomizeMealPlan]: undefined;
+  [Routes.MealPlan]: undefined;
 };
 
-const MealPlansStack = createNativeStackNavigator<MealPlansStackParams>();
+export const MealPlanStack = createNativeStackNavigator<MealPlanStackParams>();
 
-function MealPlans() {
+export function MealPlan() {
   return (
-    <MealPlansStack.Navigator screenOptions={{ headerShown: false }}>
-      <MealPlansStack.Screen
-        name={Routes.CustomizeMealPlans}
+    <MealPlanStack.Navigator>
+      <MealPlanStack.Screen
+        name={Routes.CustomizeMealPlan}
         component={CustomizeMealPlanScreen}
+        options={{ headerShown: false }}
       />
-    </MealPlansStack.Navigator>
+      <MealPlanStack.Screen
+        name={Routes.MealPlan}
+        component={MealPlanScreen}
+        options={{
+          header: ({ navigation }) => (
+            <View style={{ height: 80, backgroundColor: '#EDF1F9' }}>
+              <Pressable
+                onPress={() => navigation.goBack()}
+                style={{ position: 'absolute', top: 60, left: 25 }}>
+                <Ionicons name="chevron-back" size={30} color="#16277b" />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+    </MealPlanStack.Navigator>
   );
 }
 
@@ -93,7 +116,7 @@ export type TabParams = {
   [Tabs.Home]: undefined;
   [Tabs.Diary]: undefined;
   [Tabs.Profile]: undefined;
-  [Tabs.MealPlans]: undefined;
+  [Tabs.MealPlan]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParams>();
@@ -144,8 +167,8 @@ const TabNavigator = () => {
         />
 
         <Tab.Screen
-          name={Tabs.MealPlans}
-          component={MealPlans}
+          name={Tabs.MealPlan}
+          component={MealPlan}
           options={{
             tabBarIcon: ({ color }) => (
               <Ionicons name="ios-newspaper" size={30} color={color} />

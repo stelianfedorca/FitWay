@@ -46,6 +46,7 @@ import { createUserInFirestore } from '../../services/user.service';
 
 import database from '@react-native-firebase/database';
 import { firebase } from '@react-native-firebase/database';
+import { Text } from 'react-native-paper';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
@@ -141,7 +142,8 @@ export function SignUpScreen() {
           }}
           scrollEnabled={false}>
           <HeaderContainer>
-            <HeaderTitle variant="headlineLarge">Sign Up</HeaderTitle>
+            <HeaderTitle variant="headlineLarge">Create Account</HeaderTitle>
+            <Text style={{ marginTop: 4 }}>Sign up to join</Text>
           </HeaderContainer>
           <Controller
             control={control}

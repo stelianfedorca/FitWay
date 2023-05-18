@@ -76,10 +76,13 @@ export const TextButton = styled(Text)`
 export const HeaderContainer = styled(View)`
   margin-top: 20px;
   margin-bottom: 30px;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
 `;
 export const HeaderTitle = styled(Text)`
-  font-weight: 600;
-  font-size: 40px;
+  font-weight: 500;
+  /* font-size: 40px; */
 `;
 export const styles = StyleSheet.create({
   shadowButton: {

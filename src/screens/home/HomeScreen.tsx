@@ -11,7 +11,7 @@ import { AvatarProfile } from '../../assets/images';
 import { format } from 'date-fns';
 import { getRemainingCalories } from '../../utils/calculator';
 import { ItemStatistics } from '../../components/ItemStatistics';
-import { CircularProgressComponent } from '../../components/CircularProgressComponent';
+import { CircularProgressComponent } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
