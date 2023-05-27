@@ -66,7 +66,7 @@ export function ProfileScreen() {
 
           <DetailsContainer>
             <Text variant="titleLarge" style={{ fontWeight: '600' }}>
-              Stelian Fedorca
+              {profile.firstName}
             </Text>
             <Text variant="titleSmall" style={{ marginTop: 5, opacity: 0.8 }}>
               {profile.email}
