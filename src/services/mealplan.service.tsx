@@ -37,6 +37,7 @@ export const getMealDetails = async (
   id: number,
 ): Promise<MealPlanDetails | null> => {
   try {
+    console.log('...@@@');
     const res = await axios.get(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
       {

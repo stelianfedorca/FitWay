@@ -8,3 +8,8 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export const Title = styled(Text)`
+  font-size: 22px;
+  font-weight: 600;
+`;

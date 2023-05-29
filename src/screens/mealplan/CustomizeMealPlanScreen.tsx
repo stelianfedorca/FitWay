@@ -5,7 +5,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { Card, PrimaryButton } from '../../components';
+import { Badge, Card, PrimaryButton } from '../../components';
 import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Option, OptionGroup } from '../../components';
@@ -143,6 +143,12 @@ export function CustomizeMealPlanScreen() {
           maximumValue={7000}
           step={50}
         />
+        <Badge color="#3db9d5">
+          <Text style={{ fontWeight: '600' }}>123 g</Text>
+          <Text style={{ color: '#3e3e3e' }}>Protein</Text>
+        </Badge>
+        <Badge color="#4a62d8" />
+        <Badge color="#d38723" />
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <PrimaryButton

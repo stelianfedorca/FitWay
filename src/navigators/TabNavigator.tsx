@@ -80,8 +80,8 @@ export function MealPlan() {
             <View style={{ height: 80, backgroundColor: '#EDF1F9' }}>
               <Pressable
                 onPress={() => navigation.goBack()}
-                style={{ position: 'absolute', top: 60, left: 25 }}>
-                <Ionicons name="chevron-back" size={30} color="#16277b" />
+                style={{ position: 'absolute', top: 60, left: 15 }}>
+                <Ionicons name="chevron-back" size={36} color="#16277b" />
               </Pressable>
             </View>
           ),
