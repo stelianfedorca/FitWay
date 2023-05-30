@@ -6,9 +6,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens';
 import { Routes, Tabs } from './Routes';
 import { TabBar } from '../components/TabBar';
-import { useWindowDimensions } from 'react-native';
+import {
+  Button,
+  Image,
+  Pressable,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { FAB } from 'react-native-paper';
-import { DiaryScreen, ProfileScreen, MealPlan } from '../screens';
+import {
+  DiaryScreen,
+  ProfileScreen,
+  CustomizeMealPlanScreen,
+  MealPlanScreen,
+} from '../screens';
 
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -46,6 +57,40 @@ function Diary() {
   );
 }
 
+export type MealPlanStackParams = {
+  [Routes.CustomizeMealPlan]: undefined;
+  [Routes.MealPlan]: undefined;
+};
+
+export const MealPlanStack = createNativeStackNavigator<MealPlanStackParams>();
+
+export function MealPlan() {
+  return (
+    <MealPlanStack.Navigator>
+      <MealPlanStack.Screen
+        name={Routes.CustomizeMealPlan}
+        component={CustomizeMealPlanScreen}
+        options={{ headerShown: false }}
+      />
+      <MealPlanStack.Screen
+        name={Routes.MealPlan}
+        component={MealPlanScreen}
+        options={{
+          header: ({ navigation }) => (
+            <View style={{ height: 80, backgroundColor: '#EDF1F9' }}>
+              <Pressable
+                onPress={() => navigation.goBack()}
+                style={{ position: 'absolute', top: 60, left: 15 }}>
+                <Ionicons name="chevron-back" size={36} color="#16277b" />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+    </MealPlanStack.Navigator>
+  );
+}
+
 export type ProfileStackParams = {
   [Routes.Profile]: undefined;
 };
@@ -71,7 +116,7 @@ export type TabParams = {
   [Tabs.Home]: undefined;
   [Tabs.Diary]: undefined;
   [Tabs.Profile]: undefined;
-  [Tabs.MealPlans]: undefined;
+  [Tabs.MealPlan]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParams>();
@@ -122,7 +167,7 @@ const TabNavigator = () => {
         />
 
         <Tab.Screen
-          name={Tabs.MealPlans}
+          name={Tabs.MealPlan}
           component={MealPlan}
           options={{
             tabBarIcon: ({ color }) => (

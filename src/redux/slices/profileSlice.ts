@@ -81,7 +81,7 @@ export const selectIsSurveyCompleted = (state: RootState) =>
 
 export const selectFirstName = (state: RootState) => state.profile.firstName;
 
-export const selectProfile = (state: RootState) => state.profile;
+export const selectProfile = (state: RootState): ProfileState => state.profile;
 
 export const selectCaloriesGoals = (state: RootState) => state.caloriesGoals;
 

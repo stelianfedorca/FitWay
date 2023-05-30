@@ -26,6 +26,7 @@ import { logout } from '../../redux/slices/userSlice';
 
 import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
+import { reset } from '../../redux/slices/mealPlanSlice';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
@@ -33,6 +34,7 @@ export function ProfileScreen() {
   async function handleSignOut() {
     signOut();
     dispatch(logout());
+    dispatch(reset());
   }
   return (
     <Layout style={styles.layout} paddingTop>
@@ -64,7 +66,7 @@ export function ProfileScreen() {
 
           <DetailsContainer>
             <Text variant="titleLarge" style={{ fontWeight: '600' }}>
-              Stelian Fedorca
+              {profile.firstName}
             </Text>
             <Text variant="titleSmall" style={{ marginTop: 5, opacity: 0.8 }}>
               {profile.email}

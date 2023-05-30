@@ -17,3 +17,5 @@ export const MEALS_COLLECTION = 'meals';
 export const CARBS_CALORIES_PER_1G = 4;
 export const FAT_CALORIES_PER_1G = 9;
 export const PROTEIN_CALORIES_PER_1G = 4;
+
+export type TimeFrame = 'day' | 'week';

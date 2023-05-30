@@ -10,9 +10,10 @@ import {
 
 export type OptionProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   style?: StyleProp<ViewStyle>;
   isSelected?: boolean;
+  disabled?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
 };
 export function Option({
@@ -20,14 +21,16 @@ export function Option({
   subtitle,
   style,
   isSelected,
+  disabled,
   onPress,
 }: OptionProps) {
   return (
-    <Pressable
+    <TouchableOpacity
+      disabled={disabled}
       style={[
         styles.container,
-        style,
         { backgroundColor: isSelected ? '#457ad7' : '#eef4fe' },
+        style,
       ]}
       onPress={onPress}>
       <Text
@@ -39,7 +42,7 @@ export function Option({
         {title}
       </Text>
       {/* <Text style={{ fontSize: 12, fontWeight: '400' }}>{subtitle}</Text> */}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
