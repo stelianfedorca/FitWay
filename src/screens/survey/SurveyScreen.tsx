@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   View,
+  Text as TextRn,
 } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import Animated, {
@@ -52,6 +53,9 @@ import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 import axios from 'axios';
 import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
 import { LoadingScreen } from '../loading/LoadingScreen';
+
+import { RulerPicker } from 'react-native-ruler-picker';
+import { InputDropdown } from '../../components';
 
 export type ActivityLevelProps = {
   id: number;
@@ -105,10 +109,10 @@ export type UserProfile = {
 export function SurveyScreen() {
   const dispatch = useDispatch();
   const [genderIndex, setGenderIndex] = useState(0);
-  const [age, setAge] = useState('');
-  const [startingWeight, setStartingWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [goalWeight, setGoalWeight] = useState('');
+  const [age, setAge] = useState(18);
+  const [weight, setWeight] = useState(70);
+  const [height, setHeight] = useState(180);
+  const [goalWeight, setGoalWeight] = useState(70);
   const [activityLevel, setActivityLevel] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -164,9 +168,8 @@ export function SurveyScreen() {
   }
 
   return (
-    <Layout paddingBottom paddingTop>
+    <Layout paddingBottom paddingTop style={{ backgroundColor: '##a9a8a8' }}>
       <Container>
-        {/* <View style={{ flex: 1, borderWidth: 1 }}> */}
         <View
           style={{
             height: 100,
@@ -174,11 +177,15 @@ export function SurveyScreen() {
             justifyContent: 'center',
             marginVertical: 15,
           }}>
-          <Text
-            variant="titleMedium"
-            style={{ marginBottom: 10, color: '#668ecf', fontWeight: '600' }}>
+          <TextRn
+            style={{
+              marginBottom: 10,
+              color: 'black',
+              fontSize: 16,
+              fontWeight: '500',
+            }}>
             Gender
-          </Text>
+          </TextRn>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               style={{
@@ -222,22 +229,84 @@ export function SurveyScreen() {
           </View>
         </View>
         <Divider bold />
-        <InputRow title="Age" value={age} onChangeText={setAge} />
+        <InputDropdown title="Age" value={age} unit="yo">
+          <RulerPicker
+            max={100}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={age}
+            shortStepHeight={10}
+            onValueChange={value => setAge(Number(value))}
+          />
+        </InputDropdown>
         <Divider bold />
-        <InputRow
-          title="Starting Weight"
-          value={startingWeight}
-          onChangeText={setStartingWeight}
-        />
-        <Divider bold />
-        <InputRow title="Height" value={height} onChangeText={setHeight} />
+        <InputDropdown title="Weight" value={weight} unit="kg">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={weight}
+            shortStepHeight={10}
+            onValueChange={value => setWeight(Number(value))}
+          />
+        </InputDropdown>
 
         <Divider bold />
-        <InputRow
-          title="Goal Weight"
-          value={goalWeight}
-          onChangeText={setGoalWeight}
-        />
+        <InputDropdown title="Height" value={height} unit="cm">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={height}
+            shortStepHeight={10}
+            onValueChange={value => setHeight(Number(value))}
+          />
+        </InputDropdown>
+
+        <Divider bold />
+
+        <InputDropdown title="Goal" value={goalWeight} unit="kg">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={goalWeight}
+            shortStepHeight={10}
+            onValueChange={value => setGoalWeight(Number(value))}
+          />
+        </InputDropdown>
 
         <Divider bold />
         <InputRow
@@ -249,7 +318,6 @@ export function SurveyScreen() {
         />
 
         <Divider bold />
-        {/* </View> */}
 
         <ButtonContainer>
           <PrimaryButton onPress={handleContinue}>
@@ -264,52 +332,3 @@ export function SurveyScreen() {
     </Layout>
   );
 }
-
-// export const styles = StyleSheet.create({
-//   indicatorWrapper: {
-//     position: 'absolute',
-//     bottom: 34,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: indicatorWidth,
-//   },
-
-//   segmentIndicator: {
-//     height: indicatorHeight,
-//     backgroundColor: 'turquoise',
-//   },
-
-//   segment: {
-//     width: segmentWidth,
-//   },
-
-//   ageTextStyle: {
-//     fontSize: 42,
-//   },
-// });
-
-/*        <Animated.ScrollView
-          ref={scrollViewRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={snapSegment}
-          contentContainerStyle={{
-            justifyContent: 'flex-end',
-          }}
-          bounces={false}
-          scrollEventThrottle={16}
-          onScroll={scrollHandler}>
-          <Ruler />
-        </Animated.ScrollView>
-        <View
-          style={[
-            styles.indicatorWrapper,
-            { left: (width - indicatorWidth) / 2 },
-          ]}>
-          <TextInput
-            ref={textInputRef}
-            style={styles.ageTextStyle}
-            defaultValue={minAge.toString()}
-          />
-          <View style={[styles.segmentIndicator, styles.segment]} />
-        </View> */

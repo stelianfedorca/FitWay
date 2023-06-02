@@ -4,13 +4,22 @@ import {
   Pressable,
   View,
   GestureResponderEvent,
+  StyleSheet,
+  Text,
 } from 'react-native';
-import { Text } from 'react-native-paper';
+
 import { InputRowProps } from './InputRow.types';
 
 import { Option } from '../Option';
 import { ExpandedItem } from './InputRow.style';
 import { useProfileStore } from '../../stores';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { Label } from '../Label/Label';
 
 // const activityLevelData = [
 //   {
@@ -48,11 +57,21 @@ export const InputRow = forwardRef<TextInput, InputRowProps>(
     },
     forwardRef,
   ) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const height = useSharedValue(0);
 
     function handleRowPress() {
-      setIsExpanded(!isExpanded);
+      height.value =
+        height.value === 0 ? (height.value = 200) : (height.value = 0);
     }
+
+    const expandedAnimation = useAnimatedStyle(() => {
+      return {
+        height: withTiming(height.value, {
+          duration: 444,
+          easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+        }),
+      };
+    });
 
     return (
       <>
@@ -65,33 +84,25 @@ export const InputRow = forwardRef<TextInput, InputRowProps>(
             paddingHorizontal: 15,
           }}
           onPress={handleRowPress}>
-          <Text variant="titleLarge" style={{ color: '#668ecf' }}>
+          <Text style={{ color: 'black', fontSize: 16, fontWeight: '500' }}>
             {title}
           </Text>
-          {!dropdown ? (
-            <TextInput
-              style={{
-                borderRadius: 10,
-                height: 50,
-                width: '45%',
-                padding: 10,
-                fontSize: 18,
-                borderWidth: 1,
-              }}
-              keyboardType="numeric"
-              onChangeText={onChangeText}
-              value={value}
-            />
-          ) : (
-            <>
-              <Text style={{ fontSize: 18, fontWeight: '400' }}>
-                {data![optionIndex!].title}
-              </Text>
-            </>
-          )}
+          <Label
+            value={data![optionIndex!].title}
+            style={{
+              width: 200,
+              padding: 5,
+              borderTopLeftRadius: 10,
+              borderBottomLeftRadius: 10,
+            }}
+          />
+
+          {/* <Text style={{ fontSize: 18, fontWeight: '400' }}>
+            {data![optionIndex!].title}
+          </Text> */}
         </Pressable>
-        {dropdown && isExpanded && (
-          <ExpandedItem>
+        {dropdown && (
+          <Animated.View style={[styles.expandedItem, expandedAnimation]}>
             {data!.map((activity, index) => (
               <Option
                 title={activity.title}
@@ -101,9 +112,16 @@ export const InputRow = forwardRef<TextInput, InputRowProps>(
                 isSelected={optionIndex === index}
               />
             ))}
-          </ExpandedItem>
+          </Animated.View>
         )}
       </>
     );
   },
 );
+
+export const styles = StyleSheet.create({
+  expandedItem: {
+    justifyContent: 'flex-start',
+    overflow: 'hidden',
+  },
+});

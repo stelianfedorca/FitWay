@@ -10,6 +10,13 @@ export type CardProps = {
   data: MealPlanDetails | null;
 };
 export function Card({ data }: CardProps) {
+  console.log(
+    data?.nutrition.nutrients[0].amount,
+    ' servings: ',
+    data?.servings,
+    ' perserving: ',
+    data?.nutrition.weightPerServing.amount,
+  );
   function calculateNoOfCalories(protein: number, carbs: number, fat: number) {
     return Math.round(protein * 4 + carbs * 4 + fat * 9);
   }
@@ -21,7 +28,7 @@ export function Card({ data }: CardProps) {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: 10,
+        paddingRight: 10,
         flexDirection: 'row',
       }}
       key={data?.id}>

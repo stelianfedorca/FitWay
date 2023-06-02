@@ -54,7 +54,12 @@ export function CustomizeMealPlanScreen() {
 
     if (mealPlanData) {
       setIsLoading(false);
-      dispatch(setMealPlan({ mealPlanPerDay: mealPlanData }));
+      dispatch(
+        setMealPlan({
+          mealPlanPerDay: mealPlanData,
+          selectedTargetCalories: targetCalories,
+        }),
+      );
       navigation.navigate(Routes.MealPlan);
     }
   }

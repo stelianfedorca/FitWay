@@ -29,7 +29,6 @@ export function MealPlanScreen() {
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
         <View
           style={{
-            paddingHorizontal: 15,
             marginBottom: 20,
             justifyContent: 'space-between',
             marginTop: 25,
@@ -43,35 +42,35 @@ export function MealPlanScreen() {
             }}>
             <Badge color="#3db9d5">
               <Text style={{ fontWeight: '600' }}>
-                {mealPlan.nutrients.carbohydrates} g
+                {Math.round(mealPlan.nutrients.carbohydrates)} g
               </Text>
               <Text style={{ color: '#3e3e3e' }}>Carbs</Text>
             </Badge>
             <Badge color="#4a62d8">
               <Text style={{ fontWeight: '600' }}>
-                {mealPlan.nutrients.fat} g
+                {Math.round(mealPlan.nutrients.fat)} g
               </Text>
               <Text style={{ color: '#3e3e3e' }}>Fat</Text>
             </Badge>
             <Badge color="#d38723">
               <Text style={{ fontWeight: '600' }}>
-                {mealPlan.nutrients.protein} g
+                {Math.round(mealPlan.nutrients.protein)} g
               </Text>
               <Text style={{ color: '#3e3e3e' }}>Protein</Text>
             </Badge>
           </View>
           <Badge color="black">
             <Text style={{ fontWeight: '600' }}>
-              {mealPlan.nutrients.calories} kcal
+              {Math.round(mealPlan.nutrients.calories)} kcal
             </Text>
             <Text>Calories</Text>
           </Badge>
         </View>
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }} bounces={false}>
           {mealPlanDetails.map(mealPlanDetail => (
             <>
               <Card data={mealPlanDetail} key={mealPlanDetail?.id} />
-              <Divider key={mealPlanDetail?.id} />
+              {/* <Divider key={mealPlanDetail?.id} /> */}
             </>
           ))}
         </ScrollView>

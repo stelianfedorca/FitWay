@@ -4,3 +4,4 @@ export { PrimaryButton } from './PrimaryButton';
 export { CircularProgressComponent } from './CircularProgressComponent';
 export { GenericList } from './GenericList';
 export { Badge } from './Badge';
+export { InputDropdown } from './InputDropdown';

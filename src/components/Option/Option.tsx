@@ -55,7 +55,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     padding: 10,
-    borderRadius: 15,
     marginBottom: 10,
   },
 });

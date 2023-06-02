@@ -22,19 +22,26 @@ export function IntroductionScreen() {
       <View
         style={{
           flex: 1,
-          justifyContent: 'flex-start',
           alignItems: 'stretch',
+          justifyContent: 'center',
           marginHorizontal: 20,
           paddingTop: 150,
+          paddingBottom: 250,
         }}>
-        <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
-          Almost There!
-        </Text>
-        <Text
-          variant="bodyLarge"
-          style={{ marginTop: 15, textAlign: 'center' }}>
-          In order to proceed, we need a little more information about you.
-        </Text>
+        <View>
+          <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
+            Almost There!
+          </Text>
+          <Text
+            variant="bodyLarge"
+            style={{
+              marginTop: 15,
+              textAlign: 'center',
+              fontSize: 16,
+            }}>
+            In order to proceed, we need a little more information about you.
+          </Text>
+        </View>
 
         <ButtonsContainer>
           <PrimaryButton onPress={handleContinue}>
