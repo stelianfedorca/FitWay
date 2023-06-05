@@ -98,7 +98,7 @@ export function Item({
                 fontSize: 22,
                 fontWeight: '500',
               }}
-              clockwise={false}
+              clockwise={true}
             />
             <DetailsContainer>
               <ItemDetails

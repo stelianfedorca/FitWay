@@ -9,7 +9,10 @@ export type GenericListProps<T> = {
 
 // type renderItemT<T> = { item: T extends MealPlanDetails};
 
-export function GenericList<T>({ data, listStyle }: GenericListProps<T>) {
+export function GenericList<T extends MealPlanDetails>({
+  data,
+  listStyle,
+}: GenericListProps<T>) {
   const _renderItem = ({ item }: { item: T }) => <Card data={item} />;
 
   return (

@@ -27,6 +27,7 @@ import { logout } from '../../redux/slices/userSlice';
 import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
 import { reset } from '../../redux/slices/mealPlanSlice';
+import { calculateBMI } from '../../utils/calculator';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
@@ -90,14 +91,14 @@ export function ProfileScreen() {
             mode="outlined"
             style={{ height: 40, backgroundColor: '#EDF1F9' }}
             onPress={() => console.log('Pressed')}>
-            BMI: 24.82
+            BMI: {calculateBMI(75, 180)}
           </Chip>
           <Chip
             icon="information"
             mode="outlined"
             style={{ height: 40, backgroundColor: '#EDF1F9' }}
             onPress={() => console.log('Pressed')}>
-            TDEE: 2239 kCal
+            TDEE: {profile.tdee} kcal
           </Chip>
         </ContentContainer>
         <SettingsContainer>

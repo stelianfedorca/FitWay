@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 export const Container = styled(ScrollView)`
   flex: 1;
+  padding-top: 50px;
   /* padding-bottom: 150px; */
 `;
 

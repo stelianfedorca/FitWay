@@ -10,9 +10,13 @@ export enum ACTIVITY_LEVEL {
   'Very Active',
 }
 
+// COLLECTIONS
 export const USERS_COLLECTION = 'users';
 export const FOOD_COLLECTION = 'food';
 export const MEALS_COLLECTION = 'meals';
+
+// INNERCOLLECTIONS
+export const PROFILE_COLLECTION = 'profile';
 
 export const CARBS_CALORIES_PER_1G = 4;
 export const FAT_CALORIES_PER_1G = 9;

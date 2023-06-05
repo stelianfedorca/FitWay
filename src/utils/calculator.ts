@@ -34,7 +34,7 @@ const activityLevel: Record<ActivityLevelKeys, ActivityLevelMultiplier> = {
   'Very Active': { value: 1.9 },
 };
 
-export const getBMR = (
+export const calculateBMR = (
   weight: number,
   height: number,
   age: number,
@@ -49,14 +49,14 @@ export const getBMR = (
   return resultForFemale;
 };
 
-export const getTDEE = (
+export const calculateTDEE = (
   weight: number,
   height: number,
   age: number,
   gender: string,
   activityLevel: number,
 ) => {
-  const bmr = getBMR(weight, height, age, gender);
+  const bmr = calculateBMR(weight, height, age, gender);
   const tdee = Number((bmr * activityLevel).toFixed(0));
   return tdee;
 };
@@ -69,4 +69,8 @@ export function getRemainingCalories(
   if (tdee === undefined) return 0;
 
   return tdee - caloricIntake + (exercise ?? 0);
+}
+
+export function calculateBMI(weight: number, height: number) {
+  return (weight / (((height / 100) * height) / 100)).toFixed(1);
 }

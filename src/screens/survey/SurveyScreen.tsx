@@ -1,49 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import {
   ActivityIndicator,
-  Pressable,
-  ScrollView,
   StyleSheet,
-  TextInput,
-  TextInputProps,
-  TouchableHighlight,
   TouchableOpacity,
-  useWindowDimensions,
   View,
   Text as TextRn,
 } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
-import Animated, {
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+
 import { InputRow } from '../../components/InputRow';
-import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
-import { Option } from '../../components/Option';
-import { Routes, Stacks } from '../../navigators/Routes';
-import {
-  createUserInFirestore,
-  updateUserInFirestore,
-} from '../../services/user.service';
-import { useAuthStore, useProfileStore } from '../../stores';
-import { getTDEE } from '../../utils/calculator';
-import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
-import { HomeNavigationProp } from '../home/Home.types';
+import { Routes } from '../../navigators/Routes';
+import { updateUserInFirestore } from '../../services/user.service';
+import { GENDER } from '../../utils/consts';
 import {
   ButtonContainer,
   Container,
   PrimaryButton,
-  RowContainer,
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
-import auth from '@react-native-firebase/auth';
 import {
-  ProfileState,
   selectFirstName,
   setIsSurveyCompleted,
   setProfile,
@@ -52,7 +30,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 import axios from 'axios';
 import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
-import { LoadingScreen } from '../loading/LoadingScreen';
 
 import { RulerPicker } from 'react-native-ruler-picker';
 import { InputDropdown } from '../../components';
@@ -147,24 +124,22 @@ export function SurveyScreen() {
   async function handleContinue() {
     setLoading(true);
     dispatch(setIsSurveyCompleted(true));
+    dispatch(
+      setProfile({
+        isSurveyCompleted: true,
+        age: String(age),
+        caloricIntake: 0,
+        height: String(height),
+        startingWeight: String(weight),
+        goalWeight: String(goalWeight),
+        activityLevel: String(activityLevelData[activityLevel].title),
+        gender: String(GENDER[genderIndex]),
+      }),
+    );
 
-    await updateUserInFirestore(uid);
+    await updateUserInFirestore(uid, { isSurveyCompleted: true });
     navigation.navigate(Routes.Loading);
     setLoading(false);
-
-    // setLoading(false);
-    // const tdee = getTDEE(
-    //   Number(startingWeight),
-    //   Number(height),
-    //   Number(age),
-    //   GENDER[genderIndex],
-    //   activityLevelData[activityLevel].value,
-    // );
-
-    // setProfile(updatedProfile);
-    // }
-    // setLoading(false);
-    // navigation.navigate(Stacks.Home);
   }
 
   return (
@@ -172,10 +147,11 @@ export function SurveyScreen() {
       <Container>
         <View
           style={{
-            height: 100,
+            height: 60,
             paddingHorizontal: 15,
-            justifyContent: 'center',
-            marginVertical: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
           <TextRn
             style={{
@@ -186,11 +162,15 @@ export function SurveyScreen() {
             }}>
             Gender
           </TextRn>
-          <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
             <TouchableOpacity
               style={{
                 width: 80,
-                height: 40,
+                // height: 40,
+                padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderTopLeftRadius: 10,
@@ -209,7 +189,7 @@ export function SurveyScreen() {
             <TouchableOpacity
               style={{
                 width: 80,
-                height: 40,
+                padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderLeftWidth: 0,
@@ -319,8 +299,8 @@ export function SurveyScreen() {
 
         <Divider bold />
 
-        <ButtonContainer>
-          <PrimaryButton onPress={handleContinue}>
+        <ButtonContainer style={{ padding: 10 }}>
+          <PrimaryButton onPress={handleContinue} style={styles.shadowButton}>
             {loading ? (
               <ActivityIndicator size="large" />
             ) : (
@@ -332,3 +312,15 @@ export function SurveyScreen() {
     </Layout>
   );
 }
+
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});

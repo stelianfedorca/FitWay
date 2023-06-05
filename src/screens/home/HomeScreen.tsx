@@ -16,7 +16,12 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './Home.types';
 import { Routes } from '../../navigators';
 import { useSelector } from 'react-redux';
-import { selectFirstName, selectTdee } from '../../redux/slices/profileSlice';
+import {
+  selectFirstName,
+  selectProfile,
+  selectTdee,
+} from '../../redux/slices/profileSlice';
+import { selectUid } from '../../redux/slices/userSlice';
 
 export function HomeScreen() {
   const profile = useProfileStore(state => state.profile);
@@ -24,6 +29,7 @@ export function HomeScreen() {
 
   const userProfileName = useSelector(selectFirstName);
   const tdee = useSelector(selectTdee);
+  const userProfile = useSelector(selectProfile);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +43,8 @@ export function HomeScreen() {
   const month = format(date, 'LLLL');
 
   const remainingCalories = getRemainingCalories(1111, tdee, profile?.exercise);
+
+  console.log('profile: ', userProfile);
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -84,7 +92,7 @@ export function HomeScreen() {
           <Item
             title="Calories"
             progressTitle="Remaining"
-            progressValue={remainingCalories}
+            progressValue={2222}
             icon="flash-outline"
             max={tdee}
           />

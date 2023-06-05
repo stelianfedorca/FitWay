@@ -38,6 +38,6 @@ export const { login, logout, signup } = userSlice.actions;
 
 // selectors
 export const selectEmail = (state: RootState) => state.user.email;
-export const selectUid = (state: RootState) => state.user.uid;
+export const selectUid = (state: RootState): string => state.user.uid;
 
 export default userSlice.reducer;

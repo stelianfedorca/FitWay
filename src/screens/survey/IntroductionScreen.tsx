@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
@@ -44,7 +44,7 @@ export function IntroductionScreen() {
         </View>
 
         <ButtonsContainer>
-          <PrimaryButton onPress={handleContinue}>
+          <PrimaryButton onPress={handleContinue} style={styles.shadowButton}>
             <TitleButton>Continue</TitleButton>
           </PrimaryButton>
         </ButtonsContainer>
@@ -52,3 +52,14 @@ export function IntroductionScreen() {
     </Layout>
   );
 }
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});

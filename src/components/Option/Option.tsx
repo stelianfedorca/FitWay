@@ -56,5 +56,6 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: 10,
     marginBottom: 10,
+    borderRadius: 15,
   },
 });

@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import {
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './CellRow.style';
 
@@ -11,7 +17,7 @@ type CellRowProps = {
 export function CellRow({ title, hasInput, onPress }: CellRowProps) {
   const [age, setAge] = useState(0);
   return (
-    <Pressable
+    <TouchableOpacity
       style={{
         // backgroundColor: '#ebe5e5',
         justifyContent: 'center',
@@ -37,6 +43,6 @@ export function CellRow({ title, hasInput, onPress }: CellRowProps) {
           {title}
         </Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
