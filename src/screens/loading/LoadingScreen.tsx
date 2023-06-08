@@ -49,7 +49,7 @@ export function LoadingScreen() {
   }, []);
 
   useEffect(() => {
-    dispatch(setTdee(calculateTDEE(79, 179, 23, 'male', 2)));
+    dispatch(setTdee(calculateTDEE(70, 180, 18, 'male', 1)));
   }, []);
 
   const textAnimatedStyle = useAnimatedStyle(() => {

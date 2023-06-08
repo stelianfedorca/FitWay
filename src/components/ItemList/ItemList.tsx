@@ -1,25 +1,45 @@
-import { GestureResponderEvent } from 'react-native';
+import React from 'react';
+import { GestureResponderEvent, Image, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { FoodImage } from '../../assets/images';
 import { FoodData } from '../../stores/food';
+import { Product } from '../../types/types';
+import { ItemContainer } from '../ListRecommendation/ListRecommendation.style';
 import { Container, DetailsContainer } from './ItemList.style';
 
 type ItemProps = {
-  item: FoodData;
+  item: Product;
   onPress?: (event: GestureResponderEvent) => void;
 };
 
 export function ItemList({ item, onPress }: ItemProps) {
-  // function handleItemPress(event: GestureResponderEvent) {
-  //   onPress?.(event);
-  // }
+  const source = item.food.image ? { uri: item.food.image } : FoodImage;
   return (
     <Container onPress={onPress}>
-      <Text style={{ fontSize: 16, fontWeight: '500' }}>{item.name}</Text>
-      <DetailsContainer>
-        <Text>{`${item.calories} cal, `}</Text>
-        <Text>{`${item.servingSize} g, `}</Text>
-        <Text>{`${item.manufacturer}`}</Text>
-      </DetailsContainer>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 5,
+        }}>
+        <Image source={source} style={{ height: 60, width: 60 }} />
+        <DetailsContainer>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '500',
+            }}>
+            {item.food.label}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text>{`${
+              Math.round(item.food.nutrients.ENERC_KCAL) ?? '-'
+            } cal, `}</Text>
+            <Text>{`${100} g, `}</Text>
+            <Text>{`${item.food.brand ?? '-'}`}</Text>
+          </View>
+        </DetailsContainer>
+      </View>
     </Container>
   );
 }

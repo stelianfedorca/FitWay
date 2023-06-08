@@ -74,3 +74,5 @@ export function getRemainingCalories(
 export function calculateBMI(weight: number, height: number) {
   return (weight / (((height / 100) * height) / 100)).toFixed(1);
 }
+
+export function calculateCalories<T>(data: Array<T>) {}

@@ -1,5 +1,11 @@
 import { format } from 'date-fns';
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   FlatList,
   GestureResponderEvent,
@@ -12,6 +18,7 @@ import Animated, { ZoomIn } from 'react-native-reanimated';
 import { Pill } from '../Pill/Pill';
 
 import { CarouselRenderItem } from 'react-native-reanimated-carousel/lib/typescript/types';
+import { useFocusEffect } from '@react-navigation/native';
 
 export type FormatedData = {
   id: string;
@@ -44,7 +51,7 @@ export type CalendarProps = {
 };
 export function Calendar({ onPress, style }: CalendarProps) {
   const currentDate = new Date();
-  // const b = currentDate.setDate(11);
+  // const b = currentDate.setDate(7);
   const [formatedData, setFormatedData] = useState(
     formatData(selectMonth(currentDate)),
   );
@@ -59,7 +66,9 @@ export function Calendar({ onPress, style }: CalendarProps) {
   const flatlistRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    // flatlistRef.current?.scrollToIndex({ index: 10 });
+    setTimeout(() => {
+      flatlistRef.current?.scrollToIndex({ index: 7, animated: true });
+    }, 10);
   }, []);
 
   const _renderItem: ListRenderItem<FormatedData> = ({ item }) => {
@@ -89,8 +98,21 @@ export function Calendar({ onPress, style }: CalendarProps) {
         horizontal
         bounces={false}
         showsHorizontalScrollIndicator={false}
+        initialNumToRender={12}
         snapToAlignment="center"
-        // initialScrollIndex={10}
+        // pagingEnabled
+        // onLayout={() =>
+        //   flatlistRef.current?.scrollToOffset({ offset: 11, animated: false })
+        // }
+        // disableIntervalMomentum
+        // getItemLayout={(data, index) => {
+        //   return {
+        //     length: 100,
+        //     offset: 100 * index,
+        //     index,
+        //   };
+        // }}
+        // initialScrollIndex={8}
         onScrollToIndexFailed={({ index, averageItemLength }) => {
           flatlistRef.current?.scrollToOffset({
             offset: index * averageItemLength,

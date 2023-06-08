@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { FAB, Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
 import { useProfileStore } from '../../stores';
@@ -23,6 +29,8 @@ import {
 } from '../../redux/slices/profileSlice';
 import { selectUid } from '../../redux/slices/userSlice';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 export function HomeScreen() {
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
@@ -35,16 +43,20 @@ export function HomeScreen() {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleStateChange() {
-    setIsOpen(!isOpen);
+    // setIsOpen(!isOpen);
+  }
+
+  function onSearchPress() {
+    navigation.navigate(Routes.Search);
   }
 
   const formatedDate = format(date, 'dd');
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
 
-  const remainingCalories = getRemainingCalories(1111, tdee, profile?.exercise);
+  console.log('userProfile: ', userProfile);
 
-  console.log('profile: ', userProfile);
+  // const remainingCalories = getRemainingCalories(1111, tdee, profile?.exercise);
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -124,7 +136,38 @@ export function HomeScreen() {
           </ItemStatistics>
         </ScrollView>
       </View>
-      <FAB.Group
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          right: 20,
+          backgroundColor: '#4659b8',
+          width: 55,
+          height: 55,
+          borderRadius: 30,
+          //shadow
+          shadowColor: 'black',
+          shadowRadius: 3,
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          },
+          shadowOpacity: 0.3,
+        }}
+        onPress={onSearchPress}>
+        <Ionicons
+          name="ios-search"
+          style={{
+            position: 'absolute',
+            bottom: 15,
+            right: 15,
+          }}
+          color="white"
+          size={24}
+        />
+      </TouchableOpacity>
+
+      {/* <FAB.Group
         open={isOpen}
         visible
         icon={isOpen ? 'close' : 'plus'}
@@ -147,7 +190,8 @@ export function HomeScreen() {
         }}
         color="white"
         style={{ bottom: -20 }}
-      />
+        onPress={() => navigation.navigate(Routes.Search)}
+      /> */}
     </Layout>
   );
 }

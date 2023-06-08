@@ -100,6 +100,9 @@ export function SurveyScreen() {
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
+  console.log('RAPIDAPI_HOST: ', RAPIDAPI_HOST);
+  console.log('RAPIDAPI_KEY: ', RAPIDAPI_KEY);
+
   async function generateGoals() {
     const response = await axios.get(
       'https://fitness-calculator.p.rapidapi.com/dailycalorie',

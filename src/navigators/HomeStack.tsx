@@ -14,6 +14,9 @@ import { useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
 import { selectUid } from '../redux/slices/userSlice';
 import { selectLoading } from '../redux/slices/loadingSlice';
+import { IconButton } from 'react-native-paper';
+import { useDiary } from '../hooks/useDiary';
+import { format } from 'date-fns';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -50,15 +53,11 @@ export type RootStackParams = {
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 const HomeStack = () => {
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
+  useDiary(currentDate);
   const user = useSelector(selectUid);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
-  const loadingState = useSelector(selectLoading);
   const [showSurvey] = useState(!isSurveyCompleted);
-
-  // const [showSurvey, setShowSurvey] = useState(false);
-  // useLayoutEffect(() => {
-  //   setShowSurvey(!isSurveyCompleted);
-  // }, [isSurveyCompleted]);
 
   return (
     <Stack.Navigator
@@ -73,8 +72,12 @@ const HomeStack = () => {
         name={Routes.Search}
         component={SearchFoodScreen}
         options={{
-          headerShown: true,
+          animation: 'slide_from_bottom',
+          presentation: 'fullScreenModal',
+          // animationTypeForReplace: 'push',
+          headerShown: false,
           headerShadowVisible: false,
+          // headerLeft: () => <IconButton onPress={() => navigation.} icon="close"/>,
         }}
       />
       <Stack.Screen

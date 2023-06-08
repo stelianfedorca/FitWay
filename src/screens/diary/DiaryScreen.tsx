@@ -7,26 +7,29 @@ import { RulerPicker } from 'react-native-ruler-picker';
 import { CellDropdown } from '../../components/CellDropdown/CellDropdown';
 import { Food } from '../../types/types';
 import { SignUpBackgroundImage } from '../../assets/images';
+import { useDiaryFood } from '../../hooks/useDiaryFood';
+import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { selectDiaryFood } from '../../redux/slices/diarySlice';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const data: Food[] = [
-  {
-    foodId: 1,
-    calories: 400,
-    name: 'Oats',
-    quantity: 150,
-    type: 'Breakfast',
-    image: SignUpBackgroundImage,
-  },
-  {
-    foodId: 2,
-    calories: 89,
-    name: 'Chicken Breast',
-    quantity: 120,
-    type: 'Lunch',
-    image: SignUpBackgroundImage,
-  },
-];
 export function DiaryScreen() {
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
+  const diaryFood = useSelector(selectDiaryFood);
+
+  const diaryFoodBreakfast = diaryFood.filter(
+    food => food.type === 'Breakfast',
+  );
+  const diaryFoodLunch = diaryFood.filter(food => food.type === 'Lunch');
+  const diaryFoodDinner = diaryFood.filter(food => food.type === 'Dinner');
+
+  const totalConsumedCalories = diaryFood.reduce((accumulator, currentItem) => {
+    return (
+      accumulator +
+      currentItem.nutrition.calories * currentItem.nutrition.servings.number
+    );
+  }, 0);
+
   return (
     <Layout paddingTop style={{ backgroundColor: '#F2F1F1' }}>
       <Container>
@@ -37,40 +40,64 @@ export function DiaryScreen() {
             borderRadius: 15,
           }}
         />
-        {/* <View
+        <View
           style={{
-            borderWidth: 1,
-            flex: 1,
             flexDirection: 'row',
-            justifyContent: 'flex-end',
-            height: 100,
-            backgroundColor: 'red',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-end',
+            height: 50,
+            marginTop: 10,
+            marginHorizontal: 20,
+            paddingHorizontal: 5,
           }}>
-          <View>
-            <Text>{'1632'}</Text>
-            <Text>{'Eaten'}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              marginRight: 5,
+            }}>
+            <Text style={{ fontSize: 16, fontWeight: '600', marginRight: 5 }}>
+              {Math.round(totalConsumedCalories)}
+            </Text>
+            <Text style={{ fontWeight: '500' }}>{'Kcal'}</Text>
           </View>
-        </View> */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+            }}>
+            {/* <MaterialIcons
+                size={22}
+                name="local-fire-department"
+                color="orange"
+                style={{ marginRight: 5 }}
+              /> */}
+            {/* <Text style={{ fontSize: 16, fontWeight: '500', color: '#282f51' }}>
+              {'Eaten'}
+            </Text> */}
+          </View>
+        </View>
         <ScrollView
           style={{
             flexGrow: 1,
-            marginTop: 20,
+            // marginTop: 10,
             padding: 10,
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
           }}
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
           bounces={false}>
-          <CellDropdown calories={844} mealType="Breakfast" data={data} />
           <CellDropdown
-            calories={222}
-            mealType="Lunch"
-            data={[{ id: 1, name: 'food 2', calories: 333 }]}
+            calories={844}
+            mealType="BREAKFAST"
+            data={diaryFoodBreakfast}
           />
+          <CellDropdown calories={222} mealType="LUNCH" data={diaryFoodLunch} />
           <CellDropdown
             calories={123}
-            mealType="Dinner"
-            data={[{ id: 1, name: 'food 3', calories: 111 }]}
+            mealType="DINNER"
+            data={diaryFoodDinner}
           />
         </ScrollView>
       </Container>
