@@ -10,17 +10,6 @@ export type CardProps = {
   data: MealPlanDetails | null;
 };
 export function Card({ data }: CardProps) {
-  console.log(
-    data?.nutrition.nutrients[0].amount,
-    ' servings: ',
-    data?.servings,
-    ' perserving: ',
-    data?.nutrition.weightPerServing.amount,
-  );
-  function calculateNoOfCalories(protein: number, carbs: number, fat: number) {
-    return Math.round(protein * 4 + carbs * 4 + fat * 9);
-  }
-
   function capitalizeFirstLetter(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
@@ -73,12 +62,7 @@ export function Card({ data }: CardProps) {
               fontWeight: '400',
               color: '#d8611c',
             }}>
-            {calculateNoOfCalories(
-              data?.nutrition.caloricBreakdown.percentProtein!,
-              data?.nutrition.caloricBreakdown.percentCarbs!,
-              data?.nutrition.caloricBreakdown.percentFat!,
-            )}{' '}
-            kcal
+            {Math.round(data?.nutrition.nutrients[0].amount ?? 0)} kcal
           </Text>
         </View>
       </View>

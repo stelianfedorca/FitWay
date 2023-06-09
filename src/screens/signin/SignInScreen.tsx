@@ -88,6 +88,7 @@ export function SignInScreen() {
 
   async function handleSignIn({ email, password }: SignInForm) {
     // dispatch(setLoadingState({ loading: false }));
+    setLoading(true);
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
       password,
@@ -97,14 +98,27 @@ export function SignInScreen() {
     //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
     // }
 
-    // if (userCredential) {
-    //   dispatch(
-    //     login({
-    //       email: userCredential.user.email,
-    //       uid: userCredential.user.uid,
-    //     }),
-    //   );
-    // }
+    // dispatch(
+    //   setProfile({
+    //     isSurveyCompleted: true,
+    //     age: userCredential.user.,
+    //     caloricIntake: 0,
+    //     height: String(height),
+    //     startingWeight: String(weight),
+    //     goalWeight: String(goalWeight),
+    //     activityLevel: String(activityLevelData[activityLevel].title),
+    //     gender: String(GENDER[genderIndex]),
+    //   }),
+    // );
+
+    if (userCredential) {
+      dispatch(
+        login({
+          email: userCredential.user.email,
+          uid: userCredential.user.uid,
+        }),
+      );
+    }
 
     setLoading(false);
   }

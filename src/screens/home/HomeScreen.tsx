@@ -15,7 +15,10 @@ import { Item } from '../../components/Item';
 import { AvatarProfile } from '../../assets/images';
 
 import { format } from 'date-fns';
-import { getRemainingCalories } from '../../utils/calculator';
+import {
+  calculateCalories,
+  getRemainingCalories,
+} from '../../utils/calculator';
 import { ItemStatistics } from '../../components/ItemStatistics';
 import { CircularProgressComponent } from '../../components';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +33,7 @@ import {
 import { selectUid } from '../../redux/slices/userSlice';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { selectDiaryFood } from '../../redux/slices/diarySlice';
 
 export function HomeScreen() {
   const profile = useProfileStore(state => state.profile);
@@ -38,6 +42,7 @@ export function HomeScreen() {
   const userProfileName = useSelector(selectFirstName);
   const tdee = useSelector(selectTdee);
   const userProfile = useSelector(selectProfile);
+  const diaryFood = useSelector(selectDiaryFood);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +50,8 @@ export function HomeScreen() {
   function handleStateChange() {
     // setIsOpen(!isOpen);
   }
+
+  console.log(userProfile);
 
   function onSearchPress() {
     navigation.navigate(Routes.Search);
@@ -54,9 +61,10 @@ export function HomeScreen() {
   const day = format(date, 'EEEE');
   const month = format(date, 'LLLL');
 
-  console.log('userProfile: ', userProfile);
-
-  // const remainingCalories = getRemainingCalories(1111, tdee, profile?.exercise);
+  const remainingCalories = getRemainingCalories(
+    userProfile.caloricIntake ?? 0,
+    tdee,
+  );
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -104,33 +112,34 @@ export function HomeScreen() {
           <Item
             title="Calories"
             progressTitle="Remaining"
-            progressValue={2222}
+            progressValue={remainingCalories}
             icon="flash-outline"
             max={tdee}
+            food={calculateCalories(diaryFood)}
           />
           <ItemStatistics title="Macros">
             <CircularProgressComponent
               progressValue={220}
-              max={245.9}
+              max={userProfile.macros?.carbs}
               progressTitle="Grams"
               textTop="Carbs"
-              textBottom="40%"
+              textBottom={`${userProfile.macros?.carbsProcentage}%`}
               activeStrokeColor="#3db9d5"
             />
             <CircularProgressComponent
               progressValue={50}
-              max={68.3055555556}
+              max={userProfile.macros?.fat}
               progressTitle="Grams"
               textTop="Fat"
-              textBottom="25%"
+              textBottom={`${userProfile.macros?.fatProcentage}%`}
               activeStrokeColor="#4a62d8"
             />
             <CircularProgressComponent
               progressValue={50}
-              max={215.1625}
+              max={userProfile.macros?.protein}
               progressTitle="Grams"
               textTop="Protein"
-              textBottom="35%"
+              textBottom={`${userProfile.macros?.proteinProcentage}%`}
               activeStrokeColor="#d38723"
             />
           </ItemStatistics>

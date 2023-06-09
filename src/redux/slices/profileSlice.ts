@@ -23,9 +23,17 @@ export interface ProfileState {
   activityLevel?: string;
   goalWeight?: string;
   tdee?: number;
-  caloricIntake: number;
+  caloricIntake?: number;
+  macros?: {
+    carbs: number;
+    fat: number;
+    protein: number;
+    carbsProcentage: number;
+    fatProcentage: number;
+    proteinProcentage: number;
+  };
   exercise?: number;
-  isSurveyCompleted: boolean;
+  isSurveyCompleted?: boolean;
   caloriesGoals?: CaloriesGoals;
 }
 
@@ -55,7 +63,6 @@ export const profileSlice = createSlice({
       state.caloriesGoals = action.payload.caloriesGoals;
     },
     setTdee: (state, action: PayloadAction<number>) => {
-      state.caloricIntake = 1;
       state.tdee = action.payload;
     },
 
@@ -85,7 +92,7 @@ export const selectProfile = (state: RootState): ProfileState => state.profile;
 
 export const selectCaloriesGoals = (state: RootState) => state.caloriesGoals;
 
-export const selectTdee = (state: RootState) => state.profile.tdee;
+export const selectTdee = (state: RootState): number => state.profile.tdee;
 
 export const selectCaloricIntake = (state: RootState) =>
   state.profile.caloricIntake;

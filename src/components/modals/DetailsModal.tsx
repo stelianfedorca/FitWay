@@ -34,9 +34,13 @@ import { useSelector } from 'react-redux';
 import { selectFood } from '../../redux/slices/foodSlice';
 import { FoodFirestore } from '../../types/types';
 import { addFoodToDiary } from '../../services/food.service';
-import { selectProfile } from '../../redux/slices/profileSlice';
+import {
+  selectCaloricIntake,
+  selectProfile,
+} from '../../redux/slices/profileSlice';
 import { selectUid } from '../../redux/slices/userSlice';
 import { Option } from '../Option';
+import { updateCaloriesIntake } from '../../services/user.service';
 
 export type DetailsModal = {
   setModalVisible: (isVisible: boolean) => void;
@@ -46,6 +50,8 @@ export type DetailsModal = {
 export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
   const selectedFood = useSelector(selectFood);
   const uid = useSelector(selectUid);
+  const caloricIntake = useSelector(selectCaloricIntake);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [servingSize] = useState(100);
@@ -59,8 +65,6 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
     { label: 'Lunch', value: 'Lunch' },
     { label: 'Dinner', value: 'Dinner' },
   ]);
-
-  console.log('item selected: ', value);
 
   const handleAddFood = async () => {
     setIsLoading(true);
@@ -83,6 +87,13 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
     };
 
     await addFoodToDiary(uid, food);
+    await updateCaloriesIntake(
+      uid,
+      Math.round(
+        caloricIntake +
+          food.nutrition.calories * food.nutrition.servings.number,
+      ),
+    );
     setIsLoading(false);
     setModalVisible(false);
     onSuccess?.();

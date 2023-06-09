@@ -34,6 +34,7 @@ export type ItemProps = {
   progressTitle: string;
   progressValue: number;
   max?: number;
+  food?: number;
 };
 // icon: React.ComponentProps<typeof Ionicons>['name'];
 
@@ -44,6 +45,7 @@ export function Item({
   progressTitle,
   progressValue,
   max,
+  food,
 }: ItemProps) {
   const profile = useProfileStore(state => state.profile);
 
@@ -103,13 +105,13 @@ export function Item({
             <DetailsContainer>
               <ItemDetails
                 title="Base Goal"
-                value={profile?.tdee ?? 0}
+                value={max ?? 0}
                 icon="flag"
                 iconColor="grey"
               />
               <ItemDetails
                 title="Food"
-                value={profile?.food ?? 0}
+                value={food ?? 0}
                 icon="fastfood"
                 iconColor="#465cc9"
               />

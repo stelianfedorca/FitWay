@@ -34,7 +34,6 @@ export async function searchProduct(search: string) {
       },
     });
 
-    // console.log('response: ', response.data.hints);
     return response.data.hints;
   } catch (error) {
     console.error('error is: ', error);

@@ -48,9 +48,9 @@ export function LoadingScreen() {
     textOpacity.value = withTiming(1, { duration: 1300 });
   }, []);
 
-  useEffect(() => {
-    dispatch(setTdee(calculateTDEE(70, 180, 18, 'male', 1)));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setTdee(calculateTDEE(70, 180, 18, 'male', 1)));
+  // }, []);
 
   const textAnimatedStyle = useAnimatedStyle(() => {
     return { opacity: textOpacity.value };

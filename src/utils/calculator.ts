@@ -1,3 +1,5 @@
+import { FoodFirestore } from '../types/types';
+
 export type CalculatorProps = {
   weight: number;
   height: number;
@@ -63,11 +65,9 @@ export const calculateTDEE = (
 
 export function getRemainingCalories(
   caloricIntake: number,
-  tdee?: number,
+  tdee: number,
   exercise?: number,
 ) {
-  if (tdee === undefined) return 0;
-
   return tdee - caloricIntake + (exercise ?? 0);
 }
 
@@ -75,4 +75,25 @@ export function calculateBMI(weight: number, height: number) {
   return (weight / (((height / 100) * height) / 100)).toFixed(1);
 }
 
-export function calculateCalories<T>(data: Array<T>) {}
+export function calculateCalories(data: FoodFirestore[]): number {
+  const totalCalories =
+    data.length > 0
+      ? data.reduce((acc, currentItem) => {
+          return (
+            acc +
+            currentItem.nutrition.calories *
+              currentItem.nutrition.servings.number
+          );
+        }, 0)
+      : 0;
+
+  return Math.round(totalCalories);
+}
+
+export function calculateGramsFromPercentage(
+  procent: number,
+  macroMultiplier: number,
+  calories: number,
+) {
+  return Math.round(((procent / 100) * calories) / macroMultiplier);
+}

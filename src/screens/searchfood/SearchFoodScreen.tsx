@@ -61,11 +61,11 @@ export function SearchFoodScreen() {
   }
 
   const showToast = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Successfully added to diary',
-      visibilityTime: 1500,
-    });
+    // Toast.show({
+    //   type: 'success',
+    //   text1: 'Successfully added to diary',
+    //   visibilityTime: 1500,
+    // });
   };
 
   return (

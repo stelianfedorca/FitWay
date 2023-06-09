@@ -1,4 +1,4 @@
-import { RAPIDAPI_HOST, RAPIDAPI_KEY } from '@env';
+import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
 import axios from 'axios';
 import {
   MealPlanDay,
@@ -10,6 +10,7 @@ import { TimeFrame } from '../utils/consts';
 export const getMealPlan = async (
   timeFrame: TimeFrame,
   caloricTarget: number,
+  dietType?: string,
 ): Promise<MealPlanDay | null> => {
   try {
     const res = await axios.get(
@@ -22,6 +23,7 @@ export const getMealPlan = async (
         params: {
           timeFrame: timeFrame,
           targetCalories: caloricTarget,
+          diet: dietType ?? '',
         },
       },
     );
@@ -37,7 +39,6 @@ export const getMealDetails = async (
   id: number,
 ): Promise<MealPlanDetails | null> => {
   try {
-    console.log('...@@@');
     const res = await axios.get(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
       {

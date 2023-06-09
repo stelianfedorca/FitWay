@@ -22,11 +22,12 @@ import { TimeFrame } from '../../utils/consts';
 import { Routes } from '../../navigators';
 import { useProfileStore } from '../../stores';
 import { getMealPlan } from '../../services/mealplan.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setMealPlan,
   setMealPlanPerDay,
 } from '../../redux/slices/mealPlanSlice';
+import { selectTdee } from '../../redux/slices/profileSlice';
 
 const mappedTimeFrame: Record<number, TimeFrame> = {
   0: 'day',
@@ -36,10 +37,11 @@ const mappedTimeFrame: Record<number, TimeFrame> = {
 // const mappedTimeFrame = ['day', 'week'];
 
 export function CustomizeMealPlanScreen() {
-  const profile = useProfileStore(state => state.profile);
+  // const profile = useProfileStore(state => state.profile);
+  const tdee = useSelector(selectTdee);
 
   const [timeframeOption, setTimeframeOption] = useState(0);
-  const [targetCalories, setTargetCalories] = useState(profile?.tdee || 2000);
+  const [targetCalories, setTargetCalories] = useState(tdee || 2000);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation<MealPlanScreenNavigationProp>();
@@ -49,7 +51,7 @@ export function CustomizeMealPlanScreen() {
     setIsLoading(true);
     const mealPlanData = await getMealPlan(
       mappedTimeFrame[timeframeOption],
-      2000,
+      targetCalories,
     );
 
     if (mealPlanData) {

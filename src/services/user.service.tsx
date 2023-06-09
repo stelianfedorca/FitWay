@@ -37,6 +37,28 @@ export async function updateUserInFirestore(
   }
 }
 
+export async function getUserFirestore(uid: string) {
+  try {
+    await firestore().collection(USERS_COLLECTION).doc(uid);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateCaloriesIntake(
+  uid: string,
+  updatedCaloricIntake: number,
+) {
+  try {
+    await firestore()
+      .collection(USERS_COLLECTION)
+      .doc(uid)
+      .update({ 'profile.caloricIntake': updatedCaloricIntake });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateProfileInFiresotore(
   uid: string,
   updateObj: Partial<Profile>,

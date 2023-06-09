@@ -18,7 +18,7 @@ export const ItemColumn = styled(View)<{ marginRight?: number }>`
 export const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#EDF1F9',
+    backgroundColor: '#F2F1F1',
   },
   surface: {
     padding: 8,

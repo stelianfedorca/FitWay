@@ -9,13 +9,23 @@ export type Profile = {
   goalWeight?: string;
   tdee?: number;
   caloricIntake: number;
+  macros?: {
+    carbs: number;
+    fat: number;
+    protein: number;
+    carbsProcentage: number;
+    fatProcentage: number;
+    proteinProcentage: number;
+  };
   exercise?: number;
   isSurveyCompleted: boolean;
 };
 
 export type User = {
-  profile: Profile;
+  email: string;
+  firstName: string;
   isSurveyCompleted: boolean;
+  profile: Profile;
 };
 
 export interface Food {
@@ -72,6 +82,30 @@ export type Nutrition = {
     number: number;
     size: number;
   };
+};
+
+export interface Meal {
+  id: number;
+  title: string;
+  imageType: string;
+  readyInMinutes: number;
+  sourceUrl: string;
+  servings: number;
+}
+
+// the meal plan for a day
+export type MealPlanDayFirestore = {
+  meals: Meal[];
+  nutrients: {
+    calories: number;
+    carbohydrates: number;
+    fat: number;
+    protein: number;
+  };
+};
+
+export type MealPlanWeekFirestore = {
+  meals: MealPlanDayFirestore[];
 };
 
 // export interface DetailedProductInformation extends Product {

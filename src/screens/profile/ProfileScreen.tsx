@@ -38,7 +38,7 @@ export function ProfileScreen() {
     dispatch(reset());
   }
   return (
-    <Layout style={styles.layout} paddingTop>
+    <Layout style={[styles.layout, { backgroundColor: '#f3f3f3' }]} paddingTop>
       <Container alwaysBounceVertical={false}>
         <ProfileDetailsContainer>
           <Image

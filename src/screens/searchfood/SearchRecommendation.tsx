@@ -24,7 +24,6 @@ export function SearchRecommendation() {
   }
 
   useEffect(() => {
-    console.log('called...');
     axios
       .get(ENDPOINT_SEARCH_RECIPES_BY_INGREDIENTS, {
         headers: {
@@ -43,8 +42,6 @@ export function SearchRecommendation() {
         setIsLoading(false);
       });
   }, []);
-
-  console.log('data: ', data);
 
   return (
     <Layout paddingBottom style={styles.container}>

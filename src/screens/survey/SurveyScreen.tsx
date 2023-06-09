@@ -13,7 +13,12 @@ import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators/Routes';
 import { updateUserInFirestore } from '../../services/user.service';
-import { GENDER } from '../../utils/consts';
+import {
+  CARBS_PROCENTAGE,
+  FAT_PROCENTAGE,
+  GENDER,
+  PROTEIN_PROCENTAGE,
+} from '../../utils/consts';
 import {
   ButtonContainer,
   Container,
@@ -33,6 +38,10 @@ import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
 
 import { RulerPicker } from 'react-native-ruler-picker';
 import { InputDropdown } from '../../components';
+import {
+  calculateGramsFromPercentage,
+  calculateTDEE,
+} from '../../utils/calculator';
 
 export type ActivityLevelProps = {
   id: number;
@@ -100,9 +109,6 @@ export function SurveyScreen() {
 
   const navigation = useNavigation<SurveyScreenNavigationProp>();
 
-  console.log('RAPIDAPI_HOST: ', RAPIDAPI_HOST);
-  console.log('RAPIDAPI_KEY: ', RAPIDAPI_KEY);
-
   async function generateGoals() {
     const response = await axios.get(
       'https://fitness-calculator.p.rapidapi.com/dailycalorie',
@@ -126,7 +132,14 @@ export function SurveyScreen() {
 
   async function handleContinue() {
     setLoading(true);
-    dispatch(setIsSurveyCompleted(true));
+    const tdee = calculateTDEE(
+      weight,
+      height,
+      age,
+      String(GENDER[genderIndex]),
+      activityLevelData[activityLevel].value,
+    );
+
     dispatch(
       setProfile({
         isSurveyCompleted: true,
@@ -137,6 +150,15 @@ export function SurveyScreen() {
         goalWeight: String(goalWeight),
         activityLevel: String(activityLevelData[activityLevel].title),
         gender: String(GENDER[genderIndex]),
+        tdee: tdee,
+        macros: {
+          fat: calculateGramsFromPercentage(FAT_PROCENTAGE, 9, tdee),
+          protein: calculateGramsFromPercentage(PROTEIN_PROCENTAGE, 4, tdee),
+          carbs: calculateGramsFromPercentage(CARBS_PROCENTAGE, 4, tdee),
+          carbsProcentage: CARBS_PROCENTAGE,
+          fatProcentage: FAT_PROCENTAGE,
+          proteinProcentage: PROTEIN_PROCENTAGE,
+        },
       }),
     );
 
