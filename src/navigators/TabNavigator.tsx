@@ -25,6 +25,10 @@ import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
+import { selectMealPlanPerDay } from '../redux/slices/mealPlanSlice';
+import { useMealPlanDetails } from '../hooks/useMealPlanDetails';
+import { SearchFoodScreen } from '../screens/searchfood';
 
 export type HomeStackParams = {
   [Routes.Home]: undefined;
@@ -45,14 +49,31 @@ function Home() {
 
 export type DiaryStackParams = {
   [Routes.Diary]: undefined;
+  [Routes.Search]: undefined;
 };
 
 const DiaryStack = createNativeStackNavigator<DiaryStackParams>();
 
 function Diary() {
   return (
-    <DiaryStack.Navigator screenOptions={{ headerShown: false }}>
+    <DiaryStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: 'white' },
+      }}>
       <DiaryStack.Screen name={Routes.Diary} component={DiaryScreen} />
+      <DiaryStack.Screen
+        name={Routes.Search}
+        component={SearchFoodScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'fullScreenModal',
+          animationTypeForReplace: 'push',
+          headerShown: false,
+          headerShadowVisible: false,
+          // headerLeft: () => <IconButton onPress={() => navigation.} icon="close"/>,
+        }}
+      />
     </DiaryStack.Navigator>
   );
 }

@@ -19,10 +19,16 @@ export type CellDropdownProps = {
   mealType: string;
   calories: number;
   data: FoodFirestore[];
+  onPress?: () => void;
 };
 
 const INITIAL_HEIGHT = 100;
-export function CellDropdown({ mealType, calories, data }: CellDropdownProps) {
+export function CellDropdown({
+  mealType,
+  calories,
+  onPress,
+  data,
+}: CellDropdownProps) {
   const isDataAvailable = data.length > 0;
 
   const totalCaloriesFood =
@@ -37,7 +43,7 @@ export function CellDropdown({ mealType, calories, data }: CellDropdownProps) {
       : 0;
 
   return (
-    <Pressable style={styles.container} onPress={() => console.log('pressed')}>
+    <Pressable style={styles.container}>
       <View
         style={{
           flexDirection: 'row',
@@ -65,7 +71,7 @@ export function CellDropdown({ mealType, calories, data }: CellDropdownProps) {
           size={20}
           style={{ backgroundColor: '#1a2350' }}
           iconColor="white"
-          onPress={() => console.log('press')}
+          onPress={onPress}
         />
       </View>
       {!isDataAvailable ? (

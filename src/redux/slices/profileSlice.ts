@@ -32,6 +32,11 @@ export interface ProfileState {
     fatProcentage: number;
     proteinProcentage: number;
   };
+  macrosIntake?: {
+    carbs: number;
+    fat: number;
+    protein: number;
+  };
   exercise?: number;
   isSurveyCompleted?: boolean;
   caloriesGoals?: CaloriesGoals;
@@ -41,6 +46,11 @@ const initialState: Partial<ProfileState> = {
   isSurveyCompleted: false,
   tdee: 0,
   caloricIntake: 0,
+  macrosIntake: {
+    fat: 0,
+    protein: 0,
+    carbs: 0,
+  },
 };
 
 export const profileSlice = createSlice({
@@ -96,5 +106,8 @@ export const selectTdee = (state: RootState): number => state.profile.tdee;
 
 export const selectCaloricIntake = (state: RootState) =>
   state.profile.caloricIntake;
+
+export const selectMacrosIntake = (state: RootState) =>
+  state.profile.macrosIntake;
 
 export default profileSlice.reducer;

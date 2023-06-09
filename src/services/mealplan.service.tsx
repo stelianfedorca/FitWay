@@ -1,11 +1,17 @@
 import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
+import firestore from '@react-native-firebase/firestore';
 import axios from 'axios';
 import {
   MealPlanDay,
   MealPlanDetails,
   MealPlanWeek,
 } from '../redux/slices/mealPlanSlice';
-import { TimeFrame } from '../utils/consts';
+import {
+  DAY_PLAN_COLLECTION,
+  MEALS_COLLECTION,
+  PLANS_COLLECTION,
+  TimeFrame,
+} from '../utils/consts';
 
 export const getMealPlan = async (
   timeFrame: TimeFrame,
@@ -57,3 +63,23 @@ export const getMealDetails = async (
     return null;
   }
 };
+
+export async function addMealPlanToFirestore(
+  userId: string,
+  meal: MealPlanDay,
+) {
+  try {
+    const data = await firestore()
+      .collection(PLANS_COLLECTION)
+      .doc(userId)
+      .collection(DAY_PLAN_COLLECTION)
+      .add(meal);
+
+    if (data) return true;
+
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}

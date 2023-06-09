@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageBackground, Pressable, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import {
   Avatar,
   Button,
@@ -19,6 +25,8 @@ import {
   styles,
 } from './ProfileScreen.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { CellRow } from '../../components/CellRow';
 import { useAuthStore } from '../../stores';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,8 +45,12 @@ export function ProfileScreen() {
     dispatch(logout());
     dispatch(reset());
   }
+
+  function handleEditGoalsPress() {}
+
+  function handleMealPlansPress() {}
   return (
-    <Layout style={[styles.layout, { backgroundColor: '#f3f3f3' }]} paddingTop>
+    <Layout style={[styles.layout, { backgroundColor: 'white' }]} paddingTop>
       <Container alwaysBounceVertical={false}>
         <ProfileDetailsContainer>
           <Image
@@ -73,7 +85,7 @@ export function ProfileScreen() {
               {profile.email}
             </Text>
           </DetailsContainer>
-          <IconButton
+          {/* <IconButton
             icon="pen"
             style={{
               position: 'absolute',
@@ -83,9 +95,12 @@ export function ProfileScreen() {
             }}
             size={20}
             onPress={() => console.log('edit')}
-          />
+          /> */}
         </ProfileDetailsContainer>
-        <ContentContainer>
+        <View style={{ flex: 1 }}>
+          <ScrollView></ScrollView>
+        </View>
+        {/* <ContentContainer>
           <Chip
             icon="information"
             mode="outlined"
@@ -100,9 +115,24 @@ export function ProfileScreen() {
             onPress={() => console.log('Pressed')}>
             TDEE: {profile.tdee} kcal
           </Chip>
-        </ContentContainer>
+        </ContentContainer> */}
         <SettingsContainer>
-          <CellRow title="Log Out" onPress={handleSignOut} />
+          <CellRow
+            title="Edit goals"
+            onPress={handleEditGoalsPress}
+            icon={<FontAwesome name="edit" size={24} color="#4659b8" />}
+          />
+          <CellRow
+            title="Meal plans"
+            onPress={handleMealPlansPress}
+            icon={<Ionicons name="ios-newspaper" size={24} color="#4659b8" />}
+          />
+
+          <CellRow
+            title="Log Out"
+            onPress={handleSignOut}
+            icon={<MaterialIcons name="logout" size={24} color="#4659b8" />}
+          />
         </SettingsContainer>
       </Container>
     </Layout>

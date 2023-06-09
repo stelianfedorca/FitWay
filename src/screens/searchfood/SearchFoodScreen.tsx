@@ -1,4 +1,10 @@
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  Text,
+  View,
+  Keyboard,
+} from 'react-native';
 import { Layout } from '../../components/Layout';
 import { List } from '../../components/List';
 import { SearchBar } from '../../components/SearchBar';
@@ -20,6 +26,11 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchNavigationProp } from './Search.types';
 import { selectLoading, setLoading } from '../../redux/slices/loadingSlice';
 import Toast from 'react-native-toast-message';
+import { selectFood } from '../../redux/slices/foodSlice';
+
+function isEmpty(str: string) {
+  return !str || str.length === 0;
+}
 
 export function SearchFoodScreen() {
   // const result = useFoodCollection();
@@ -28,6 +39,7 @@ export function SearchFoodScreen() {
   const search = useSelector(selectSearch);
   const loading = useSelector(selectLoading);
   const navigation = useNavigation<SearchNavigationProp>();
+  const selectedFood = useSelector(selectFood);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -58,6 +70,7 @@ export function SearchFoodScreen() {
 
     if (data) dispatch(setLoading({ loading: false }));
     setProducts(data.slice(0, 9));
+    Keyboard.dismiss();
   }
 
   const showToast = () => {
@@ -70,7 +83,11 @@ export function SearchFoodScreen() {
 
   return (
     <Layout paddingBottom paddingTop style={styles.container}>
-      <View style={{ marginBottom: 20, paddingLeft: 5 }}>
+      <View
+        style={{
+          marginBottom: 20,
+          paddingLeft: 5,
+        }}>
         <IconButton
           style={{ backgroundColor: '#303030' }}
           icon="close"
@@ -92,13 +109,13 @@ export function SearchFoodScreen() {
             Search results
           </Text>
         </View>
-        <Toast position="bottom" />
+        {/* <Toast position="bottom" /> */}
         {loading ? (
           <ActivityIndicator />
         ) : (
           <List
             contentStyle={{ paddingHorizontal: 10 }}
-            data={search ? products : []}
+            data={isEmpty(search) ? [] : products}
             onItemPress={handleItemPress}
           />
         )}
@@ -110,7 +127,11 @@ export function SearchFoodScreen() {
           animationOutTiming={700}
           animationInTiming={350}
           style={styles.modal}>
-          <DetailsModal setModalVisible={setIsVisible} onSuccess={showToast} />
+          <DetailsModal
+            setModalVisible={setIsVisible}
+            onSuccess={showToast}
+            selectedFood={selectedFood}
+          />
         </Modal>
       </Pressable>
     </Layout>

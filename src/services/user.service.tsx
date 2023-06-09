@@ -59,6 +59,24 @@ export async function updateCaloriesIntake(
   }
 }
 
+export async function updateMacrosIntake(
+  uid: string,
+  macros: { fat: number; protein: number; carbs: number },
+) {
+  try {
+    await firestore()
+      .collection(USERS_COLLECTION)
+      .doc(uid)
+      .update({
+        'profile.macrosIntake.fat': macros.fat,
+        'profile.macrosIntake.protein': macros.protein,
+        'profile.macrosIntake.carbs': macros.carbs,
+      });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateProfileInFiresotore(
   uid: string,
   updateObj: Partial<Profile>,

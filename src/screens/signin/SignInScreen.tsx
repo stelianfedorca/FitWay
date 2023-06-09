@@ -47,6 +47,7 @@ import { login, selectEmail } from '../../redux/slices/userSlice';
 import { selectLoading } from '../../redux/slices/loadingSlice';
 import { setLoading as setLoadingState } from '../../redux/slices/loadingSlice';
 import {
+  selectIsSurveyCompleted,
   selectProfile,
   setIsSurveyCompleted,
 } from '../../redux/slices/profileSlice';
@@ -60,14 +61,12 @@ export function SignInScreen() {
 
   const loadingState = useSelector(selectLoading);
 
-  const user = useAuthStore(state => state.user);
-  const setUser = useAuthStore(state => state.setUser);
-  const setProfile = useProfileStore(state => state.setProfile);
-
   const email = useSelector(selectEmail);
   const dispatch = useDispatch();
 
   const profilestate = useSelector(selectProfile);
+  const userProfile = useSelector(selectIsSurveyCompleted);
+  console.log(userProfile ?? '');
 
   const defaultValues = {
     email: '',
@@ -94,22 +93,9 @@ export function SignInScreen() {
       password,
     );
 
-    // if (userCredential) {
-    //   dispatch(setIsSurveyCompleted({ isSurveyCompleted: true }));
-    // }
-
-    // dispatch(
-    //   setProfile({
-    //     isSurveyCompleted: true,
-    //     age: userCredential.user.,
-    //     caloricIntake: 0,
-    //     height: String(height),
-    //     startingWeight: String(weight),
-    //     goalWeight: String(goalWeight),
-    //     activityLevel: String(activityLevelData[activityLevel].title),
-    //     gender: String(GENDER[genderIndex]),
-    //   }),
-    // );
+    if (userCredential) {
+      dispatch(setIsSurveyCompleted(true));
+    }
 
     if (userCredential) {
       dispatch(

@@ -73,6 +73,20 @@ export function Root() {
                   email: data.email ?? '',
                   caloricIntake: data.profile?.caloricIntake ?? 0,
                   tdee: data.profile?.tdee ?? 0,
+                  macros: {
+                    carbs: data.profile?.macros?.carbs ?? 0,
+                    fat: data.profile?.macros?.fat ?? 0,
+                    protein: data.profile?.macros?.protein ?? 0,
+                    fatProcentage: data.profile?.macros?.fatProcentage ?? 0,
+                    proteinProcentage:
+                      data.profile?.macros?.proteinProcentage ?? 0,
+                    carbsProcentage: data.profile?.macros?.carbsProcentage ?? 0,
+                  },
+                  macrosIntake: data.profile?.macrosIntake ?? {
+                    fat: 0,
+                    carbs: 0,
+                    protein: 0,
+                  },
                 }),
               );
             }
@@ -110,15 +124,25 @@ export function Root() {
 
   // listen to realtime updates on user document in firestore
   useEffect(() => {
-    firestore()
-      .collection(USERS_COLLECTION)
-      .doc(currentUser?.uid)
-      .onSnapshot(documentSnapshot => {
-        const data = documentSnapshot.data() as User;
-        dispatch(
-          setProfile({ caloricIntake: data.profile?.caloricIntake ?? 0 }),
-        );
-      });
+    if (currentUser?.uid) {
+      firestore()
+        .collection(USERS_COLLECTION)
+        .doc(currentUser?.uid)
+        .onSnapshot(documentSnapshot => {
+          const data = documentSnapshot.data() as User;
+          const macrosIntake = data.profile?.macrosIntake ?? {
+            fat: 0,
+            protein: 0,
+            carbs: 0,
+          };
+          dispatch(
+            setProfile({
+              caloricIntake: data.profile?.caloricIntake ?? 0,
+              macrosIntake: macrosIntake,
+            }),
+          );
+        });
+    }
   }, [currentUser?.uid]);
 
   return (

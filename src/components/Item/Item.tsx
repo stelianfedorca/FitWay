@@ -49,6 +49,11 @@ export function Item({
 }: ItemProps) {
   const profile = useProfileStore(state => state.profile);
 
+  function progressValueFormater(value: number) {
+    'worklet';
+    return Math.round(2170 - value);
+  }
+
   return (
     <>
       {horizontal ? (
@@ -100,7 +105,8 @@ export function Item({
                 fontSize: 22,
                 fontWeight: '500',
               }}
-              clockwise={true}
+              // progressFormatter={progressValueFormater}
+              clockwise={false}
             />
             <DetailsContainer>
               <ItemDetails

@@ -17,6 +17,11 @@ export type Profile = {
     fatProcentage: number;
     proteinProcentage: number;
   };
+  macrosIntake?: {
+    carbs: number;
+    fat: number;
+    protein: number;
+  };
   exercise?: number;
   isSurveyCompleted: boolean;
 };

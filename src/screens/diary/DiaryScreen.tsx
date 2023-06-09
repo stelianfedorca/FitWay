@@ -12,10 +12,17 @@ import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { selectDiaryFood } from '../../redux/slices/diarySlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Divider } from 'react-native-paper';
+
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import { DiaryScreenNavigationProp } from './DiaryScreen.types';
+import { Routes } from '../../navigators';
 
 export function DiaryScreen() {
   const currentDate = format(new Date(), 'dd-MM-yyyy');
   const diaryFood = useSelector(selectDiaryFood);
+  const navigation = useNavigation<DiaryScreenNavigationProp>();
 
   const diaryFoodBreakfast = diaryFood.filter(
     food => food.type === 'Breakfast',
@@ -30,9 +37,20 @@ export function DiaryScreen() {
     );
   }, 0);
 
+  function openSearch() {
+    navigation.navigate(Routes.Search);
+  }
+
   return (
     <Layout paddingTop style={{ backgroundColor: '#F2F1F1' }}>
       <Container>
+        <View
+          style={{
+            paddingBottom: 10,
+            paddingHorizontal: 15,
+          }}>
+          <Text style={{ fontSize: 22, fontWeight: '500' }}>Food Journal</Text>
+        </View>
         <Calendar
           style={{
             marginHorizontal: 15,
@@ -45,10 +63,10 @@ export function DiaryScreen() {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'flex-end',
-            height: 50,
             marginTop: 10,
             marginHorizontal: 20,
             paddingHorizontal: 5,
+            paddingTop: 20,
           }}>
           <View
             style={{
@@ -56,26 +74,18 @@ export function DiaryScreen() {
               alignItems: 'flex-end',
               justifyContent: 'center',
               marginRight: 5,
+              padding: 5,
             }}>
+            <MIcon
+              name="food-apple-outline"
+              size={26}
+              style={{ marginRight: 5 }}
+              color="#465cc9"
+            />
             <Text style={{ fontSize: 16, fontWeight: '600', marginRight: 5 }}>
               {Math.round(totalConsumedCalories)}
             </Text>
             <Text style={{ fontWeight: '500' }}>{'Kcal'}</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-end',
-            }}>
-            {/* <MaterialIcons
-                size={22}
-                name="local-fire-department"
-                color="orange"
-                style={{ marginRight: 5 }}
-              /> */}
-            {/* <Text style={{ fontSize: 16, fontWeight: '500', color: '#282f51' }}>
-              {'Eaten'}
-            </Text> */}
           </View>
         </View>
         <ScrollView
@@ -92,12 +102,19 @@ export function DiaryScreen() {
             calories={844}
             mealType="BREAKFAST"
             data={diaryFoodBreakfast}
+            onPress={openSearch}
           />
-          <CellDropdown calories={222} mealType="LUNCH" data={diaryFoodLunch} />
+          <CellDropdown
+            calories={222}
+            mealType="LUNCH"
+            data={diaryFoodLunch}
+            onPress={openSearch}
+          />
           <CellDropdown
             calories={123}
             mealType="DINNER"
             data={diaryFoodDinner}
+            onPress={openSearch}
           />
         </ScrollView>
       </Container>

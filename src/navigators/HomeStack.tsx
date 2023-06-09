@@ -62,7 +62,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        animationTypeForReplace: user ? 'push' : 'pop',
+        // animationTypeForReplace: user ? 'push' : 'pop',
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
@@ -74,7 +74,7 @@ const HomeStack = () => {
         options={{
           animation: 'slide_from_bottom',
           presentation: 'fullScreenModal',
-          // animationTypeForReplace: 'push',
+          animationTypeForReplace: 'push',
           headerShown: false,
           headerShadowVisible: false,
           // headerLeft: () => <IconButton onPress={() => navigation.} icon="close"/>,

@@ -7,6 +7,7 @@ export enum Routes {
   Profile = 'PROFILE',
   Search = 'SEARCH',
   Recommendation = 'RECOMMENDATION',
+  SavedMealPlans = 'SAVED_MEAL_PLANS',
 
   // Survey Stack
   Survey = 'SURVEY',

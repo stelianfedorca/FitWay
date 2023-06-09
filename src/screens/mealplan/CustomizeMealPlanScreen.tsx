@@ -5,7 +5,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { Badge, Card, PrimaryButton } from '../../components';
+import { Badge, Card, InputDropdown, PrimaryButton } from '../../components';
 import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Option, OptionGroup } from '../../components';
@@ -28,6 +28,7 @@ import {
   setMealPlanPerDay,
 } from '../../redux/slices/mealPlanSlice';
 import { selectTdee } from '../../redux/slices/profileSlice';
+import { Divider } from 'react-native-paper';
 
 const mappedTimeFrame: Record<number, TimeFrame> = {
   0: 'day',
@@ -86,10 +87,19 @@ export function CustomizeMealPlanScreen() {
           Generate a meal plan with three meals per day (breakfast, lunch, and
           dinner)
         </Title>
-        <Text style={{ marginBottom: 10, fontSize: 18, fontWeight: '400' }}>
-          Choose the time frame
-        </Text>
-        <OptionGroup onPress={handleTimeOption}>
+        <OptionGroup
+          onPress={handleTimeOption}
+          style={{
+            marginBottom: 20,
+            // //shadow
+            shadowColor: 'black',
+            shadowRadius: 2,
+            shadowOffset: {
+              width: 2,
+              height: 2,
+            },
+            shadowOpacity: 0.2,
+          }}>
           <Option
             title="Day"
             style={{
@@ -97,7 +107,6 @@ export function CustomizeMealPlanScreen() {
               borderBottomRightRadius: 0,
               alignItems: 'center',
               marginBottom: 0,
-              borderBottomWidth: 0.3,
             }}
             isSelected={timeframeOption === 0 ? true : false}
             onPress={() => setTimeframeOption(0)}
@@ -109,13 +118,52 @@ export function CustomizeMealPlanScreen() {
               borderBottomLeftRadius: 0,
               alignItems: 'center',
               marginBottom: 0,
-              borderBottomWidth: 0.3,
             }}
             isSelected={timeframeOption === 1 ? true : false}
             onPress={() => setTimeframeOption(1)}
           />
         </OptionGroup>
-        <View
+        <InputDropdown
+          value={targetCalories}
+          title="Choose the caloric target"
+          unit="kcal"
+          style={{
+            backgroundColor: '#f1f1f1',
+            justifyContent: 'space-between',
+            paddingHorizontal: 10,
+            // borderRadius: 10,
+            // //shadow
+            // shadowColor: 'black',
+            // shadowRadius: 2,
+            // shadowOffset: {
+            //   width: 2,
+            //   height: 2,
+            // },
+            // shadowOpacity: 0.3,
+          }}
+          childStyle={{
+            backgroundColor: '#f1f1f1',
+            paddingHorizontal: 15,
+          }}
+          labelStyle={{
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
+          unitLabel={{ backgroundColor: '#e6e6e6' }}>
+          <Slider
+            value={targetCalories}
+            onValueChange={value => setTargetCalories(value[0])}
+            animateTransitions={true}
+            maximumValue={7000}
+            step={50}
+          />
+        </InputDropdown>
+        <Divider bold />
+        {/* <Text style={{ marginBottom: 10, fontSize: 18, fontWeight: '400' }}>
+          Choose the time frame
+        </Text> */}
+
+        {/* <View
           style={{
             marginTop: 40,
             marginBottom: 10,
@@ -129,7 +177,7 @@ export function CustomizeMealPlanScreen() {
               fontWeight: '400',
               marginRight: 10,
             }}>
-            What is the caloric target ?
+            Select the caloric target
           </Text>
           <Option
             disabled
@@ -149,7 +197,7 @@ export function CustomizeMealPlanScreen() {
           animateTransitions={true}
           maximumValue={7000}
           step={50}
-        />
+        /> */}
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <PrimaryButton

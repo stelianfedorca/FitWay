@@ -73,7 +73,6 @@ export const mealPlanSlice = createSlice({
       };
     },
     setMealPlanPerDay: (state, action: PayloadAction<MealPlanDay>) => {
-      console.log('in action: ', action.payload);
       state.mealPlanPerDay = action.payload;
     },
     reset: () => initialState,

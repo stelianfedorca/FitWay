@@ -28,29 +28,41 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { addMeal, MealData } from '../../services/meals.service';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FoodType } from '../../stores/food';
 import { useSelector } from 'react-redux';
 import { selectFood } from '../../redux/slices/foodSlice';
-import { FoodFirestore } from '../../types/types';
+import { FoodFirestore, Product } from '../../types/types';
 import { addFoodToDiary } from '../../services/food.service';
 import {
   selectCaloricIntake,
+  selectMacrosIntake,
   selectProfile,
 } from '../../redux/slices/profileSlice';
 import { selectUid } from '../../redux/slices/userSlice';
 import { Option } from '../Option';
-import { updateCaloriesIntake } from '../../services/user.service';
+import {
+  updateCaloriesIntake,
+  updateMacrosIntake,
+} from '../../services/user.service';
+import { Accordion, AccordionItem } from '../Accordion/Accordion';
+import { useFocusEffect } from '@react-navigation/native';
 
-export type DetailsModal = {
+export type DetailsModalProps = {
+  selectedFood: Product;
   setModalVisible: (isVisible: boolean) => void;
   onSuccess?: () => void;
 };
 
-export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
-  const selectedFood = useSelector(selectFood);
+export function DetailsModal({
+  setModalVisible,
+  selectedFood,
+  onSuccess,
+}: DetailsModalProps) {
+  // const selectedFood = useSelector(selectFood);
   const uid = useSelector(selectUid);
   const caloricIntake = useSelector(selectCaloricIntake);
+  const macrosIntake = useSelector(selectMacrosIntake);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,7 +71,7 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
   const [mealType, setMealType] = useState('Breakfast');
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('Breakfast');
   const [items, setItems] = useState([
     { label: 'Breakfast', value: 'Breakfast' },
     { label: 'Lunch', value: 'Lunch' },
@@ -94,6 +106,13 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
           food.nutrition.calories * food.nutrition.servings.number,
       ),
     );
+    await updateMacrosIntake(uid, {
+      fat: Math.round(macrosIntake.fat + Number(food.nutrition.fat)),
+      protein: Math.round(
+        Number(macrosIntake.protein + food.nutrition.protein),
+      ),
+      carbs: Math.round(macrosIntake.carbs + Number(food.nutrition.carbs)),
+    });
     setIsLoading(false);
     setModalVisible(false);
     onSuccess?.();
@@ -118,18 +137,35 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
             flexDirection: 'row',
           }}>
           <Text style={{ fontSize: 16 }}>Serving Size</Text>
-          <Option
+          <View
+            style={{
+              width: 60,
+              padding: 5,
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+            }}>
+            <TextInput
+              style={{
+                fontSize: 16,
+                fontWeight: '600',
+                // color: '#004d99',
+              }}
+              keyboardType="numeric"
+              value={`${servingSize}`}
+              onChangeText={setServingsNo}
+            />
+            {/* <Text style={{ fontSize: 16, color: 'white' }}>{servingSize}</Text> */}
+          </View>
+          {/* <Option
             title={`${servingSize}`}
             disabled
             style={{
-              width: 60,
               flex: 0,
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-              borderWidth: 1,
-              backgroundColor: 'white',
+              justifyContent: 'center',
             }}
-          />
+            isSelected
+          /> */}
         </View>
         <QuantityContainer>
           <Text style={{ fontSize: 16 }}>Number of Servings</Text>
@@ -137,7 +173,8 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
             <TextInput
               style={{
                 fontSize: 16,
-                color: '#004d99',
+                fontWeight: '600',
+                // color: '#004d99',
               }}
               keyboardType="numeric"
               value={`${servingsNo}`}
@@ -147,37 +184,32 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
         </QuantityContainer>
         <View
           style={{
-            flexDirection: 'row',
-            height: 40,
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-start',
+            marginTop: 5,
           }}>
           <Text style={{ fontSize: 16 }}>Type of meal</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              flex: 1,
-            }}>
-            <DropDownPicker
-              open={isDropdownOpen}
-              value={value}
-              items={items}
-              setOpen={setDropdownOpen}
-              setValue={setValue}
-              setItems={setItems}
-              style={{ width: 100, alignSelf: 'flex-end' }}
-            />
-          </View>
+          <DropDownPicker
+            open={isDropdownOpen}
+            value={value}
+            items={items}
+            setOpen={setDropdownOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder="Breakfast"
+            modalTitle="Type of meal"
+            style={{ marginTop: 10 }}
+            dropDownDirection="TOP"
+          />
         </View>
         <MacrosDetails>
           <CircularProgressComponent
             progressTitle="cal"
             progressValue={selectedFood?.food.nutrients.ENERC_KCAL!}
-            max={selectedFood?.food.nutrients.ENERC_KCAL!}
+            max={selectedFood.food.nutrients.ENERC_KCAL}
             radius={40}
             activeStrokeColorWidth={6}
             duration={0}
+            activeStrokeColor="#465cc9"
           />
           <View
             style={{
@@ -187,16 +219,31 @@ export function DetailsModal({ setModalVisible, onSuccess }: DetailsModal) {
               height: 70,
             }}>
             <MacrosItem>
-              <TextQuantity>{`${selectedFood?.food.nutrients.CHOCDF} g`}</TextQuantity>
-              <TextName>Carbs</TextName>
+              <TextQuantity
+                style={{
+                  color: '#3db9d5',
+                }}>{`${selectedFood?.food.nutrients.CHOCDF} g`}</TextQuantity>
+              <TextName style={{ color: '#3db9d5', fontWeight: '500' }}>
+                Carbs
+              </TextName>
             </MacrosItem>
             <MacrosItem>
-              <TextQuantity>{`${selectedFood?.food.nutrients.FAT} g`}</TextQuantity>
-              <TextName>Fat</TextName>
+              <TextQuantity
+                style={{
+                  color: '#4a62d8',
+                }}>{`${selectedFood?.food.nutrients.FAT} g`}</TextQuantity>
+              <TextName style={{ color: '#4a62d8', fontWeight: '500' }}>
+                Fat
+              </TextName>
             </MacrosItem>
             <MacrosItem>
-              <TextQuantity>{`${selectedFood?.food.nutrients.PROCNT} g`}</TextQuantity>
-              <TextName>Protein</TextName>
+              <TextQuantity
+                style={{
+                  color: '#d38723',
+                }}>{`${selectedFood?.food.nutrients.PROCNT} g`}</TextQuantity>
+              <TextName style={{ color: '#d38723', fontWeight: '500' }}>
+                Protein
+              </TextName>
             </MacrosItem>
           </View>
         </MacrosDetails>

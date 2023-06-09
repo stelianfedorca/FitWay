@@ -90,6 +90,22 @@ export function calculateCalories(data: FoodFirestore[]): number {
   return Math.round(totalCalories);
 }
 
+export function calculateTotalFat(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return acc + Number(item.nutrition.fat);
+  }, 0);
+}
+export function calculateTotalProtein(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return acc + Number(item.nutrition.protein);
+  }, 0);
+}
+export function calculateTotalCarbs(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return acc + Number(item.nutrition.carbs);
+  }, 0);
+}
+
 export function calculateGramsFromPercentage(
   procent: number,
   macroMultiplier: number,

@@ -25,22 +25,26 @@ import { Option } from '../Option';
 export type InputDropdownType = {
   title?: string;
   defaultValue?: string | number;
-  value: number;
-  unit?: string;
+  value: number | string;
+  secondLabel?: string;
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<ViewStyle>;
   childStyle?: StyleProp<ViewStyle>;
   unitLabel?: StyleProp<ViewStyle>;
+  timeframeOption: number;
+  onOptionPress: (option: number) => void;
 };
-export function InputDropdown({
+export function SimpleDropdown({
   title,
   defaultValue,
   children,
-  unit,
+  secondLabel,
   style,
   labelStyle,
   childStyle,
+  timeframeOption,
+  onOptionPress,
   unitLabel,
   value = 0,
 }: InputDropdownType) {
@@ -62,6 +66,7 @@ export function InputDropdown({
       height.value = 0;
     }
   }
+
   return (
     <>
       <TouchableOpacity
@@ -85,7 +90,31 @@ export function InputDropdown({
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Label
+          <Option
+            title="Day"
+            style={{
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+              alignItems: 'center',
+              marginBottom: 0,
+              borderBottomWidth: 0.3,
+            }}
+            isSelected={timeframeOption === 0 ? true : false}
+            onPress={() => onOptionPress(0)}
+          />
+          <Option
+            title="Week"
+            style={{
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              alignItems: 'center',
+              marginBottom: 0,
+              borderBottomWidth: 0.3,
+            }}
+            isSelected={timeframeOption === 1 ? true : false}
+            onPress={() => onOptionPress(1)}
+          />
+          {/* <Label
             value={value}
             defaultValue={defaultValue}
             style={[
@@ -99,9 +128,9 @@ export function InputDropdown({
             ]}
           />
 
-          {unit && (
+          {secondLabel && (
             <Label
-              value={unit!}
+              value={secondLabel!}
               defaultValue={defaultValue}
               valueColor="black"
               style={[
@@ -115,15 +144,11 @@ export function InputDropdown({
                 unitLabel,
               ]}
             />
-          )}
+          )} */}
 
           {/* <Text style={{ fontSize: 16, fontWeight: '600' }}>{unit}</Text> */}
         </View>
       </TouchableOpacity>
-      <Animated.View
-        style={[styles.expandedItem, expandedAnimation, childStyle]}>
-        {children}
-      </Animated.View>
     </>
   );
 }

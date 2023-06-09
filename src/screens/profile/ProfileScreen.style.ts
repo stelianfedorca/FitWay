@@ -4,6 +4,8 @@ import styled from 'styled-components';
 export const Container = styled(ScrollView)`
   flex: 1;
   padding-top: 20px;
+  background-color: white;
+  /* background-color: #f2f1f1; */
   /* padding-horizontal: 20px; */
 `;
 export const ProfileDetailsContainer = styled(View)`

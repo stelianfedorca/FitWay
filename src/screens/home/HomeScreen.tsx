@@ -34,15 +34,17 @@ import { selectUid } from '../../redux/slices/userSlice';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { selectDiaryFood } from '../../redux/slices/diarySlice';
+import { useMacros } from '../../hooks/useMacros';
 
 export function HomeScreen() {
   const profile = useProfileStore(state => state.profile);
   const navigation = useNavigation<HomeNavigationProp>();
+  const diaryFood = useSelector(selectDiaryFood);
+  // const totalMacros = useMacros(diaryFood);
 
   const userProfileName = useSelector(selectFirstName);
   const tdee = useSelector(selectTdee);
   const userProfile = useSelector(selectProfile);
-  const diaryFood = useSelector(selectDiaryFood);
 
   const [date] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +52,6 @@ export function HomeScreen() {
   function handleStateChange() {
     // setIsOpen(!isOpen);
   }
-
-  console.log(userProfile);
 
   function onSearchPress() {
     navigation.navigate(Routes.Search);
@@ -65,6 +65,13 @@ export function HomeScreen() {
     userProfile.caloricIntake ?? 0,
     tdee,
   );
+
+  // const { fat, protein, carbs } = calculateMacros(diaryFood);
+  const totalMacrosConsumed = {
+    fat: 10,
+    protein: 23,
+    carbs: 18,
+  };
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -119,7 +126,7 @@ export function HomeScreen() {
           />
           <ItemStatistics title="Macros">
             <CircularProgressComponent
-              progressValue={220}
+              progressValue={userProfile.macrosIntake?.carbs ?? 0}
               max={userProfile.macros?.carbs}
               progressTitle="Grams"
               textTop="Carbs"
@@ -127,7 +134,7 @@ export function HomeScreen() {
               activeStrokeColor="#3db9d5"
             />
             <CircularProgressComponent
-              progressValue={50}
+              progressValue={userProfile.macrosIntake?.fat ?? 0}
               max={userProfile.macros?.fat}
               progressTitle="Grams"
               textTop="Fat"
@@ -135,7 +142,7 @@ export function HomeScreen() {
               activeStrokeColor="#4a62d8"
             />
             <CircularProgressComponent
-              progressValue={50}
+              progressValue={userProfile.macrosIntake?.protein ?? 0}
               max={userProfile.macros?.protein}
               progressTitle="Grams"
               textTop="Protein"
