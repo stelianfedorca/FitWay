@@ -14,14 +14,18 @@ export type MealPlanItemProps = {
   mealPlan: MealPlanDay;
   mealPlanDetails: (MealPlanDetails | null)[];
   isLoading?: boolean;
+  isGenerateButtonLoading?: boolean;
   onAddPress?: () => void;
+  onGeneratePress?: () => void;
   style?: StyleProp<ViewStyle>;
 };
 export function MealPlanItem({
   mealPlan,
   mealPlanDetails,
   isLoading,
+  isGenerateButtonLoading,
   onAddPress,
+  onGeneratePress,
   style,
 }: MealPlanItemProps) {
   return (
@@ -86,7 +90,7 @@ export function MealPlanItem({
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           marginBottom: 20,
         }}>
         <TouchableOpacity
@@ -95,6 +99,32 @@ export function MealPlanItem({
             paddingVertical: 10,
             borderRadius: 15,
             backgroundColor: 'green',
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowColor: 'black',
+            shadowRadius: 2,
+            shadowOffset: {
+              width: 2,
+              height: 2,
+            },
+            shadowOpacity: 0.4,
+          }}
+          onPress={onGeneratePress}>
+          {isGenerateButtonLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={{ color: 'white', fontWeight: '500' }}>
+              Generate new plan
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 15,
+            backgroundColor: '#4659b8',
             justifyContent: 'center',
             alignItems: 'center',
             shadowColor: 'black',

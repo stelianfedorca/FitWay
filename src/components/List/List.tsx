@@ -20,7 +20,7 @@ export type ListProps = {
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
   data: Product[] | null;
-  onItemPress?: (event: GestureResponderEvent) => void;
+  onItemPress?: (item: Product) => void;
 };
 
 function EmptyList() {
@@ -44,11 +44,11 @@ export function List({ contentStyle, data, onItemPress }: ListProps) {
   const searchFilter = useSelector(selectSearch);
 
   function _renderItem({ item }: ListRenderItemInfo<Product>) {
-    function handleItemPress(event: GestureResponderEvent) {
-      dispatch(setFood(item));
-      onItemPress?.(event);
-    }
-    return <ItemList item={item} onPress={handleItemPress} />;
+    // function handleItemPress(event: GestureResponderEvent) {
+    //   // dispatch(setFood(item));
+    //   onItemPress?.(event);
+    // }
+    return <ItemList item={item} onPress={() => onItemPress?.(item)} />;
   }
 
   return (

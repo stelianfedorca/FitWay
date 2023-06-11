@@ -8,6 +8,8 @@ import {
   LOGS_COLLECTION,
 } from '../utils/consts';
 import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { selectCurrentDate } from '../redux/slices/dateSlice';
 
 const SEARCH_PRODUCT_API =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search';
@@ -64,13 +66,16 @@ export async function getProductInformation(id: number) {
   }
 }
 
-export async function addFoodToDiary(userId: string, food: FoodFirestore) {
-  const currentDate = format(new Date(), 'dd-MM-yyyy');
+export async function addFoodToDiary(
+  userId: string,
+  food: FoodFirestore,
+  date: string,
+) {
   await firestore()
     .collection(DIARY_COLLECTION)
     .doc(userId)
     .collection(DAILY_LOGS_COLLECTION)
-    .doc(currentDate)
+    .doc(date)
     .collection(LOGS_COLLECTION)
     .doc(food.id)
     .set(food, { merge: true });

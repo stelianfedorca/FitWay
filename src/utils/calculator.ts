@@ -75,34 +75,67 @@ export function calculateBMI(weight: number, height: number) {
   return (weight / (((height / 100) * height) / 100)).toFixed(1);
 }
 
+export function calculateCaloriesByServing(calories: number, quantity: number) {
+  return Math.round((quantity * calories) / 100);
+}
+
 export function calculateCalories(data: FoodFirestore[]): number {
   const totalCalories =
     data.length > 0
       ? data.reduce((acc, currentItem) => {
           return (
             acc +
-            currentItem.nutrition.calories *
-              currentItem.nutrition.servings.number
+            calculateCaloriesByServing(
+              currentItem.nutrition.calories,
+              currentItem.nutrition.servings.size,
+            )
+            // currentItem.nutrition.calories *
+            //   currentItem.nutrition.servings.number
           );
         }, 0)
       : 0;
 
   return Math.round(totalCalories);
 }
+export function calculateMacronutrientsByServing(
+  macronutrient: number,
+  quantity: number,
+) {
+  return Math.round((quantity * macronutrient) / 100);
+}
 
+// trb modificate
 export function calculateTotalFat(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return acc + Number(item.nutrition.fat);
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.fat),
+        item.nutrition.servings.size,
+      )
+    );
   }, 0);
 }
 export function calculateTotalProtein(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return acc + Number(item.nutrition.protein);
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.protein),
+        item.nutrition.servings.size,
+      )
+    );
   }, 0);
 }
 export function calculateTotalCarbs(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return acc + Number(item.nutrition.carbs);
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.carbs),
+        item.nutrition.servings.size,
+      )
+    );
   }, 0);
 }
 

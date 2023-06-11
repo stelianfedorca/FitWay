@@ -30,6 +30,9 @@ import { selectMealPlanPerDay } from '../redux/slices/mealPlanSlice';
 import { useMealPlanDetails } from '../hooks/useMealPlanDetails';
 import { SearchFoodScreen } from '../screens/searchfood';
 import { SavedMealPlansScreen } from '../screens/saved_meal_plans/SavedMealPlansScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { SavedMealPlansDayScreen } from '../screens/saved_meal_plans_day/SavedMealPlansDayScreen';
+import { SavedMealPlansWeekScreen } from '../screens/saved_meal_plans_week/SavedMealPlansWeekScreen';
 
 export type HomeStackParams = {
   [Routes.Home]: undefined;
@@ -116,22 +119,24 @@ export function MealPlan() {
 
 export type ProfileStackParams = {
   [Routes.Profile]: undefined;
-  [Routes.SavedMealPlans]: undefined;
+  // [Routes.SavedMealPlans]: undefined;
 };
 
-const ProfileStack = createNativeStackNavigator<ProfileStackParams>();
+const ProfileStack = createBottomTabNavigator<ProfileStackParams>();
 
 function Profile() {
   return (
     <ProfileStack.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
+        tabBarIcon: () => <View />,
       }}>
       <ProfileStack.Screen name={Routes.Profile} component={ProfileScreen} />
-      <ProfileStack.Screen
+      {/* <ProfileStack.Screen
         name={Routes.SavedMealPlans}
-        component={SavedMealPlansScreen}
-      />
+        component={SavedMealPlans}
+      /> */}
     </ProfileStack.Navigator>
   );
 }

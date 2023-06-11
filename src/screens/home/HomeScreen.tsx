@@ -17,6 +17,7 @@ import { AvatarProfile } from '../../assets/images';
 import { format } from 'date-fns';
 import {
   calculateCalories,
+  calculateTotalFat,
   getRemainingCalories,
 } from '../../utils/calculator';
 import { ItemStatistics } from '../../components/ItemStatistics';
@@ -124,7 +125,7 @@ export function HomeScreen() {
             max={tdee}
             food={calculateCalories(diaryFood)}
           />
-          <ItemStatistics title="Macros">
+          <ItemStatistics title="Macronutrients">
             <CircularProgressComponent
               progressValue={userProfile.macrosIntake?.carbs ?? 0}
               max={userProfile.macros?.carbs}

@@ -13,6 +13,7 @@ import { Divider, IconButton } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { AvatarProfile } from '../../assets/images';
 import { Food, FoodFirestore } from '../../types/types';
+import { calculateCalories } from '../../utils/calculator';
 import { ScrollViewItem } from '../ScrollViewItem/ScrollViewItem';
 
 export type CellDropdownProps = {
@@ -31,16 +32,16 @@ export function CellDropdown({
 }: CellDropdownProps) {
   const isDataAvailable = data.length > 0;
 
-  const totalCaloriesFood =
-    data.length > 0
-      ? data.reduce((accumulator, currentElement) => {
-          return (
-            accumulator +
-            currentElement.nutrition.calories *
-              currentElement.nutrition.servings.number
-          );
-        }, 0)
-      : 0;
+  const totalCaloriesFood = calculateCalories(data);
+  // data.length > 0
+  //   ? data.reduce((accumulator, currentElement) => {
+  //       return (
+  //         accumulator +
+  //         currentElement.nutrition.calories *
+  //           currentElement.nutrition.servings.number
+  //       );
+  //     }, 0)
+  //   : 0;
 
   return (
     <Pressable style={styles.container}>

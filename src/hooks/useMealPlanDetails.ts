@@ -1,10 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  MealPlanDay,
-  MealPlanDetails,
-  setMealPlans,
-} from '../redux/slices/mealPlanSlice';
+import { MealPlanDay, MealPlanDetails } from '../redux/slices/mealPlanSlice';
 import { getMealDetails } from '../services/mealplan.service';
 
 export function useMealPlanDetails(mealPlan: MealPlanDay) {

@@ -75,44 +75,25 @@ export function SavedMealPlansItem({
           <Text>Calories</Text>
         </Badge>
       </View>
-      <ScrollView
-        style={{ flexGrow: 1 }}
-        bounces={false}
-        showsVerticalScrollIndicator={false}>
-        {mealPlanDetails.map(mealPlanDetail => (
-          <Card data={mealPlanDetail} key={mealPlanDetail?.id} />
-        ))}
-      </ScrollView>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginVertical: 10,
-        }}>
-        {/* <TouchableOpacity
+      {isLoading ? (
+        <View
           style={{
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            borderRadius: 15,
-            backgroundColor: 'green',
+            height: 200,
             justifyContent: 'center',
             alignItems: 'center',
-            shadowColor: 'black',
-            shadowRadius: 2,
-            shadowOffset: {
-              width: 2,
-              height: 2,
-            },
-            shadowOpacity: 0.4,
-          }}
-          onPress={onAddPress}>
-          {isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <Text style={{ color: 'white', fontWeight: '500' }}>Add plan</Text>
-          )}
-        </TouchableOpacity> */}
-      </View>
+          }}>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        <ScrollView
+          style={{ flexGrow: 1, paddingBottom: 20 }}
+          bounces={false}
+          showsVerticalScrollIndicator={false}>
+          {mealPlanDetails.map(mealPlanDetail => (
+            <Card data={mealPlanDetail} key={mealPlanDetail?.id} />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }

@@ -50,7 +50,7 @@ function EmptyList() {
   );
 }
 
-export function SavedMealPlansScreen() {
+export function SavedMealPlansDayScreen() {
   const uid = useSelector(selectUid);
   const savedMealPlans = useSavedMealPlans(uid);
   const navigation = useNavigation<ProfileScreenNavigationProp>();
@@ -64,28 +64,14 @@ export function SavedMealPlansScreen() {
   };
 
   return (
-    <Layout paddingTop>
+    <Layout>
       <Pressable
         style={{
           flex: 1,
-          paddingTop: 50,
+          // paddingTop: 50,
           paddingHorizontal: 10,
           justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 15,
-          }}
-          onPress={goBack}>
-          <Ionicons
-            name="chevron-back"
-            color="#16277b"
-            size={30}
-            style={{ position: 'absolute' }}
-          />
-        </TouchableOpacity>
         <FlatList
           data={savedMealPlans}
           renderItem={_renderItem}

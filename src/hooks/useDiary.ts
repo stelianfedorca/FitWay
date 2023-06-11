@@ -10,6 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUid } from '../redux/slices/userSlice';
 import { setFood } from '../redux/slices/foodSlice';
 import { setDiaryFood } from '../redux/slices/diarySlice';
+import {
+  calculateCalories,
+  calculateTotalCarbs,
+  calculateTotalFat,
+  calculateTotalProtein,
+} from '../utils/calculator';
+import { setProfile } from '../redux/slices/profileSlice';
 
 // custom hook
 export function useDiary(date: string) {
@@ -28,11 +35,22 @@ export function useDiary(date: string) {
         const foodLogs: FoodFirestore[] = [];
 
         querySnapshot.forEach(documentSnapshot => {
-          documentSnapshot.data();
-          foodLogs.push(documentSnapshot.data() as FoodFirestore);
+          const foodData = documentSnapshot.data() as FoodFirestore;
+          foodLogs.push(foodData);
         });
+        const calories = calculateCalories(foodLogs);
         setFoodLogs(foodLogs);
         dispatch(setDiaryFood(foodLogs));
+        dispatch(
+          setProfile({
+            caloricIntake: calories,
+            macrosIntake: {
+              fat: calculateTotalFat(foodLogs),
+              protein: calculateTotalProtein(foodLogs),
+              carbs: calculateTotalCarbs(foodLogs),
+            },
+          }),
+        );
       });
 
     // unsubscribe from events when no longer in use

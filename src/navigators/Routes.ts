@@ -8,6 +8,8 @@ export enum Routes {
   Search = 'SEARCH',
   Recommendation = 'RECOMMENDATION',
   SavedMealPlans = 'SAVED_MEAL_PLANS',
+  SavedMealPlansDay = 'SAVED_MEAL_PLANS_DAY',
+  SavedMealPlansWeek = 'SAVED_MEAL_PLANS_WEEK',
 
   // Survey Stack
   Survey = 'SURVEY',
@@ -30,6 +32,11 @@ export enum Tabs {
   Diary = 'Journal',
   MealPlan = 'Meal Plan',
   // FAB = 'FAB',
+}
+
+export enum TopTabs {
+  Day = 'Day',
+  Week = 'Week',
 }
 
 export enum Stacks {

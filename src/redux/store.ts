@@ -22,12 +22,13 @@ import mealPlanSlice from './slices/mealPlanSlice';
 import searchSlice from './slices/searchSlice';
 import foodSlice from './slices/foodSlice';
 import diarySlice from './slices/diarySlice';
+import dateSlice from './slices/dateSlice';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['user', 'loading', 'search', 'food', 'diary'],
+  blacklist: ['user', 'loading', 'search', 'food', 'diary', 'date'],
 };
 
 const combinedReducers = combineReducers({
@@ -38,6 +39,7 @@ const combinedReducers = combineReducers({
   search: searchSlice,
   food: foodSlice,
   diary: diarySlice,
+  date: dateSlice,
 });
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {

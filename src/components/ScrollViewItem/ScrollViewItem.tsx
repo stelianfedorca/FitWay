@@ -1,6 +1,7 @@
 import { Pressable, Image, Text, View } from 'react-native';
 import { FoodImage } from '../../assets/images';
 import { FoodFirestore } from '../../types/types';
+import { calculateCaloriesByServing } from '../../utils/calculator';
 
 export type ScrollViewItemProps = {
   item: FoodFirestore;
@@ -30,7 +31,10 @@ export function ScrollViewItem({ item, index }: ScrollViewItemProps) {
         }}>
         <Text style={{ fontWeight: '600', marginBottom: 5 }}>{item.name}</Text>
         <Text style={{ color: 'grey' }}>
-          {Math.round(item.nutrition.calories * item.nutrition.servings.number)}{' '}
+          {calculateCaloriesByServing(
+            item.nutrition.calories,
+            item.nutrition.servings.size,
+          )}{' '}
           kcal
         </Text>
       </View>

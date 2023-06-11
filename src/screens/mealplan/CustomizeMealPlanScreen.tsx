@@ -30,7 +30,7 @@ import {
 import { selectTdee } from '../../redux/slices/profileSlice';
 import { Divider } from 'react-native-paper';
 
-const mappedTimeFrame: Record<number, TimeFrame> = {
+export const mappedTimeFrame: Record<number, TimeFrame> = {
   0: 'day',
   1: 'week',
 };

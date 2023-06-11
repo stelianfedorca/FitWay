@@ -18,6 +18,7 @@ import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { DiaryScreenNavigationProp } from './DiaryScreen.types';
 import { Routes } from '../../navigators';
+import { calculateCalories } from '../../utils/calculator';
 
 export function DiaryScreen() {
   const currentDate = format(new Date(), 'dd-MM-yyyy');
@@ -30,12 +31,13 @@ export function DiaryScreen() {
   const diaryFoodLunch = diaryFood.filter(food => food.type === 'Lunch');
   const diaryFoodDinner = diaryFood.filter(food => food.type === 'Dinner');
 
-  const totalConsumedCalories = diaryFood.reduce((accumulator, currentItem) => {
-    return (
-      accumulator +
-      currentItem.nutrition.calories * currentItem.nutrition.servings.number
-    );
-  }, 0);
+  const totalCalories = calculateCalories(diaryFood);
+  // const totalConsumedCalories = diaryFood.reduce((accumulator, currentItem) => {
+  //   return (
+  //     accumulator +
+  //     currentItem.nutrition.calories * currentItem.nutrition.servings.number
+  //   );
+  // }, 0);
 
   function openSearch() {
     navigation.navigate(Routes.Search);
@@ -83,7 +85,7 @@ export function DiaryScreen() {
               color="#465cc9"
             />
             <Text style={{ fontSize: 16, fontWeight: '600', marginRight: 5 }}>
-              {Math.round(totalConsumedCalories)}
+              {Math.round(totalCalories)}
             </Text>
             <Text style={{ fontWeight: '500' }}>{'Kcal'}</Text>
           </View>

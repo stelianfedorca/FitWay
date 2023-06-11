@@ -19,6 +19,11 @@ import { Pill } from '../Pill/Pill';
 
 import { CarouselRenderItem } from 'react-native-reanimated-carousel/lib/typescript/types';
 import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentDate,
+  setCurrentDate,
+} from '../../redux/slices/dateSlice';
 
 export type FormatedData = {
   id: string;
@@ -50,8 +55,9 @@ export type CalendarProps = {
   style?: StyleProp<ViewStyle>;
 };
 export function Calendar({ onPress, style }: CalendarProps) {
+  const dispatch = useDispatch();
   const currentDate = new Date();
-  // const b = currentDate.setDate(7);
+  const selectedCurrentDate = useSelector(selectCurrentDate);
   const [formatedData, setFormatedData] = useState(
     formatData(selectMonth(currentDate)),
   );
@@ -61,13 +67,18 @@ export function Calendar({ onPress, style }: CalendarProps) {
 
   function handleItemPress(id: string) {
     setSelectedItem(id);
+    dispatch(setCurrentDate(id));
   }
 
   const flatlistRef = useRef<FlatList>(null);
 
   useEffect(() => {
     setTimeout(() => {
-      flatlistRef.current?.scrollToIndex({ index: 7, animated: true });
+      flatlistRef.current?.scrollToIndex({
+        index:
+          formatedData.findIndex(item => item.id === selectedCurrentDate) - 3,
+        animated: true,
+      });
     }, 10);
   }, []);
 
@@ -75,7 +86,7 @@ export function Calendar({ onPress, style }: CalendarProps) {
     const date = format(item.data, 'dd');
     const day = format(item.data, 'EE');
 
-    const isActive = item.id === selectedItem;
+    const isActive = item.id === selectedCurrentDate ?? selectedItem;
 
     return (
       <Pill<FormatedData>

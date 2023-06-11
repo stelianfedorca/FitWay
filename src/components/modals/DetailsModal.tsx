@@ -47,26 +47,33 @@ import {
 } from '../../services/user.service';
 import { Accordion, AccordionItem } from '../Accordion/Accordion';
 import { useFocusEffect } from '@react-navigation/native';
+import {
+  calculateCaloriesByServing,
+  calculateMacronutrientsByServing,
+} from '../../utils/calculator';
+import { selectCurrentDate } from '../../redux/slices/dateSlice';
+import { format } from 'date-fns';
 
 export type DetailsModalProps = {
-  selectedFood: Product;
+  selectedFood?: Product;
   setModalVisible: (isVisible: boolean) => void;
   onSuccess?: () => void;
 };
 
 export function DetailsModal({
   setModalVisible,
-  selectedFood,
   onSuccess,
 }: DetailsModalProps) {
-  // const selectedFood = useSelector(selectFood);
+  const selectedFood = useSelector(selectFood);
   const uid = useSelector(selectUid);
   const caloricIntake = useSelector(selectCaloricIntake);
   const macrosIntake = useSelector(selectMacrosIntake);
+  const selectedCurrentDate = useSelector(selectCurrentDate);
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [servingSize] = useState(100);
+  const [servingSize, setServingSize] = useState(100);
   const [servingsNo, setServingsNo] = useState('1');
   const [mealType, setMealType] = useState('Breakfast');
 
@@ -77,6 +84,14 @@ export function DetailsModal({
     { label: 'Lunch', value: 'Lunch' },
     { label: 'Dinner', value: 'Dinner' },
   ]);
+
+  const total = calculateCaloriesByServing(
+    selectedFood?.food.nutrients.ENERC_KCAL ?? 100,
+    servingSize,
+  );
+
+  console.log('total: ', total);
+  console.log('sleec: ', selectedFood.food.label);
 
   const handleAddFood = async () => {
     setIsLoading(true);
@@ -92,31 +107,56 @@ export function DetailsModal({
         protein: selectedFood.food.nutrients.PROCNT,
         servings: {
           number: Number(servingsNo),
-          size: servingSize,
+          size: Number(servingSize),
         },
       },
       type: value,
     };
 
-    await addFoodToDiary(uid, food);
+    await addFoodToDiary(uid, food, selectedCurrentDate ?? currentDate);
     await updateCaloriesIntake(
       uid,
       Math.round(
         caloricIntake +
-          food.nutrition.calories * food.nutrition.servings.number,
+          calculateCaloriesByServing(
+            food.nutrition.calories,
+            food.nutrition.servings.size,
+          ),
       ),
     );
     await updateMacrosIntake(uid, {
-      fat: Math.round(macrosIntake.fat + Number(food.nutrition.fat)),
-      protein: Math.round(
-        Number(macrosIntake.protein + food.nutrition.protein),
+      fat: Math.round(
+        macrosIntake.fat +
+          calculateMacronutrientsByServing(
+            Number(food.nutrition.fat),
+            food.nutrition.servings.size,
+          ),
       ),
-      carbs: Math.round(macrosIntake.carbs + Number(food.nutrition.carbs)),
+      protein: Math.round(
+        Number(
+          macrosIntake.protein +
+            calculateMacronutrientsByServing(
+              Number(food.nutrition.protein),
+              food.nutrition.servings.size,
+            ),
+        ),
+      ),
+      carbs: Math.round(
+        macrosIntake.carbs +
+          calculateMacronutrientsByServing(
+            Number(Number(food.nutrition.carbs)),
+            food.nutrition.servings.size,
+          ),
+      ),
     });
     setIsLoading(false);
     setModalVisible(false);
     onSuccess?.();
   };
+
+  function onQuantityChange(text: string) {
+    setServingSize(Number(text));
+  }
 
   return (
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
@@ -129,58 +169,28 @@ export function DetailsModal({
           {selectedFood?.food.label}
         </Text>
         <Divider style={{ marginVertical: 10 }} bold />
-        <View
-          style={{
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: 40,
-            flexDirection: 'row',
-          }}>
-          <Text style={{ fontSize: 16 }}>Serving Size</Text>
+        <QuantityContainer>
+          <Text style={{ fontSize: 16 }}>Quantity</Text>
           <View
             style={{
-              width: 60,
-              padding: 5,
+              flexDirection: 'row',
               alignItems: 'center',
-              borderRadius: 5,
-              borderWidth: 1,
             }}>
-            <TextInput
-              style={{
-                fontSize: 16,
-                fontWeight: '600',
-                // color: '#004d99',
-              }}
-              keyboardType="numeric"
-              value={`${servingSize}`}
-              onChangeText={setServingsNo}
-            />
-            {/* <Text style={{ fontSize: 16, color: 'white' }}>{servingSize}</Text> */}
+            <QuantityValueContainer style={{ marginRight: 5 }}>
+              <TextInput
+                style={{
+                  fontSize: 16,
+                  fontWeight: '600',
+                  color: '#004d99',
+                }}
+                keyboardType="numeric"
+                value={`${servingSize}`}
+                onChangeText={onQuantityChange}
+                maxLength={5}
+              />
+            </QuantityValueContainer>
+            <Text style={{ fontSize: 16 }}>grams</Text>
           </View>
-          {/* <Option
-            title={`${servingSize}`}
-            disabled
-            style={{
-              flex: 0,
-              justifyContent: 'center',
-            }}
-            isSelected
-          /> */}
-        </View>
-        <QuantityContainer>
-          <Text style={{ fontSize: 16 }}>Number of Servings</Text>
-          <QuantityValueContainer>
-            <TextInput
-              style={{
-                fontSize: 16,
-                fontWeight: '600',
-                // color: '#004d99',
-              }}
-              keyboardType="numeric"
-              value={`${servingsNo}`}
-              onChangeText={setServingsNo}
-            />
-          </QuantityValueContainer>
         </QuantityContainer>
         <View
           style={{
@@ -203,13 +213,15 @@ export function DetailsModal({
         </View>
         <MacrosDetails>
           <CircularProgressComponent
-            progressTitle="cal"
-            progressValue={selectedFood?.food.nutrients.ENERC_KCAL!}
-            max={selectedFood.food.nutrients.ENERC_KCAL}
+            progressTitle="calories"
+            progressValue={total}
+            max={total}
             radius={40}
             activeStrokeColorWidth={6}
             duration={0}
             activeStrokeColor="#465cc9"
+            inactiveStrokeColor="#465cc9"
+            // inActiveStrokeWidth={0}
           />
           <View
             style={{
@@ -222,7 +234,10 @@ export function DetailsModal({
               <TextQuantity
                 style={{
                   color: '#3db9d5',
-                }}>{`${selectedFood?.food.nutrients.CHOCDF} g`}</TextQuantity>
+                }}>{`${calculateMacronutrientsByServing(
+                selectedFood?.food.nutrients.CHOCDF,
+                servingSize,
+              )} g`}</TextQuantity>
               <TextName style={{ color: '#3db9d5', fontWeight: '500' }}>
                 Carbs
               </TextName>
@@ -231,7 +246,10 @@ export function DetailsModal({
               <TextQuantity
                 style={{
                   color: '#4a62d8',
-                }}>{`${selectedFood?.food.nutrients.FAT} g`}</TextQuantity>
+                }}>{`${calculateMacronutrientsByServing(
+                selectedFood?.food.nutrients.FAT,
+                servingSize,
+              )} g`}</TextQuantity>
               <TextName style={{ color: '#4a62d8', fontWeight: '500' }}>
                 Fat
               </TextName>
@@ -240,7 +258,10 @@ export function DetailsModal({
               <TextQuantity
                 style={{
                   color: '#d38723',
-                }}>{`${selectedFood?.food.nutrients.PROCNT} g`}</TextQuantity>
+                }}>{`${calculateMacronutrientsByServing(
+                selectedFood?.food.nutrients.PROCNT,
+                servingSize,
+              )} g`}</TextQuantity>
               <TextName style={{ color: '#d38723', fontWeight: '500' }}>
                 Protein
               </TextName>

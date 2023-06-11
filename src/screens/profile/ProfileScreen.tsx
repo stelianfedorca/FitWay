@@ -30,15 +30,20 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { CellRow } from '../../components/CellRow';
 import { useAuthStore } from '../../stores';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/slices/userSlice';
+import { logout, selectUid } from '../../redux/slices/userSlice';
 
 import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
 import { reset } from '../../redux/slices/mealPlanSlice';
 import { calculateBMI } from '../../utils/calculator';
+import { useNavigation } from '@react-navigation/native';
+import { ProfileScreenNavigationProp } from './ProfileScreen.types';
+import { Routes } from '../../navigators';
+import { useSavedMealPlans } from '../../hooks/useSavedMealPlans';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   async function handleSignOut() {
     signOut();
@@ -48,7 +53,9 @@ export function ProfileScreen() {
 
   function handleEditGoalsPress() {}
 
-  function handleMealPlansPress() {}
+  function handleMealPlansPress() {
+    navigation.navigate(Routes.SavedMealPlans);
+  }
   return (
     <Layout style={[styles.layout, { backgroundColor: 'white' }]} paddingTop>
       <Container alwaysBounceVertical={false}>
@@ -117,11 +124,11 @@ export function ProfileScreen() {
           </Chip>
         </ContentContainer> */}
         <SettingsContainer>
-          <CellRow
+          {/* <CellRow
             title="Edit goals"
             onPress={handleEditGoalsPress}
             icon={<FontAwesome name="edit" size={24} color="#4659b8" />}
-          />
+          /> */}
           <CellRow
             title="Meal plans"
             onPress={handleMealPlansPress}
@@ -132,6 +139,7 @@ export function ProfileScreen() {
             title="Log Out"
             onPress={handleSignOut}
             icon={<MaterialIcons name="logout" size={24} color="#4659b8" />}
+            rightIcon={false}
           />
         </SettingsContainer>
       </Container>

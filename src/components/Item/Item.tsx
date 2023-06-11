@@ -30,7 +30,7 @@ interface IconTypeProps {
 export type ItemProps = {
   horizontal?: boolean;
   title: string;
-  icon: string;
+  icon?: string;
   progressTitle: string;
   progressValue: number;
   max?: number;
@@ -64,7 +64,7 @@ export function Item({
           ]}>
           <HeaderContainer>
             <TitleHeader>{title}</TitleHeader>
-            <Ionicons name={icon} size={24} color="#465cc9" />
+            {icon && <Ionicons name={icon} size={24} color="#465cc9" />}
           </HeaderContainer>
           <ProgressContainer>
             <ProgressValue>{progressValue}</ProgressValue>
@@ -83,7 +83,7 @@ export function Item({
               </SubTitleHeader>
             </View>
 
-            <Ionicons name={icon} size={24} color="#465cc9" />
+            {icon && <Ionicons name={icon} size={24} color="#465cc9" />}
           </HeaderContainer>
           <InfoContainer>
             <CircularProgress

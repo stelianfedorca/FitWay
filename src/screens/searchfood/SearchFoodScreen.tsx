@@ -26,9 +26,9 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchNavigationProp } from './Search.types';
 import { selectLoading, setLoading } from '../../redux/slices/loadingSlice';
 import Toast from 'react-native-toast-message';
-import { selectFood } from '../../redux/slices/foodSlice';
+import { selectFood, setFood } from '../../redux/slices/foodSlice';
 
-function isEmpty(str: string) {
+export function isEmpty(str: string) {
   return !str || str.length === 0;
 }
 
@@ -43,8 +43,9 @@ export function SearchFoodScreen() {
 
   const [isVisible, setIsVisible] = useState(false);
 
-  function handleItemPress() {
+  function handleItemPress(item: Product) {
     setIsVisible(!isVisible);
+    dispatch(setFood(item));
   }
 
   function goBack() {
@@ -58,15 +59,6 @@ export function SearchFoodScreen() {
   async function handleSearchPress(search: string) {
     dispatch(setLoading({ loading: true }));
     const data: Product[] = await searchProduct(search);
-    // data.map((product) => {
-    //   return {...product, id: product.food.foodId + product.food.}
-    // })
-    // console.log('data: ', data);
-    // const detailedProducts: DetailedProductInformation[] = await Promise.all(
-    //   data.map(product => {
-    //     return getProductInformation(product.id);
-    //   }),
-    // );
 
     if (data) dispatch(setLoading({ loading: false }));
     setProducts(data.slice(0, 9));

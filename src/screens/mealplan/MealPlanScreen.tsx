@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ItemStatistics } from '../../components/ItemStatistics';
 import {
   Card,
@@ -22,6 +22,7 @@ import { Layout } from '../../components/Layout';
 import {
   MealPlanDetails,
   selectMealPlanPerDay,
+  setMealPlan,
 } from '../../redux/slices/mealPlanSlice';
 import { styles, Title } from './MealPlanScreen.style';
 import { useMealPlanDetails } from '../../hooks/useMealPlanDetails';
@@ -32,15 +33,22 @@ import { MealPlanItem } from '../../components/MealPlanItem/MealPlanItem';
 import { useNavigation } from '@react-navigation/native';
 import { MealPlanScreenNavigationProp } from './MealPlan.types';
 import { selectUid } from '../../redux/slices/userSlice';
-import { addMealPlanToFirestore } from '../../services/mealplan.service';
+import {
+  addMealPlanToFirestore,
+  getMealPlan,
+} from '../../services/mealplan.service';
 
 import Toast from 'react-native-toast-message';
+import { Routes } from '../../navigators';
+import { mappedTimeFrame } from './CustomizeMealPlanScreen';
 
 export function MealPlanScreen() {
   const mealPlan = useSelector(selectMealPlanPerDay);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingButton, setLoadingButton] = useState(false);
+  const [loadingAddButton, setLoadingAddButton] = useState(false);
+  const [loadingGenerateButton, setLoadingGenerateButton] = useState(false);
   const uid = useSelector(selectUid);
+  const dispatch = useDispatch();
 
   const mealPlanDetails = useMealPlanDetails(mealPlan);
 
@@ -55,12 +63,30 @@ export function MealPlanScreen() {
   };
 
   const addMealPlan = async () => {
-    setLoadingButton(true);
+    setLoadingAddButton(true);
     const isAdded = await addMealPlanToFirestore(uid, mealPlan);
     if (isAdded) {
       navigation.goBack();
     }
-    setLoadingButton(false);
+    setLoadingAddButton(false);
+  };
+
+  const generateNewPlan = async () => {
+    setLoadingGenerateButton(true);
+
+    setIsLoading(true);
+    const mealPlanData = await getMealPlan(mappedTimeFrame[0], 2222);
+
+    if (mealPlanData) {
+      setIsLoading(false);
+      dispatch(
+        setMealPlan({
+          mealPlanPerDay: mealPlanData,
+          selectedTargetCalories: 2222,
+        }),
+      );
+    }
+    setLoadingGenerateButton(false);
   };
 
   return (
@@ -97,7 +123,9 @@ export function MealPlanScreen() {
             mealPlan={mealPlan}
             key={'3'}
             onAddPress={addMealPlan}
-            isLoading={loadingButton}
+            isLoading={loadingAddButton}
+            isGenerateButtonLoading={loadingGenerateButton}
+            onGeneratePress={generateNewPlan}
           />
         )}
       </View>

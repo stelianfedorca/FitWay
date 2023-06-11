@@ -8,6 +8,13 @@ export interface Meal {
   readyInMinutes: number;
   sourceUrl: string;
   servings: number;
+  nutrition: {
+    nutrients: {
+      weightPerServing: {
+        amount: number;
+      };
+    };
+  };
 }
 
 // the meal plan for a day
@@ -75,6 +82,7 @@ export const mealPlanSlice = createSlice({
     setMealPlanPerDay: (state, action: PayloadAction<MealPlanDay>) => {
       state.mealPlanPerDay = action.payload;
     },
+
     reset: () => initialState,
   },
 });

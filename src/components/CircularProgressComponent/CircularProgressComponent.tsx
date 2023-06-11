@@ -17,6 +17,8 @@ export type CircularProgressComponentProps = {
   radius?: number;
   activeStrokeColorWidth?: number;
   duration?: number;
+  inactiveStrokeColor?: string;
+  inActiveStrokeWidth?: number;
 };
 
 export function CircularProgressComponent({
@@ -29,7 +31,10 @@ export function CircularProgressComponent({
   radius,
   activeStrokeColorWidth,
   duration,
+  inactiveStrokeColor,
+  inActiveStrokeWidth,
 }: CircularProgressComponentProps) {
+  console.log('circular: ', max);
   return (
     <Container>
       <TextTop color={activeStrokeColor}>{textTop}</TextTop>
@@ -39,10 +44,11 @@ export function CircularProgressComponent({
         radius={radius ?? 50}
         duration={duration ?? 500}
         progressValueColor="black"
-        maxValue={max ?? 500}
-        inActiveStrokeColor="#EDF1F9"
+        maxValue={max}
+        inActiveStrokeColor={inactiveStrokeColor ?? '#EDF1F9'}
         activeStrokeColor={activeStrokeColor}
         activeStrokeWidth={activeStrokeColorWidth ?? 10}
+        inActiveStrokeWidth={inActiveStrokeWidth ?? 10}
         title={progressTitle}
         titleFontSize={12}
         titleColor="#c3c4c7"

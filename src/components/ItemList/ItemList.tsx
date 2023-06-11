@@ -34,7 +34,7 @@ export function ItemList({ item, onPress }: ItemProps) {
           <View style={{ flexDirection: 'row' }}>
             <Text>{`${
               Math.round(item.food.nutrients.ENERC_KCAL) ?? '-'
-            } cal, `}</Text>
+            } calories / `}</Text>
             <Text>{`${100} g, `}</Text>
             <Text>{`${item.food.brand ?? '-'}`}</Text>
           </View>
