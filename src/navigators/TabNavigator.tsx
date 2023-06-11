@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { selectMealPlanPerDay } from '../redux/slices/mealPlanSlice';
 import { useMealPlanDetails } from '../hooks/useMealPlanDetails';
 import { SearchFoodScreen } from '../screens/searchfood';
+import { SavedMealPlansScreen } from '../screens/saved_meal_plans/SavedMealPlansScreen';
 
 export type HomeStackParams = {
   [Routes.Home]: undefined;
@@ -115,6 +116,7 @@ export function MealPlan() {
 
 export type ProfileStackParams = {
   [Routes.Profile]: undefined;
+  [Routes.SavedMealPlans]: undefined;
 };
 
 const ProfileStack = createNativeStackNavigator<ProfileStackParams>();
@@ -126,6 +128,10 @@ function Profile() {
         headerShown: false,
       }}>
       <ProfileStack.Screen name={Routes.Profile} component={ProfileScreen} />
+      <ProfileStack.Screen
+        name={Routes.SavedMealPlans}
+        component={SavedMealPlansScreen}
+      />
     </ProfileStack.Navigator>
   );
 }

@@ -14,9 +14,16 @@ type CellRowProps = {
   title: string;
   hasInput?: boolean;
   icon?: Partial<Icon>;
+  rightIcon?: boolean;
   onPress?: () => void;
 };
-export function CellRow({ title, hasInput, icon, onPress }: CellRowProps) {
+export function CellRow({
+  title,
+  hasInput,
+  icon,
+  rightIcon = true,
+  onPress,
+}: CellRowProps) {
   const [age, setAge] = useState(0);
   const Icon = icon;
   return (
@@ -51,9 +58,11 @@ export function CellRow({ title, hasInput, icon, onPress }: CellRowProps) {
           </Text>
         </>
       </View>
-      <TouchableOpacity style={{}}>
-        <MaterialIcons name="arrow-forward-ios" size={20} />
-      </TouchableOpacity>
+      {rightIcon && (
+        <TouchableOpacity style={{}}>
+          <MaterialIcons name="arrow-forward-ios" size={20} />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }

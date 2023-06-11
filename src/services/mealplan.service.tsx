@@ -6,8 +6,10 @@ import {
   MealPlanDetails,
   MealPlanWeek,
 } from '../redux/slices/mealPlanSlice';
+import { MealPlanDayFirestore } from '../types/types';
 import {
   DAY_PLAN_COLLECTION,
+  DIARY_COLLECTION,
   MEALS_COLLECTION,
   PLANS_COLLECTION,
   TimeFrame,
@@ -81,5 +83,35 @@ export async function addMealPlanToFirestore(
   } catch (error) {
     console.log(error);
     return false;
+  }
+}
+
+export async function getSavedMealPlansFirestore(
+  uid: string,
+): Promise<MealPlanDayFirestore[]> {
+  try {
+    const mealPlansQuerySnapshot = await firestore()
+      .collection(PLANS_COLLECTION)
+      .doc(uid)
+      .collection(DAY_PLAN_COLLECTION)
+      .get();
+
+    const data = mealPlansQuerySnapshot.docs.map(mealPlanDoc => {
+      const mealPlanDayData = mealPlanDoc.data() as MealPlanDayFirestore;
+      return mealPlanDayData;
+    });
+
+    // const data: MealPlanDayFirestore[] = [];
+
+    // mealPlansQuerySnapshot.docs.forEach(mealPlanDoc => {
+    //   console.log('doc: ', mealPlanDoc);
+    //   const mealPlanDayData = mealPlanDoc.data() as MealPlanDayFirestore;
+    //   data.push(mealPlanDayData);
+    // });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 }

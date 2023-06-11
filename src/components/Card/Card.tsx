@@ -1,4 +1,4 @@
-import { Pressable, Text, Image, View } from 'react-native';
+import { Pressable, Text, Image, View, TouchableOpacity } from 'react-native';
 import CircularProgress, {
   CircularProgressBase,
 } from 'react-native-circular-progress-indicator';
@@ -17,7 +17,7 @@ export function Card({ data }: CardProps) {
 
   const imageSource = data?.image ? { uri: data?.image } : FoodImage;
   return (
-    <Pressable
+    <TouchableOpacity
       style={{
         flex: 1,
         paddingRight: 10,
@@ -27,6 +27,7 @@ export function Card({ data }: CardProps) {
         paddingTop: 5,
         borderBottomWidth: 0.2,
       }}
+      onPress={() => console.log('ds')}
       key={data?.id}>
       <Image
         source={imageSource}
@@ -84,6 +85,6 @@ export function Card({ data }: CardProps) {
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }

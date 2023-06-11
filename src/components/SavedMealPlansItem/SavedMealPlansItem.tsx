@@ -10,20 +10,20 @@ import {
 import { MealPlanDay, MealPlanDetails } from '../../redux/slices/mealPlanSlice';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
-export type MealPlanItemProps = {
+export type SavedMealPlansItemProps = {
   mealPlan: MealPlanDay;
   mealPlanDetails: (MealPlanDetails | null)[];
   isLoading?: boolean;
   onAddPress?: () => void;
   style?: StyleProp<ViewStyle>;
 };
-export function MealPlanItem({
+export function SavedMealPlansItem({
   mealPlan,
   mealPlanDetails,
   isLoading,
   onAddPress,
   style,
-}: MealPlanItemProps) {
+}: SavedMealPlansItemProps) {
   return (
     <View
       style={[
@@ -87,9 +87,9 @@ export function MealPlanItem({
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
-          marginBottom: 20,
+          marginVertical: 10,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             paddingHorizontal: 20,
             paddingVertical: 10,
@@ -111,7 +111,7 @@ export function MealPlanItem({
           ) : (
             <Text style={{ color: 'white', fontWeight: '500' }}>Add plan</Text>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

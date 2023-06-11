@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { MealPlanDay, MealPlanDetails } from '../redux/slices/mealPlanSlice';
+import {
+  MealPlanDay,
+  MealPlanDetails,
+  setMealPlans,
+} from '../redux/slices/mealPlanSlice';
 import { getMealDetails } from '../services/mealplan.service';
 
 export function useMealPlanDetails(mealPlan: MealPlanDay) {
@@ -25,6 +29,7 @@ export function useMealPlanDetails(mealPlan: MealPlanDay) {
   useEffect(() => {
     memoizedMealPlanDetails.then(mealDetails => {
       setMealPlanDetails(mealDetails);
+      // dispatch(setMealPlans());
     });
   }, [mealPlan]);
 
