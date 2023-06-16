@@ -25,6 +25,14 @@ import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
+import { selectMealPlanPerDay } from '../redux/slices/mealPlanSlice';
+import { useMealPlanDetails } from '../hooks/useMealPlanDetails';
+import { SearchFoodScreen } from '../screens/searchfood';
+import { SavedMealPlansScreen } from '../screens/saved_meal_plans/SavedMealPlansScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { SavedMealPlansDayScreen } from '../screens/saved_meal_plans_day/SavedMealPlansDayScreen';
+import { SavedMealPlansWeekScreen } from '../screens/saved_meal_plans_week/SavedMealPlansWeekScreen';
 
 export type HomeStackParams = {
   [Routes.Home]: undefined;
@@ -45,14 +53,31 @@ function Home() {
 
 export type DiaryStackParams = {
   [Routes.Diary]: undefined;
+  [Routes.Search]: undefined;
 };
 
 const DiaryStack = createNativeStackNavigator<DiaryStackParams>();
 
 function Diary() {
   return (
-    <DiaryStack.Navigator screenOptions={{ headerShown: false }}>
+    <DiaryStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: 'white' },
+      }}>
       <DiaryStack.Screen name={Routes.Diary} component={DiaryScreen} />
+      <DiaryStack.Screen
+        name={Routes.Search}
+        component={SearchFoodScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'fullScreenModal',
+          animationTypeForReplace: 'push',
+          headerShown: false,
+          headerShadowVisible: false,
+          // headerLeft: () => <IconButton onPress={() => navigation.} icon="close"/>,
+        }}
+      />
     </DiaryStack.Navigator>
   );
 }
@@ -75,17 +100,18 @@ export function MealPlan() {
       <MealPlanStack.Screen
         name={Routes.MealPlan}
         component={MealPlanScreen}
-        options={{
-          header: ({ navigation }) => (
-            <View style={{ height: 80, backgroundColor: '#EDF1F9' }}>
-              <Pressable
-                onPress={() => navigation.goBack()}
-                style={{ position: 'absolute', top: 60, left: 15 }}>
-                <Ionicons name="chevron-back" size={36} color="#16277b" />
-              </Pressable>
-            </View>
-          ),
-        }}
+        options={{ headerShown: false }}
+        // options={{
+        //   header: ({ navigation }) => (
+        //     <View style={{ height: 80, backgroundColor: '#EDF1F9' }}>
+        //       <Pressable
+        //         onPress={() => navigation.goBack()}
+        //         style={{ position: 'absolute', top: 60, left: 15 }}>
+        //         <Ionicons name="chevron-back" size={36} color="#16277b" />
+        //       </Pressable>
+        //     </View>
+        //   ),
+        // }}
       />
     </MealPlanStack.Navigator>
   );
@@ -93,17 +119,24 @@ export function MealPlan() {
 
 export type ProfileStackParams = {
   [Routes.Profile]: undefined;
+  // [Routes.SavedMealPlans]: undefined;
 };
 
-const ProfileStack = createNativeStackNavigator<ProfileStackParams>();
+const ProfileStack = createBottomTabNavigator<ProfileStackParams>();
 
 function Profile() {
   return (
     <ProfileStack.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
+        tabBarIcon: () => <View />,
       }}>
       <ProfileStack.Screen name={Routes.Profile} component={ProfileScreen} />
+      {/* <ProfileStack.Screen
+        name={Routes.SavedMealPlans}
+        component={SavedMealPlans}
+      /> */}
     </ProfileStack.Navigator>
   );
 }

@@ -1,3 +1,5 @@
+import { FoodFirestore } from '../types/types';
+
 export type CalculatorProps = {
   weight: number;
   height: number;
@@ -34,7 +36,7 @@ const activityLevel: Record<ActivityLevelKeys, ActivityLevelMultiplier> = {
   'Very Active': { value: 1.9 },
 };
 
-export const getBMR = (
+export const calculateBMR = (
   weight: number,
   height: number,
   age: number,
@@ -49,24 +51,98 @@ export const getBMR = (
   return resultForFemale;
 };
 
-export const getTDEE = (
+export const calculateTDEE = (
   weight: number,
   height: number,
   age: number,
   gender: string,
   activityLevel: number,
 ) => {
-  const bmr = getBMR(weight, height, age, gender);
+  const bmr = calculateBMR(weight, height, age, gender);
   const tdee = Number((bmr * activityLevel).toFixed(0));
   return tdee;
 };
 
 export function getRemainingCalories(
   caloricIntake: number,
-  tdee?: number,
+  tdee: number,
   exercise?: number,
 ) {
-  if (tdee === undefined) return 0;
-
   return tdee - caloricIntake + (exercise ?? 0);
+}
+
+export function calculateBMI(weight: number, height: number) {
+  return (weight / (((height / 100) * height) / 100)).toFixed(1);
+}
+
+export function calculateCaloriesByServing(calories: number, quantity: number) {
+  return Math.round((quantity * calories) / 100);
+}
+
+export function calculateCalories(data: FoodFirestore[]): number {
+  const totalCalories =
+    data.length > 0
+      ? data.reduce((acc, currentItem) => {
+          return (
+            acc +
+            calculateCaloriesByServing(
+              currentItem.nutrition.calories,
+              currentItem.nutrition.servings.size,
+            )
+            // currentItem.nutrition.calories *
+            //   currentItem.nutrition.servings.number
+          );
+        }, 0)
+      : 0;
+
+  return Math.round(totalCalories);
+}
+export function calculateMacronutrientsByServing(
+  macronutrient: number,
+  quantity: number,
+) {
+  return Math.round((quantity * macronutrient) / 100);
+}
+
+// trb modificate
+export function calculateTotalFat(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.fat),
+        item.nutrition.servings.size,
+      )
+    );
+  }, 0);
+}
+export function calculateTotalProtein(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.protein),
+        item.nutrition.servings.size,
+      )
+    );
+  }, 0);
+}
+export function calculateTotalCarbs(diaryFood: FoodFirestore[]) {
+  return diaryFood.reduce((acc, item) => {
+    return (
+      acc +
+      calculateMacronutrientsByServing(
+        Number(item.nutrition.carbs),
+        item.nutrition.servings.size,
+      )
+    );
+  }, 0);
+}
+
+export function calculateGramsFromPercentage(
+  procent: number,
+  macroMultiplier: number,
+  calories: number,
+) {
+  return Math.round(((procent / 100) * calories) / macroMultiplier);
 }

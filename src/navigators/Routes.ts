@@ -1,12 +1,15 @@
 export enum Routes {
   // Home stack
   Home = 'HOME',
-  Diary = 'DIARY',
+  Diary = 'JOURNAL',
   CustomizeMealPlan = 'CUSTOMIZE_MEAL_PLAN',
   MealPlan = 'MEAL_PLAN',
   Profile = 'PROFILE',
   Search = 'SEARCH',
   Recommendation = 'RECOMMENDATION',
+  SavedMealPlans = 'SAVED_MEAL_PLANS',
+  SavedMealPlansDay = 'SAVED_MEAL_PLANS_DAY',
+  SavedMealPlansWeek = 'SAVED_MEAL_PLANS_WEEK',
 
   // Survey Stack
   Survey = 'SURVEY',
@@ -26,9 +29,14 @@ export enum Routes {
 export enum Tabs {
   Home = 'Home',
   Profile = 'Profile',
-  Diary = 'Diary',
+  Diary = 'Journal',
   MealPlan = 'Meal Plan',
   // FAB = 'FAB',
+}
+
+export enum TopTabs {
+  Day = 'Day',
+  Week = 'Week',
 }
 
 export enum Stacks {

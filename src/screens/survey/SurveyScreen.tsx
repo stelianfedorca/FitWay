@@ -1,48 +1,32 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import {
   ActivityIndicator,
-  Pressable,
-  ScrollView,
   StyleSheet,
-  TextInput,
-  TextInputProps,
-  TouchableHighlight,
   TouchableOpacity,
-  useWindowDimensions,
   View,
+  Text as TextRn,
 } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
-import Animated, {
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+
 import { InputRow } from '../../components/InputRow';
-import { ExpandedItem } from '../../components/InputRow/InputRow.style';
 import { Layout } from '../../components/Layout';
-import { Option } from '../../components/Option';
-import { Routes, Stacks } from '../../navigators/Routes';
+import { Routes } from '../../navigators/Routes';
+import { updateUserInFirestore } from '../../services/user.service';
 import {
-  createUserInFirestore,
-  updateUserInFirestore,
-} from '../../services/user.service';
-import { useAuthStore, useProfileStore } from '../../stores';
-import { getTDEE } from '../../utils/calculator';
-import { ACTIVITY_LEVEL, GENDER } from '../../utils/consts';
-import { HomeNavigationProp } from '../home/Home.types';
+  CARBS_PROCENTAGE,
+  FAT_PROCENTAGE,
+  GENDER,
+  PROTEIN_PROCENTAGE,
+} from '../../utils/consts';
 import {
   ButtonContainer,
   Container,
   PrimaryButton,
-  RowContainer,
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
-import auth from '@react-native-firebase/auth';
 import {
-  ProfileState,
   selectFirstName,
   setIsSurveyCompleted,
   setProfile,
@@ -51,7 +35,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 import axios from 'axios';
 import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
-import { LoadingScreen } from '../loading/LoadingScreen';
+
+import { RulerPicker } from 'react-native-ruler-picker';
+import { InputDropdown } from '../../components';
+import {
+  calculateGramsFromPercentage,
+  calculateTDEE,
+} from '../../utils/calculator';
 
 export type ActivityLevelProps = {
   id: number;
@@ -105,10 +95,10 @@ export type UserProfile = {
 export function SurveyScreen() {
   const dispatch = useDispatch();
   const [genderIndex, setGenderIndex] = useState(0);
-  const [age, setAge] = useState('');
-  const [startingWeight, setStartingWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [goalWeight, setGoalWeight] = useState('');
+  const [age, setAge] = useState(18);
+  const [weight, setWeight] = useState(70);
+  const [height, setHeight] = useState(180);
+  const [goalWeight, setGoalWeight] = useState(70);
   const [activityLevel, setActivityLevel] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -142,48 +132,70 @@ export function SurveyScreen() {
 
   async function handleContinue() {
     setLoading(true);
-    dispatch(setIsSurveyCompleted(true));
+    const tdee = calculateTDEE(
+      weight,
+      height,
+      age,
+      String(GENDER[genderIndex]),
+      activityLevelData[activityLevel].value,
+    );
 
-    await updateUserInFirestore(uid);
+    dispatch(
+      setProfile({
+        isSurveyCompleted: true,
+        age: String(age),
+        caloricIntake: 0,
+        height: String(height),
+        startingWeight: String(weight),
+        goalWeight: String(goalWeight),
+        activityLevel: String(activityLevelData[activityLevel].title),
+        gender: String(GENDER[genderIndex]),
+        tdee: tdee,
+        macros: {
+          fat: calculateGramsFromPercentage(FAT_PROCENTAGE, 9, tdee),
+          protein: calculateGramsFromPercentage(PROTEIN_PROCENTAGE, 4, tdee),
+          carbs: calculateGramsFromPercentage(CARBS_PROCENTAGE, 4, tdee),
+          carbsProcentage: CARBS_PROCENTAGE,
+          fatProcentage: FAT_PROCENTAGE,
+          proteinProcentage: PROTEIN_PROCENTAGE,
+        },
+      }),
+    );
+
+    await updateUserInFirestore(uid, { isSurveyCompleted: true });
     navigation.navigate(Routes.Loading);
     setLoading(false);
-
-    // setLoading(false);
-    // const tdee = getTDEE(
-    //   Number(startingWeight),
-    //   Number(height),
-    //   Number(age),
-    //   GENDER[genderIndex],
-    //   activityLevelData[activityLevel].value,
-    // );
-
-    // setProfile(updatedProfile);
-    // }
-    // setLoading(false);
-    // navigation.navigate(Stacks.Home);
   }
 
   return (
-    <Layout paddingBottom paddingTop>
+    <Layout paddingBottom paddingTop style={{ backgroundColor: '##a9a8a8' }}>
       <Container>
-        {/* <View style={{ flex: 1, borderWidth: 1 }}> */}
         <View
           style={{
-            height: 100,
+            height: 60,
             paddingHorizontal: 15,
-            justifyContent: 'center',
-            marginVertical: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          <Text
-            variant="titleMedium"
-            style={{ marginBottom: 10, color: '#668ecf', fontWeight: '600' }}>
+          <TextRn
+            style={{
+              marginBottom: 10,
+              color: 'black',
+              fontSize: 16,
+              fontWeight: '500',
+            }}>
             Gender
-          </Text>
-          <View style={{ flexDirection: 'row' }}>
+          </TextRn>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
             <TouchableOpacity
               style={{
                 width: 80,
-                height: 40,
+                // height: 40,
+                padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderTopLeftRadius: 10,
@@ -202,7 +214,7 @@ export function SurveyScreen() {
             <TouchableOpacity
               style={{
                 width: 80,
-                height: 40,
+                padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderLeftWidth: 0,
@@ -222,22 +234,84 @@ export function SurveyScreen() {
           </View>
         </View>
         <Divider bold />
-        <InputRow title="Age" value={age} onChangeText={setAge} />
+        <InputDropdown title="Age" value={age} unit="yo">
+          <RulerPicker
+            max={100}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={age}
+            shortStepHeight={10}
+            onValueChange={value => setAge(Number(value))}
+          />
+        </InputDropdown>
         <Divider bold />
-        <InputRow
-          title="Starting Weight"
-          value={startingWeight}
-          onChangeText={setStartingWeight}
-        />
-        <Divider bold />
-        <InputRow title="Height" value={height} onChangeText={setHeight} />
+        <InputDropdown title="Weight" value={weight} unit="kg">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={weight}
+            shortStepHeight={10}
+            onValueChange={value => setWeight(Number(value))}
+          />
+        </InputDropdown>
 
         <Divider bold />
-        <InputRow
-          title="Goal Weight"
-          value={goalWeight}
-          onChangeText={setGoalWeight}
-        />
+        <InputDropdown title="Height" value={height} unit="cm">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={height}
+            shortStepHeight={10}
+            onValueChange={value => setHeight(Number(value))}
+          />
+        </InputDropdown>
+
+        <Divider bold />
+
+        <InputDropdown title="Goal" value={goalWeight} unit="kg">
+          <RulerPicker
+            max={200}
+            min={14}
+            height={50}
+            indicatorHeight={25}
+            indicatorColor="#457ad7"
+            step={1}
+            unit=""
+            unitTextStyle={{ fontSize: 12 }}
+            valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
+            fractionDigits={0}
+            gapBetweenSteps={25}
+            initialValue={goalWeight}
+            shortStepHeight={10}
+            onValueChange={value => setGoalWeight(Number(value))}
+          />
+        </InputDropdown>
 
         <Divider bold />
         <InputRow
@@ -249,10 +323,9 @@ export function SurveyScreen() {
         />
 
         <Divider bold />
-        {/* </View> */}
 
-        <ButtonContainer>
-          <PrimaryButton onPress={handleContinue}>
+        <ButtonContainer style={{ padding: 10 }}>
+          <PrimaryButton onPress={handleContinue} style={styles.shadowButton}>
             {loading ? (
               <ActivityIndicator size="large" />
             ) : (
@@ -265,51 +338,14 @@ export function SurveyScreen() {
   );
 }
 
-// export const styles = StyleSheet.create({
-//   indicatorWrapper: {
-//     position: 'absolute',
-//     bottom: 34,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: indicatorWidth,
-//   },
-
-//   segmentIndicator: {
-//     height: indicatorHeight,
-//     backgroundColor: 'turquoise',
-//   },
-
-//   segment: {
-//     width: segmentWidth,
-//   },
-
-//   ageTextStyle: {
-//     fontSize: 42,
-//   },
-// });
-
-/*        <Animated.ScrollView
-          ref={scrollViewRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={snapSegment}
-          contentContainerStyle={{
-            justifyContent: 'flex-end',
-          }}
-          bounces={false}
-          scrollEventThrottle={16}
-          onScroll={scrollHandler}>
-          <Ruler />
-        </Animated.ScrollView>
-        <View
-          style={[
-            styles.indicatorWrapper,
-            { left: (width - indicatorWidth) / 2 },
-          ]}>
-          <TextInput
-            ref={textInputRef}
-            style={styles.ageTextStyle}
-            defaultValue={minAge.toString()}
-          />
-          <View style={[styles.segmentIndicator, styles.segment]} />
-        </View> */
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});

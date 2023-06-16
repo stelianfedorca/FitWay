@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
@@ -22,22 +22,29 @@ export function IntroductionScreen() {
       <View
         style={{
           flex: 1,
-          justifyContent: 'flex-start',
           alignItems: 'stretch',
+          justifyContent: 'center',
           marginHorizontal: 20,
           paddingTop: 150,
+          paddingBottom: 250,
         }}>
-        <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
-          Almost There!
-        </Text>
-        <Text
-          variant="bodyLarge"
-          style={{ marginTop: 15, textAlign: 'center' }}>
-          In order to proceed, we need a little more information about you.
-        </Text>
+        <View>
+          <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
+            Almost There!
+          </Text>
+          <Text
+            variant="bodyLarge"
+            style={{
+              marginTop: 15,
+              textAlign: 'center',
+              fontSize: 16,
+            }}>
+            In order to proceed, we need a little more information about you.
+          </Text>
+        </View>
 
         <ButtonsContainer>
-          <PrimaryButton onPress={handleContinue}>
+          <PrimaryButton onPress={handleContinue} style={styles.shadowButton}>
             <TitleButton>Continue</TitleButton>
           </PrimaryButton>
         </ButtonsContainer>
@@ -45,3 +52,14 @@ export function IntroductionScreen() {
     </Layout>
   );
 }
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});

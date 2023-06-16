@@ -14,7 +14,12 @@ import {
 import { login } from '../redux/slices/userSlice';
 
 import firestore from '@react-native-firebase/firestore';
-import { USERS_COLLECTION } from '../utils/consts';
+import {
+  DAILY_LOGS_COLLECTION,
+  DIARY_COLLECTION,
+  LOGS_COLLECTION,
+  USERS_COLLECTION,
+} from '../utils/consts';
 import {
   ProfileState,
   selectIsSurveyCompleted,
@@ -28,6 +33,8 @@ import AuthStack from '../navigators/AuthStack';
 import auth from '@react-native-firebase/auth';
 
 import database from '@react-native-firebase/database';
+import { FoodFirestore, User } from '../types/types';
+import { format } from 'date-fns';
 
 export function Root() {
   // const onAuthStateChanged = useAuthStore(state => state.onAuthStateChanged);
@@ -35,6 +42,7 @@ export function Root() {
   const survey = useSelector(selectIsSurveyCompleted);
 
   const currentUser = firebase.app().auth().currentUser;
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
 
   useEffect(() => {
     const subscriber = firebase
@@ -52,7 +60,7 @@ export function Root() {
           async function refreshProfile() {
             const userId = user?.uid;
             const userFound = await firestore()
-              .collection<Partial<ProfileState>>(USERS_COLLECTION)
+              .collection<Partial<User>>(USERS_COLLECTION)
               .doc(userId)
               .get();
             const data = userFound.data();
@@ -61,9 +69,24 @@ export function Root() {
               dispatch(
                 setProfile({
                   isSurveyCompleted: data.isSurveyCompleted ?? false,
-                  firstName: data.firstName ?? undefined,
-                  email: data.email ?? undefined,
-                  caloricIntake: data.caloricIntake ?? 0,
+                  firstName: data.firstName ?? '',
+                  email: data.email ?? '',
+                  caloricIntake: data.profile?.caloricIntake ?? 0,
+                  tdee: data.profile?.tdee ?? 0,
+                  macros: {
+                    carbs: data.profile?.macros?.carbs ?? 0,
+                    fat: data.profile?.macros?.fat ?? 0,
+                    protein: data.profile?.macros?.protein ?? 0,
+                    fatProcentage: data.profile?.macros?.fatProcentage ?? 0,
+                    proteinProcentage:
+                      data.profile?.macros?.proteinProcentage ?? 0,
+                    carbsProcentage: data.profile?.macros?.carbsProcentage ?? 0,
+                  },
+                  macrosIntake: data.profile?.macrosIntake ?? {
+                    fat: 0,
+                    carbs: 0,
+                    protein: 0,
+                  },
                 }),
               );
             }
@@ -83,24 +106,44 @@ export function Root() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
+  // useEffect(() => {
+  //   firestore()
+  //     .collection(DIARY_COLLECTION)
+  //     .doc(currentUser?.uid)
+  //     .collection(DAILY_LOGS_COLLECTION)
+  //     .doc(currentDate)
+  //     .collection(LOGS_COLLECTION)
+  //     .onSnapshot(documentSnapshot => {
+  //     });
+  // }, []);
+
   //FIXME:
   //PROBLEM: this listener is not updated on time
   // if I already signed up and then I log out and immediately I signed up again with another account,
   // the survey doesn't show up because it reads from firestore collection with the id from the previous account
 
   // listen to realtime updates on user document in firestore
-  // useEffect(() => {
-  //   firestore()
-  //     .collection(USERS_COLLECTION)
-  //     .doc(currentUser?.uid)
-  //     .onSnapshot(documentSnapshot => {
-  //       dispatch(
-  //         setIsSurveyCompleted({
-  //           isSurveyCompleted: documentSnapshot.data()?.isSurveyCompleted,
-  //         }),
-  //       );
-  //     });
-  // });
+  useEffect(() => {
+    if (currentUser?.uid) {
+      firestore()
+        .collection(USERS_COLLECTION)
+        .doc(currentUser?.uid)
+        .onSnapshot(documentSnapshot => {
+          const data = documentSnapshot.data() as User;
+          const macrosIntake = data.profile?.macrosIntake ?? {
+            fat: 0,
+            protein: 0,
+            carbs: 0,
+          };
+          dispatch(
+            setProfile({
+              caloricIntake: data.profile?.caloricIntake ?? 0,
+              macrosIntake: macrosIntake,
+            }),
+          );
+        });
+    }
+  }, [currentUser?.uid]);
 
   return (
     <PaperProvider>

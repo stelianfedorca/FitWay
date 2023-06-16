@@ -8,6 +8,13 @@ export interface Meal {
   readyInMinutes: number;
   sourceUrl: string;
   servings: number;
+  nutrition: {
+    nutrients: {
+      weightPerServing: {
+        amount: number;
+      };
+    };
+  };
 }
 
 // the meal plan for a day
@@ -24,22 +31,31 @@ export type MealPlanDay = {
 // the meal plan for a week
 export type MealPlanWeek = {};
 
+type Nutrient = {
+  name: string;
+  amount: number;
+  unit: string;
+  percentOfDailyNeeds: number;
+};
+
 export type MealPlanDetails = {
   sourceName?: string;
   title: string;
   id: number;
   image: string;
   readyInMinutes: number;
+  servings: number;
   nutrition: {
+    nutrients: Nutrient[];
     caloricBreakdown: {
       percentProtein: number;
       percentFat: number;
       percentCarbs: number;
     };
-  };
-  weightPerServing: {
-    amount: number;
-    unit: string;
+    weightPerServing: {
+      amount: number;
+      unit: string;
+    };
   };
   diets: string[];
   dishTypes: string[];
@@ -48,6 +64,7 @@ export type MealPlanDetails = {
 export interface MealPlanState {
   mealPlanPerDay?: MealPlanDay;
   mealPlanPerWeek?: MealPlanWeek;
+  selectedTargetCalories?: number;
 }
 
 const initialState: Partial<MealPlanState> = {};
@@ -63,9 +80,9 @@ export const mealPlanSlice = createSlice({
       };
     },
     setMealPlanPerDay: (state, action: PayloadAction<MealPlanDay>) => {
-      console.log('in action: ', action.payload);
       state.mealPlanPerDay = action.payload;
     },
+
     reset: () => initialState,
   },
 });

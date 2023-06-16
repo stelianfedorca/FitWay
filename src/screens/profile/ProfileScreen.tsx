@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageBackground, Pressable, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import {
   Avatar,
   Button,
@@ -19,25 +25,39 @@ import {
   styles,
 } from './ProfileScreen.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { CellRow } from '../../components/CellRow';
 import { useAuthStore } from '../../stores';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/slices/userSlice';
+import { logout, selectUid } from '../../redux/slices/userSlice';
 
 import { signOut } from '../../services/user.service';
 import { selectProfile } from '../../redux/slices/profileSlice';
 import { reset } from '../../redux/slices/mealPlanSlice';
+import { calculateBMI } from '../../utils/calculator';
+import { useNavigation } from '@react-navigation/native';
+import { ProfileScreenNavigationProp } from './ProfileScreen.types';
+import { Routes } from '../../navigators';
+import { useSavedMealPlans } from '../../hooks/useSavedMealPlans';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   async function handleSignOut() {
     signOut();
     dispatch(logout());
     dispatch(reset());
   }
+
+  function handleEditGoalsPress() {}
+
+  function handleMealPlansPress() {
+    navigation.navigate(Routes.SavedMealPlans);
+  }
   return (
-    <Layout style={styles.layout} paddingTop>
+    <Layout style={[styles.layout, { backgroundColor: 'white' }]} paddingTop>
       <Container alwaysBounceVertical={false}>
         <ProfileDetailsContainer>
           <Image
@@ -72,7 +92,7 @@ export function ProfileScreen() {
               {profile.email}
             </Text>
           </DetailsContainer>
-          <IconButton
+          {/* <IconButton
             icon="pen"
             style={{
               position: 'absolute',
@@ -82,26 +102,45 @@ export function ProfileScreen() {
             }}
             size={20}
             onPress={() => console.log('edit')}
-          />
+          /> */}
         </ProfileDetailsContainer>
-        <ContentContainer>
+        <View style={{ flex: 1 }}>
+          <ScrollView></ScrollView>
+        </View>
+        {/* <ContentContainer>
           <Chip
             icon="information"
             mode="outlined"
             style={{ height: 40, backgroundColor: '#EDF1F9' }}
             onPress={() => console.log('Pressed')}>
-            BMI: 24.82
+            BMI: {calculateBMI(75, 180)}
           </Chip>
           <Chip
             icon="information"
             mode="outlined"
             style={{ height: 40, backgroundColor: '#EDF1F9' }}
             onPress={() => console.log('Pressed')}>
-            TDEE: 2239 kCal
+            TDEE: {profile.tdee} kcal
           </Chip>
-        </ContentContainer>
+        </ContentContainer> */}
         <SettingsContainer>
-          <CellRow title="Log Out" onPress={handleSignOut} />
+          {/* <CellRow
+            title="Edit goals"
+            onPress={handleEditGoalsPress}
+            icon={<FontAwesome name="edit" size={24} color="#4659b8" />}
+          /> */}
+          <CellRow
+            title="Meal plans"
+            onPress={handleMealPlansPress}
+            icon={<Ionicons name="ios-newspaper" size={24} color="#4659b8" />}
+          />
+
+          <CellRow
+            title="Log Out"
+            onPress={handleSignOut}
+            icon={<MaterialIcons name="logout" size={24} color="#4659b8" />}
+            rightIcon={false}
+          />
         </SettingsContainer>
       </Container>
     </Layout>

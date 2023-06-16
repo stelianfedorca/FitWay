@@ -1,4 +1,4 @@
-import { Text, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions } from 'react-native';
 import { Layout } from '../../components/Layout';
 import {
   Container,
@@ -21,39 +21,45 @@ import { useNavigation } from '@react-navigation/native';
 import { SurveyScreenNavigationProp } from '../survey/SurveyScreen.types';
 import { Stacks } from '../../navigators/Routes';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectProfile, setTdee } from '../../redux/slices/profileSlice';
+import { calculateTDEE } from '../../utils/calculator';
 import {
-  selectCaloriesGoals,
-  selectTdee,
-  setProfile,
-  setTdee,
-} from '../../redux/slices/profileSlice';
-import { getTDEE } from '../../utils/calculator';
+  updateProfileInFiresotore,
+  updateUserInFirestore,
+} from '../../services/user.service';
+
+import auth from '@react-native-firebase/auth';
+import { selectUid } from '../../redux/slices/userSlice';
 
 export function LoadingScreen() {
   // useCalories();
-
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
+  const profile = useSelector(selectProfile);
   const navigation = useNavigation<SurveyScreenNavigationProp>();
   const [isButtonShowing, setIsButtonShowing] = useState(false);
   const textOpacity = useSharedValue(0);
 
-  const caloriesGoals = useSelector(selectCaloriesGoals);
-  const tdee = useSelector(selectTdee);
+  console.log('profile: ', profile);
+
+  // const userId = auth().currentUser?.uid;
+
+  const uid = useSelector(selectUid);
 
   useEffect(() => {
     textOpacity.value = withTiming(1, { duration: 1300 });
   }, []);
 
-  useEffect(() => {
-    dispatch(setTdee(getTDEE(79, 179, 23, 'male', 2)));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setTdee(calculateTDEE(70, 180, 18, 'male', 1)));
+  // }, []);
 
   const textAnimatedStyle = useAnimatedStyle(() => {
     return { opacity: textOpacity.value };
   });
 
-  function handleContinuePress() {
+  async function handleContinuePress() {
+    await updateProfileInFiresotore(uid, profile);
     navigation.replace(Stacks.Home);
   }
 
@@ -68,7 +74,8 @@ export function LoadingScreen() {
           <AnimatedPrimaryButton
             entering={FadeIn.delay(200)}
             exiting={FadeOut}
-            onPress={handleContinuePress}>
+            onPress={handleContinuePress}
+            style={styles.shadowButton}>
             <TextContinue>Continue</TextContinue>
           </AnimatedPrimaryButton>
         )}
@@ -76,3 +83,15 @@ export function LoadingScreen() {
     </Layout>
   );
 }
+
+export const styles = StyleSheet.create({
+  shadowButton: {
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+  },
+});

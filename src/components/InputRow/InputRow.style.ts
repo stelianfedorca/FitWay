@@ -6,4 +6,5 @@ export const ExpandedItem = styled(Pressable)`
   /* height: 80px; */
   padding-left: 15px;
   padding-right: 30px;
+  overflow: hidden;
 `;

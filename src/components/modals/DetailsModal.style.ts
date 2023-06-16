@@ -31,10 +31,11 @@ export const QuantityContainer = styled(View)`
 `;
 
 export const QuantityValueContainer = styled(View)`
+  flex-direction: row;
   width: 60px;
   padding: 5px;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   border-width: 1px;
   border-radius: 5px;
 `;
@@ -62,7 +63,7 @@ export const MacrosItem = styled(View)`
 
 export const styles = StyleSheet.create({
   container: {
-    height: 350,
+    height: 450,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',

@@ -1,15 +1,24 @@
-import { RAPIDAPI_HOST, RAPIDAPI_KEY } from '@env';
+import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
+import firestore from '@react-native-firebase/firestore';
 import axios from 'axios';
 import {
   MealPlanDay,
   MealPlanDetails,
   MealPlanWeek,
 } from '../redux/slices/mealPlanSlice';
-import { TimeFrame } from '../utils/consts';
+import { MealPlanDayFirestore } from '../types/types';
+import {
+  DAY_PLAN_COLLECTION,
+  DIARY_COLLECTION,
+  MEALS_COLLECTION,
+  PLANS_COLLECTION,
+  TimeFrame,
+} from '../utils/consts';
 
 export const getMealPlan = async (
   timeFrame: TimeFrame,
   caloricTarget: number,
+  dietType?: string,
 ): Promise<MealPlanDay | null> => {
   try {
     const res = await axios.get(
@@ -22,6 +31,7 @@ export const getMealPlan = async (
         params: {
           timeFrame: timeFrame,
           targetCalories: caloricTarget,
+          diet: dietType ?? '',
         },
       },
     );
@@ -37,7 +47,6 @@ export const getMealDetails = async (
   id: number,
 ): Promise<MealPlanDetails | null> => {
   try {
-    console.log('...@@@');
     const res = await axios.get(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
       {
@@ -56,3 +65,53 @@ export const getMealDetails = async (
     return null;
   }
 };
+
+export async function addMealPlanToFirestore(
+  userId: string,
+  meal: MealPlanDay,
+) {
+  try {
+    const data = await firestore()
+      .collection(PLANS_COLLECTION)
+      .doc(userId)
+      .collection(DAY_PLAN_COLLECTION)
+      .add(meal);
+
+    if (data) return true;
+
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function getSavedMealPlansFirestore(
+  uid: string,
+): Promise<MealPlanDayFirestore[]> {
+  try {
+    const mealPlansQuerySnapshot = await firestore()
+      .collection(PLANS_COLLECTION)
+      .doc(uid)
+      .collection(DAY_PLAN_COLLECTION)
+      .get();
+
+    const data = mealPlansQuerySnapshot.docs.map(mealPlanDoc => {
+      const mealPlanDayData = mealPlanDoc.data() as MealPlanDayFirestore;
+      return mealPlanDayData;
+    });
+
+    // const data: MealPlanDayFirestore[] = [];
+
+    // mealPlansQuerySnapshot.docs.forEach(mealPlanDoc => {
+    //   console.log('doc: ', mealPlanDoc);
+    //   const mealPlanDayData = mealPlanDoc.data() as MealPlanDayFirestore;
+    //   data.push(mealPlanDayData);
+    // });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}

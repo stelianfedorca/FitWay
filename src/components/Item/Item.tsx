@@ -30,10 +30,11 @@ interface IconTypeProps {
 export type ItemProps = {
   horizontal?: boolean;
   title: string;
-  icon: string;
+  icon?: string;
   progressTitle: string;
   progressValue: number;
   max?: number;
+  food?: number;
 };
 // icon: React.ComponentProps<typeof Ionicons>['name'];
 
@@ -44,8 +45,14 @@ export function Item({
   progressTitle,
   progressValue,
   max,
+  food,
 }: ItemProps) {
   const profile = useProfileStore(state => state.profile);
+
+  function progressValueFormater(value: number) {
+    'worklet';
+    return Math.round(2170 - value);
+  }
 
   return (
     <>
@@ -57,7 +64,7 @@ export function Item({
           ]}>
           <HeaderContainer>
             <TitleHeader>{title}</TitleHeader>
-            <Ionicons name={icon} size={24} color="#465cc9" />
+            {icon && <Ionicons name={icon} size={24} color="#465cc9" />}
           </HeaderContainer>
           <ProgressContainer>
             <ProgressValue>{progressValue}</ProgressValue>
@@ -76,7 +83,7 @@ export function Item({
               </SubTitleHeader>
             </View>
 
-            <Ionicons name={icon} size={24} color="#465cc9" />
+            {icon && <Ionicons name={icon} size={24} color="#465cc9" />}
           </HeaderContainer>
           <InfoContainer>
             <CircularProgress
@@ -98,18 +105,19 @@ export function Item({
                 fontSize: 22,
                 fontWeight: '500',
               }}
+              // progressFormatter={progressValueFormater}
               clockwise={false}
             />
             <DetailsContainer>
               <ItemDetails
                 title="Base Goal"
-                value={profile?.tdee ?? 0}
+                value={max ?? 0}
                 icon="flag"
                 iconColor="grey"
               />
               <ItemDetails
                 title="Food"
-                value={profile?.food ?? 0}
+                value={food ?? 0}
                 icon="fastfood"
                 iconColor="#465cc9"
               />

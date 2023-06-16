@@ -10,10 +10,18 @@ import { IntroductionScreen } from '../screens/survey';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { SearchFoodScreen } from '../screens/searchfood';
 import { SearchRecommendation } from '../screens/searchfood';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectIsSurveyCompleted } from '../redux/slices/profileSlice';
 import { selectUid } from '../redux/slices/userSlice';
 import { selectLoading } from '../redux/slices/loadingSlice';
+import { IconButton } from 'react-native-paper';
+import { useDiary } from '../hooks/useDiary';
+import { format } from 'date-fns';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { SavedMealPlansDayScreen } from '../screens/saved_meal_plans_day/SavedMealPlansDayScreen';
+import { SavedMealPlansWeekScreen } from '../screens/saved_meal_plans_week/SavedMealPlansWeekScreen';
+import { selectCurrentDate, setCurrentDate } from '../redux/slices/dateSlice';
+import { isEmpty } from '../screens/searchfood/SearchFoodScreen';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -45,25 +53,56 @@ export type RootStackParams = {
   [Stacks.Survey]: undefined;
   [Routes.Search]: undefined;
   [Routes.Recommendation]: undefined;
+  [Routes.SavedMealPlans]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
+export type SavedMealPlansStackParams = {
+  [Routes.SavedMealPlansDay]: undefined;
+  [Routes.SavedMealPlansWeek]: undefined;
+};
+
+const SavedMealPlansTabs = createMaterialTopTabNavigator();
+
+function SavedMealPlansTabsScreen() {
+  return (
+    <SavedMealPlansTabs.Navigator screenOptions={{}}>
+      <SavedMealPlansTabs.Screen
+        name={Routes.SavedMealPlansDay}
+        component={SavedMealPlansDayScreen}
+        options={{ tabBarLabel: 'Day' }}
+      />
+      <SavedMealPlansTabs.Screen
+        name={Routes.SavedMealPlansWeek}
+        component={SavedMealPlansWeekScreen}
+        options={{ tabBarLabel: 'Week' }}
+      />
+    </SavedMealPlansTabs.Navigator>
+  );
+}
+
 const HomeStack = () => {
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
+  const currentSelectedDate = useSelector(selectCurrentDate);
+  useDiary(isEmpty(currentSelectedDate) ? currentDate : currentSelectedDate);
   const user = useSelector(selectUid);
   const isSurveyCompleted = useSelector(selectIsSurveyCompleted);
-  const loadingState = useSelector(selectLoading);
   const [showSurvey] = useState(!isSurveyCompleted);
+  const dispatch = useDispatch();
 
-  // const [showSurvey, setShowSurvey] = useState(false);
-  // useLayoutEffect(() => {
-  //   setShowSurvey(!isSurveyCompleted);
-  // }, [isSurveyCompleted]);
+  useEffect(() => {
+    dispatch(
+      setCurrentDate(
+        isEmpty(currentSelectedDate) ? currentDate : currentSelectedDate,
+      ),
+    );
+  });
 
   return (
     <Stack.Navigator
       screenOptions={{
-        animationTypeForReplace: user ? 'push' : 'pop',
+        // animationTypeForReplace: user ? 'push' : 'pop',
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}>
@@ -73,8 +112,12 @@ const HomeStack = () => {
         name={Routes.Search}
         component={SearchFoodScreen}
         options={{
-          headerShown: true,
+          animation: 'slide_from_bottom',
+          presentation: 'fullScreenModal',
+          animationTypeForReplace: 'push',
+          headerShown: false,
           headerShadowVisible: false,
+          // headerLeft: () => <IconButton onPress={() => navigation.} icon="close"/>,
         }}
       />
       <Stack.Screen
@@ -83,6 +126,15 @@ const HomeStack = () => {
         options={{
           headerShown: true,
           headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={Routes.SavedMealPlans}
+        component={SavedMealPlansTabsScreen}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+          headerTitle: 'Meal Plans',
         }}
       />
     </Stack.Navigator>

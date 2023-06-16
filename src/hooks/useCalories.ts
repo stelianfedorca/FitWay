@@ -35,8 +35,6 @@ export function useCalories() {
           },
         },
       );
-
-      console.log(res.data);
     }
 
     generateGoals();
