@@ -1,15 +1,13 @@
 import {
-  View,
+  ActivityIndicator,
+  Keyboard,
+  Pressable,
   Text,
   TextInput,
-  Keyboard,
-  KeyboardEventName,
-  Pressable,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { useFoodStore } from '../../stores';
 import { CircularProgressComponent } from '../CircularProgressComponent';
 import {
   ContentContainer,
@@ -26,33 +24,27 @@ import {
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
+import { format } from 'date-fns';
+import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { addMeal, MealData } from '../../services/meals.service';
-import { useEffect, useState } from 'react';
-import { FoodType } from '../../stores/food';
 import { useSelector } from 'react-redux';
+import { selectCurrentDate } from '../../redux/slices/dateSlice';
 import { selectFood } from '../../redux/slices/foodSlice';
-import { FoodFirestore, Product } from '../../types/types';
-import { addFoodToDiary } from '../../services/food.service';
 import {
   selectCaloricIntake,
   selectMacrosIntake,
-  selectProfile,
 } from '../../redux/slices/profileSlice';
 import { selectUid } from '../../redux/slices/userSlice';
-import { Option } from '../Option';
+import { addFoodToDiary } from '../../services/food.service';
 import {
   updateCaloriesIntake,
   updateMacrosIntake,
 } from '../../services/user.service';
-import { Accordion, AccordionItem } from '../Accordion/Accordion';
-import { useFocusEffect } from '@react-navigation/native';
+import { FoodFirestore, Product } from '../../types/types';
 import {
   calculateCaloriesByServing,
   calculateMacronutrientsByServing,
 } from '../../utils/calculator';
-import { selectCurrentDate } from '../../redux/slices/dateSlice';
-import { format } from 'date-fns';
 
 export type DetailsModalProps = {
   selectedFood?: Product;

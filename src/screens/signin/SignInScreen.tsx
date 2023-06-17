@@ -1,37 +1,32 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
-import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   ImageBackground,
   Keyboard,
   Pressable,
   ScrollView,
+  Text,
   useWindowDimensions,
   View,
-  Text,
 } from 'react-native';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SignInBackgroundImage } from '../../assets/images';
 import {
-  Title,
-  TextButton,
-  StyledInput,
-  SignInButton,
-  SubTitle,
-  TitleContainer,
-  SubTitleContainer,
-  TitleButton,
-  TextError,
-  Container,
-  SignUpButton,
-  TitleSignUp,
+  BottomTextContainer,
   Link,
   LinkText,
-  BottomTextContainer,
+  SignInButton,
+  StyledInput,
   styles,
+  SubTitle,
+  SubTitleContainer,
+  TextError,
+  TitleButton,
+  TitleContainer,
 } from './SignInScreen.style';
 import { SignInForm, SignInScreenNavigationProp } from './SignInScreen.types';
 
@@ -39,18 +34,11 @@ import { Layout } from '../../components/Layout';
 import { SignInSchema } from './SignInScreen.schema';
 
 import auth from '@react-native-firebase/auth';
-import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useAuthStore, useProfileStore } from '../../stores';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, selectEmail } from '../../redux/slices/userSlice';
-import { selectLoading } from '../../redux/slices/loadingSlice';
-import { setLoading as setLoadingState } from '../../redux/slices/loadingSlice';
-import {
-  selectIsSurveyCompleted,
-  selectProfile,
-  setIsSurveyCompleted,
-} from '../../redux/slices/profileSlice';
+import { useDispatch } from 'react-redux';
+import { Routes } from '../../navigators';
+import { setIsSurveyCompleted } from '../../redux/slices/profileSlice';
+import { login } from '../../redux/slices/userSlice';
 
 export function SignInScreen() {
   const { height } = useWindowDimensions();

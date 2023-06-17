@@ -3,15 +3,20 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
+  Text as TextRn,
   TouchableOpacity,
   View,
-  Text as TextRn,
 } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { RAPIDAPI_HOST, RAPIDAPI_KEY } from '@env';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators/Routes';
+import { selectFirstName, setProfile } from '../../redux/slices/profileSlice';
+import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 import { updateUserInFirestore } from '../../services/user.service';
 import {
   CARBS_PROCENTAGE,
@@ -26,15 +31,6 @@ import {
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
-import {
-  selectFirstName,
-  setIsSurveyCompleted,
-  setProfile,
-} from '../../redux/slices/profileSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectEmail, selectUid } from '../../redux/slices/userSlice';
-import axios from 'axios';
-import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
 
 import { RulerPicker } from 'react-native-ruler-picker';
 import { InputDropdown } from '../../components';

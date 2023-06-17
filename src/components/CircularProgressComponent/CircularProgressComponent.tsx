@@ -5,7 +5,6 @@ import {
 } from './CircularProgressComponent.style';
 
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { Badge } from 'react-native-paper';
 
 export type CircularProgressComponentProps = {
   textTop?: string;

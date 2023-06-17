@@ -1,34 +1,26 @@
+import { useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import {
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
-import { Badge, Card, InputDropdown, PrimaryButton } from '../../components';
-import { InputRow } from '../../components/InputRow';
+  InputDropdown,
+  Option,
+  OptionGroup,
+  PrimaryButton,
+} from '../../components';
 import { Layout } from '../../components/Layout';
-import { Option, OptionGroup } from '../../components';
 import { ButtonTitle, styles, Title } from './CustomizeMealPlanScreen.style';
-import { useEffect, useState } from 'react';
 
 import { Slider } from '@miblanchard/react-native-slider';
-import Animated, { FadeIn } from 'react-native-reanimated';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { MealPlanScreenNavigationProp } from './MealPlan.types';
-import { TimeFrame } from '../../utils/consts';
-import { Routes } from '../../navigators';
-import { useProfileStore } from '../../stores';
-import { getMealPlan } from '../../services/mealplan.service';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setMealPlan,
-  setMealPlanPerDay,
-} from '../../redux/slices/mealPlanSlice';
-import { selectTdee } from '../../redux/slices/profileSlice';
 import { Divider } from 'react-native-paper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes } from '../../navigators';
+import { setMealPlan } from '../../redux/slices/mealPlanSlice';
+import { selectTdee } from '../../redux/slices/profileSlice';
+import { getMealPlan } from '../../services/mealplan.service';
+import { TimeFrame } from '../../utils/consts';
+import { MealPlanScreenNavigationProp } from './MealPlan.types';
 
 export const mappedTimeFrame: Record<number, TimeFrame> = {
   0: 'day',
@@ -66,13 +58,6 @@ export function CustomizeMealPlanScreen() {
       navigation.navigate(Routes.MealPlan);
     }
   }
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' },
-  ]);
 
   function handleTimeOption() {}
   return (

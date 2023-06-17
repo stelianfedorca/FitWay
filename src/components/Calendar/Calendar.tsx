@@ -1,11 +1,5 @@
 import { format } from 'date-fns';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   GestureResponderEvent,
@@ -14,11 +8,8 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import Animated, { ZoomIn } from 'react-native-reanimated';
 import { Pill } from '../Pill/Pill';
 
-import { CarouselRenderItem } from 'react-native-reanimated-carousel/lib/typescript/types';
-import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentDate,

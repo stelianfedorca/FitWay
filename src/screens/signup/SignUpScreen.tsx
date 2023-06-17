@@ -1,20 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import auth from '@react-native-firebase/auth';
 
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   ImageBackground,
   Pressable,
-  ScrollView,
-  TextInput,
-  useWindowDimensions,
-  View,
   Text,
+  TextInput,
+  View,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SignUpBackgroundImage } from '../../assets/images';
+import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
 import { SignUpSchema } from './SignUpScreen.schema';
 import {
@@ -22,21 +22,16 @@ import {
   HeaderContainer,
   HeaderTitle,
   Link,
-  NextButton,
   SignInContainer,
   SignUpButton,
   StyledInput,
   styles,
   SubTitle,
-  TextButton,
   TextError,
   TextLink,
-  Title,
   TitleButton,
 } from './SignUpScreen.style';
 import { SignUpForm, SignUpScreenNavigationProp } from './SignUpScreen.types';
-import { SignUpBackgroundImage } from '../../assets/images';
-import { Layout } from '../../components/Layout';
 
 import { useDispatch } from 'react-redux';
 import { createUserInFirestore } from '../../services/user.service';

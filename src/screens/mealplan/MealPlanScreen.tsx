@@ -1,45 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { ItemStatistics } from '../../components/ItemStatistics';
-import {
-  Card,
-  CircularProgressComponent,
-  GenericList,
-  Badge,
-  PrimaryButton,
-} from '../../components';
 import { Layout } from '../../components/Layout';
+import { MealPlanItem } from '../../components/MealPlanItem/MealPlanItem';
+import { useMealPlanDetails } from '../../hooks/useMealPlanDetails';
 import {
-  MealPlanDetails,
   selectMealPlanPerDay,
   setMealPlan,
 } from '../../redux/slices/mealPlanSlice';
-import { styles, Title } from './MealPlanScreen.style';
-import { useMealPlanDetails } from '../../hooks/useMealPlanDetails';
-import { Divider, IconButton } from 'react-native-paper';
-import { ProgressBar } from '../../components/ProgressBar';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { MealPlanItem } from '../../components/MealPlanItem/MealPlanItem';
-import { useNavigation } from '@react-navigation/native';
-import { MealPlanScreenNavigationProp } from './MealPlan.types';
 import { selectUid } from '../../redux/slices/userSlice';
 import {
   addMealPlanToFirestore,
   getMealPlan,
 } from '../../services/mealplan.service';
+import { MealPlanScreenNavigationProp } from './MealPlan.types';
+import { Title } from './MealPlanScreen.style';
 
-import Toast from 'react-native-toast-message';
-import { Routes } from '../../navigators';
 import { mappedTimeFrame } from './CustomizeMealPlanScreen';
 
 export function MealPlanScreen() {

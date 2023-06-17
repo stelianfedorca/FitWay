@@ -1,46 +1,28 @@
 import React from 'react';
-import {
-  Image,
-  ImageBackground,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
-import {
-  Avatar,
-  Button,
-  Chip,
-  FAB,
-  IconButton,
-  Text,
-} from 'react-native-paper';
-import { AvatarProfile, ProfileBackgroundImage } from '../../assets/images';
+import { Image, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { AvatarProfile } from '../../assets/images';
+import { CellRow } from '../../components/CellRow';
 import { Layout } from '../../components/Layout';
+import { logout } from '../../redux/slices/userSlice';
 import {
   Container,
-  ContentContainer,
   DetailsContainer,
   ProfileDetailsContainer,
   SettingsContainer,
   styles,
 } from './ProfileScreen.style';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { CellRow } from '../../components/CellRow';
-import { useAuthStore } from '../../stores';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout, selectUid } from '../../redux/slices/userSlice';
 
-import { signOut } from '../../services/user.service';
-import { selectProfile } from '../../redux/slices/profileSlice';
-import { reset } from '../../redux/slices/mealPlanSlice';
-import { calculateBMI } from '../../utils/calculator';
 import { useNavigation } from '@react-navigation/native';
-import { ProfileScreenNavigationProp } from './ProfileScreen.types';
 import { Routes } from '../../navigators';
-import { useSavedMealPlans } from '../../hooks/useSavedMealPlans';
-import { Option } from '../../components';
+import { reset } from '../../redux/slices/mealPlanSlice';
+import { selectProfile } from '../../redux/slices/profileSlice';
+import { signOut } from '../../services/user.service';
+import { calculateBMI } from '../../utils/calculator';
+import { ProfileScreenNavigationProp } from './ProfileScreen.types';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);

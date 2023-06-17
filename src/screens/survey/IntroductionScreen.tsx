@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
 import {
