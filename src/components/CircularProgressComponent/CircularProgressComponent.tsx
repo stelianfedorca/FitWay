@@ -34,7 +34,6 @@ export function CircularProgressComponent({
   inactiveStrokeColor,
   inActiveStrokeWidth,
 }: CircularProgressComponentProps) {
-  console.log('circular: ', max);
   return (
     <Container>
       <TextTop color={activeStrokeColor}>{textTop}</TextTop>

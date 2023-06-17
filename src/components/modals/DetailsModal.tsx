@@ -90,9 +90,6 @@ export function DetailsModal({
     servingSize,
   );
 
-  console.log('total: ', total);
-  console.log('sleec: ', selectedFood.food.label);
-
   const handleAddFood = async () => {
     setIsLoading(true);
     const food: FoodFirestore = {

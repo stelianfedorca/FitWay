@@ -4,9 +4,10 @@ import {
   Touchable,
   TouchableOpacity,
   View,
+  Text,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Text, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 

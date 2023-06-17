@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
@@ -82,7 +82,7 @@ export const HeaderContainer = styled(View)`
 `;
 export const HeaderTitle = styled(Text)`
   font-weight: 500;
-  /* font-size: 40px; */
+  font-size: 30px;
 `;
 export const styles = StyleSheet.create({
   shadowButton: {

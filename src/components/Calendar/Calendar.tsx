@@ -110,8 +110,8 @@ export function Calendar({ onPress, style }: CalendarProps) {
         bounces={false}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={31}
-        snapToAlignment="center"
-        pagingEnabled
+        snapToAlignment="start"
+        // pagingEnabled
         // onLayout={() =>
         //   flatlistRef.current?.scrollToOffset({ offset: 11, animated: false })
         // }

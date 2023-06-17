@@ -44,8 +44,8 @@ export function SearchFoodScreen() {
   const [isVisible, setIsVisible] = useState(false);
 
   function handleItemPress(item: Product) {
-    setIsVisible(!isVisible);
     dispatch(setFood(item));
+    setIsVisible(!isVisible);
   }
 
   function goBack() {

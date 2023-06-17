@@ -71,8 +71,22 @@ export function getRemainingCalories(
   return tdee - caloricIntake + (exercise ?? 0);
 }
 
+export function getBMICategory(bmi: number) {
+  if (bmi < 18.5) return 'UnderWeight';
+  if (bmi >= 18.5 && bmi <= 24.9) return 'Normal';
+  if (bmi >= 25 && bmi <= 29.9) return 'Overweight';
+
+  return 'Obesity';
+}
+
 export function calculateBMI(weight: number, height: number) {
-  return (weight / (((height / 100) * height) / 100)).toFixed(1);
+  const bmiValue = (weight / (((height / 100) * height) / 100)).toFixed(1);
+  const bmiCategory = getBMICategory(Number(bmiValue));
+
+  return {
+    bmiValue: bmiValue,
+    bmiCategory: bmiCategory,
+  };
 }
 
 export function calculateCaloriesByServing(calories: number, quantity: number) {
@@ -89,8 +103,6 @@ export function calculateCalories(data: FoodFirestore[]): number {
               currentItem.nutrition.calories,
               currentItem.nutrition.servings.size,
             )
-            // currentItem.nutrition.calories *
-            //   currentItem.nutrition.servings.number
           );
         }, 0)
       : 0;
@@ -146,3 +158,5 @@ export function calculateGramsFromPercentage(
 ) {
   return Math.round(((procent / 100) * calories) / macroMultiplier);
 }
+
+export function getBMI() {}

@@ -10,6 +10,7 @@ import {
   ScrollView,
   useWindowDimensions,
   View,
+  Text,
 } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -41,7 +42,6 @@ import auth from '@react-native-firebase/auth';
 import { Routes } from '../../navigators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuthStore, useProfileStore } from '../../stores';
-import { Text, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, selectEmail } from '../../redux/slices/userSlice';
 import { selectLoading } from '../../redux/slices/loadingSlice';
@@ -59,14 +59,7 @@ export function SignInScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  const loadingState = useSelector(selectLoading);
-
-  const email = useSelector(selectEmail);
   const dispatch = useDispatch();
-
-  const profilestate = useSelector(selectProfile);
-  const userProfile = useSelector(selectIsSurveyCompleted);
-  console.log(userProfile ?? '');
 
   const defaultValues = {
     email: '',
@@ -86,7 +79,6 @@ export function SignInScreen() {
   });
 
   async function handleSignIn({ email, password }: SignInForm) {
-    // dispatch(setLoadingState({ loading: false }));
     setLoading(true);
     const userCredential = await auth().signInWithEmailAndPassword(
       email,
@@ -155,7 +147,7 @@ export function SignInScreen() {
               justifyContent: 'space-evenly',
             }}>
             <TitleContainer>
-              <Text variant="headlineLarge" style={{ fontWeight: '500' }}>
+              <Text style={{ fontWeight: '500', fontSize: 32 }}>
                 Welcome back
               </Text>
             </TitleContainer>
@@ -184,6 +176,7 @@ export function SignInScreen() {
                     autoComplete="email"
                     label="Email"
                     mode="outlined"
+                    textColor="black"
                     theme={{ roundness: 15 }}
                   />
                   {!!errors.email && (
@@ -220,6 +213,7 @@ export function SignInScreen() {
                     placeholderTextColor="#323437"
                     label="Password"
                     mode="outlined"
+                    textColor="black"
                     theme={{ roundness: 15 }}
                   />
                   {!!errors.password && (

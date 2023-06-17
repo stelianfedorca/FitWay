@@ -40,10 +40,16 @@ import { useNavigation } from '@react-navigation/native';
 import { ProfileScreenNavigationProp } from './ProfileScreen.types';
 import { Routes } from '../../navigators';
 import { useSavedMealPlans } from '../../hooks/useSavedMealPlans';
+import { Option } from '../../components';
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  const bmi = calculateBMI(
+    Number(profile.startingWeight),
+    Number(profile.height),
+  );
 
   async function handleSignOut() {
     signOut();
@@ -70,7 +76,7 @@ export function ProfileScreen() {
             resizeMode="contain"
           />
 
-          <IconButton
+          {/* <IconButton
             icon="plus"
             size={22}
             style={{
@@ -82,13 +88,17 @@ export function ProfileScreen() {
               backgroundColor: '#EBE9EF',
             }}
             onPress={() => console.log('press')}
-          />
+          /> */}
 
           <DetailsContainer>
-            <Text variant="titleLarge" style={{ fontWeight: '600' }}>
+            <Text
+              variant="titleLarge"
+              style={{ fontWeight: '600', color: 'black' }}>
               {profile.firstName}
             </Text>
-            <Text variant="titleSmall" style={{ marginTop: 5, opacity: 0.8 }}>
+            <Text
+              variant="titleSmall"
+              style={{ marginTop: 5, opacity: 0.8, color: 'black' }}>
               {profile.email}
             </Text>
           </DetailsContainer>
@@ -104,31 +114,167 @@ export function ProfileScreen() {
             onPress={() => console.log('edit')}
           /> */}
         </ProfileDetailsContainer>
-        <View style={{ flex: 1 }}>
-          <ScrollView></ScrollView>
-        </View>
-        {/* <ContentContainer>
-          <Chip
-            icon="information"
-            mode="outlined"
-            style={{ height: 40, backgroundColor: '#EDF1F9' }}
-            onPress={() => console.log('Pressed')}>
-            BMI: {calculateBMI(75, 180)}
-          </Chip>
-          <Chip
-            icon="information"
-            mode="outlined"
-            style={{ height: 40, backgroundColor: '#EDF1F9' }}
-            onPress={() => console.log('Pressed')}>
-            TDEE: {profile.tdee} kcal
-          </Chip>
-        </ContentContainer> */}
         <SettingsContainer>
           {/* <CellRow
             title="Edit goals"
             onPress={handleEditGoalsPress}
             icon={<FontAwesome name="edit" size={24} color="#4659b8" />}
           /> */}
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              flex: 1,
+              height: 60,
+              padding: 15,
+              paddingRight: 20,
+              borderBottomWidth: 0.3,
+              borderBottomColor: 'grey',
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons
+                name="ios-information-circle-outline"
+                size={24}
+                color="#4659b8"
+              />
+              <Text
+                style={{
+                  color: 'black',
+                  marginLeft: 15,
+                  fontSize: 16,
+                  fontWeight: '500',
+                }}>
+                Weight Goal
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#4659b8',
+                padding: 5,
+                paddingHorizontal: 10,
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  fontWeight: '500',
+                  fontSize: 16,
+                  color: 'white',
+                }}>{`${profile.goalWeight}`}</Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 16,
+                  fontWeight: '500',
+                  marginLeft: 5,
+                }}>
+                kg
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              flex: 1,
+              height: 60,
+              padding: 15,
+              paddingRight: 20,
+              borderBottomWidth: 0.3,
+              borderBottomColor: 'grey',
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons
+                name="ios-information-circle-outline"
+                size={24}
+                color="#4659b8"
+              />
+              <Text
+                style={{
+                  color: 'black',
+                  marginLeft: 15,
+                  fontSize: 16,
+                  fontWeight: '500',
+                }}>
+                Calories Goal
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#4659b8',
+                padding: 5,
+                paddingHorizontal: 10,
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  fontWeight: '500',
+                  fontSize: 16,
+                  color: 'white',
+                }}>{`${profile.tdee}`}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              flex: 1,
+              height: 60,
+              padding: 15,
+              paddingRight: 20,
+              borderBottomWidth: 0.3,
+              borderBottomColor: 'grey',
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons
+                name="ios-information-circle-outline"
+                size={24}
+                color="#4659b8"
+              />
+              <Text
+                style={{
+                  color: 'black',
+                  marginLeft: 15,
+                  fontSize: 16,
+                  fontWeight: '500',
+                }}>
+                BMI
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#4659b8',
+                padding: 5,
+                paddingHorizontal: 10,
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  fontWeight: '500',
+                  fontSize: 16,
+                  color: 'white',
+                }}>{`${bmi.bmiValue}`}</Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 16,
+                  fontWeight: '500',
+                  marginLeft: 5,
+                }}>
+                {`/ ${bmi.bmiCategory}`}
+              </Text>
+            </View>
+          </View>
           <CellRow
             title="Meal plans"
             onPress={handleMealPlansPress}

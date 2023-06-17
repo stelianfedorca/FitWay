@@ -23,7 +23,6 @@ export const ContentContainer = styled(View)`
   margin-top: 30px;
   height: 110px;
   justify-content: space-evenly;
-  padding-horizontal: 20px;
 `;
 
 export const SettingsContainer = styled(View)`

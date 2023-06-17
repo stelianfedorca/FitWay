@@ -126,8 +126,6 @@ export function SurveyScreen() {
         },
       },
     );
-
-    console.log(response);
   }
 
   async function handleContinue() {

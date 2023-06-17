@@ -37,7 +37,7 @@ export function SearchBar({ style, onPress }: SearchBarProps) {
           backgroundColor: '#EDF1F9',
           borderRadius: 10,
         }}
-        inputStyle={{ fontSize: 16 }}
+        inputStyle={{ fontSize: 16, color: 'black' }}
         placeholderTextColor="grey"
         onIconPress={onPress}
         iconColor="#4659b8"

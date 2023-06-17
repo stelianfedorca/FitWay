@@ -15,8 +15,6 @@ export function Card({ data }: CardProps) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  console.log(data?.nutrition.weightPerServing.amount);
-
   const imageSource = data?.image ? { uri: data?.image } : FoodImage;
   return (
     <TouchableOpacity
