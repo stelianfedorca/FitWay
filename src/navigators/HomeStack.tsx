@@ -63,7 +63,8 @@ export type SavedMealPlansStackParams = {
   [Routes.SavedMealPlansWeek]: undefined;
 };
 
-const SavedMealPlansTabs = createMaterialTopTabNavigator();
+const SavedMealPlansTabs =
+  createMaterialTopTabNavigator<SavedMealPlansStackParams>();
 
 function SavedMealPlansTabsScreen() {
   return (

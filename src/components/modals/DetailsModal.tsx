@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Keyboard,
+  KeyboardAvoidingView,
   Pressable,
   Text,
   TextInput,
@@ -181,25 +182,7 @@ export function DetailsModal({
             <Text style={{ fontSize: 16 }}>grams</Text>
           </View>
         </QuantityContainer>
-        <View
-          style={{
-            alignItems: 'flex-start',
-            marginTop: 5,
-          }}>
-          <Text style={{ fontSize: 16 }}>Type of meal</Text>
-          <DropDownPicker
-            open={isDropdownOpen}
-            value={value}
-            items={items}
-            setOpen={setDropdownOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder="Breakfast"
-            modalTitle="Type of meal"
-            style={{ marginTop: 10 }}
-            dropDownDirection="TOP"
-          />
-        </View>
+
         <MacrosDetails>
           <CircularProgressComponent
             progressTitle="calories"
@@ -257,6 +240,25 @@ export function DetailsModal({
             </MacrosItem>
           </View>
         </MacrosDetails>
+        <View
+          style={{
+            alignItems: 'flex-start',
+            marginTop: 5,
+          }}>
+          <Text style={{ fontSize: 16 }}>Type of meal</Text>
+          <DropDownPicker
+            open={isDropdownOpen}
+            value={value}
+            items={items}
+            setOpen={setDropdownOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder="Breakfast"
+            modalTitle="Type of meal"
+            style={{ marginTop: 10 }}
+            dropDownDirection="BOTTOM"
+          />
+        </View>
       </ContentContainer>
 
       <TouchableOpacity style={styles.addIcon} onPress={handleAddFood}>

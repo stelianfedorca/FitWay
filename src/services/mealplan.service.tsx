@@ -10,7 +10,6 @@ import { MealPlanDayFirestore } from '../types/types';
 import {
   DAY_PLAN_COLLECTION,
   DIARY_COLLECTION,
-  MEALS_COLLECTION,
   PLANS_COLLECTION,
   TimeFrame,
 } from '../utils/consts';

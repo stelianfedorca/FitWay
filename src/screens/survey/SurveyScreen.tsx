@@ -236,7 +236,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="years old"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -247,7 +247,7 @@ export function SurveyScreen() {
           />
         </InputDropdown>
         <Divider bold />
-        <InputDropdown title="Weight" value={weight} unit="kg">
+        <InputDropdown title="Current Weight" value={weight} unit="kg">
           <RulerPicker
             max={200}
             min={14}
@@ -255,7 +255,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="kg"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -275,7 +275,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="cm"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -288,7 +288,7 @@ export function SurveyScreen() {
 
         <Divider bold />
 
-        <InputDropdown title="Goal" value={goalWeight} unit="kg">
+        <InputDropdown title="Weight Goal" value={goalWeight} unit="kg">
           <RulerPicker
             max={200}
             min={14}
@@ -296,7 +296,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="kg"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}

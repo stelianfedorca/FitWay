@@ -28,7 +28,6 @@ export function isEmpty(str: string) {
 }
 
 export function SearchFoodScreen() {
-  // const result = useFoodCollection();
   const [products, setProducts] = useState<Product[]>([]);
   const dispatch = useDispatch();
   const search = useSelector(selectSearch);

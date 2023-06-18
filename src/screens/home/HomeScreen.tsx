@@ -64,16 +64,9 @@ export function HomeScreen() {
   const month = format(date, 'LLLL');
 
   const remainingCalories = getRemainingCalories(
-    userProfile.caloricIntake ?? 0,
+    calculateCalories(diaryFood),
     tdee,
   );
-
-  // const { fat, protein, carbs } = calculateMacros(diaryFood);
-  const totalMacrosConsumed = {
-    fat: 10,
-    protein: 23,
-    carbs: 18,
-  };
 
   return (
     <Layout style={styles.container} paddingTop>

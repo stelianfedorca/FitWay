@@ -63,7 +63,7 @@ export const MacrosItem = styled(View)`
 
 export const styles = StyleSheet.create({
   container: {
-    height: 450,
+    height: 550,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',

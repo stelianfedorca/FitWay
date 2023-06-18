@@ -220,7 +220,6 @@ export function SignUpScreen() {
                   ref={passwordInputRef}
                   secureTextEntry={true}
                   autoCorrect={false}
-                  textContentType="newPassword"
                   keyboardType="default"
                   returnKeyType="done"
                   mode="outlined"

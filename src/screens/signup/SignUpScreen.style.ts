@@ -1,9 +1,16 @@
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
-export const Container = styled(View)`
+export const Container = styled(KeyboardAwareScrollView)`
   flex: 1;
   background-color: #f2f2f3;
   /* padding-horizontal: 20px; */
@@ -11,7 +18,7 @@ export const Container = styled(View)`
   border-top-right-radius: 20px;
   position: absolute;
   width: 100%;
-  height: 600px;
+  min-height: 600px;
   bottom: 50px;
   /* justify-content: center; */
 `;
