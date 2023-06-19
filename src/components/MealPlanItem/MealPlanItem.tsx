@@ -93,7 +93,7 @@ export function MealPlanItem({
           justifyContent: 'space-between',
           marginBottom: 20,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             paddingHorizontal: 20,
             paddingVertical: 10,
@@ -141,7 +141,7 @@ export function MealPlanItem({
           ) : (
             <Text style={{ color: 'white', fontWeight: '500' }}>Add plan</Text>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

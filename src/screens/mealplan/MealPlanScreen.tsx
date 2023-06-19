@@ -1,6 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  TouchableOpacity,
+  View,
+  Text,
+  ScrollView,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
@@ -19,10 +26,12 @@ import { MealPlanScreenNavigationProp } from './MealPlan.types';
 import { Title } from './MealPlanScreen.style';
 
 import { mappedTimeFrame } from './CustomizeMealPlanScreen';
+import Toast from 'react-native-toast-message';
 
 export function MealPlanScreen() {
   const mealPlan = useSelector(selectMealPlanPerDay);
   const [isLoading, setIsLoading] = useState(true);
+  const [isNewLoading, setIsNewLoading] = useState(false);
   const [loadingAddButton, setLoadingAddButton] = useState(false);
   const [loadingGenerateButton, setLoadingGenerateButton] = useState(false);
   const uid = useSelector(selectUid);
@@ -33,7 +42,9 @@ export function MealPlanScreen() {
   const navigation = useNavigation<MealPlanScreenNavigationProp>();
 
   useEffect(() => {
-    mealPlanDetails && setIsLoading(false);
+    if (mealPlanDetails.length > 0) {
+      setIsLoading(false);
+    }
   }, [mealPlanDetails]);
 
   const goBack = () => {
@@ -44,27 +55,34 @@ export function MealPlanScreen() {
     setLoadingAddButton(true);
     const isAdded = await addMealPlanToFirestore(uid, mealPlan);
     if (isAdded) {
-      navigation.goBack();
+      Toast.show({
+        type: 'success',
+        text1: 'Plan added',
+        position: 'bottom',
+      });
+      // navigation.goBack();
     }
     setLoadingAddButton(false);
   };
 
   const generateNewPlan = async () => {
-    setLoadingGenerateButton(true);
+    setIsNewLoading(true);
+    // setLoadingGenerateButton(true);
 
-    setIsLoading(true);
     const mealPlanData = await getMealPlan(mappedTimeFrame[0], 2222);
 
     if (mealPlanData) {
-      setIsLoading(false);
       dispatch(
         setMealPlan({
           mealPlanPerDay: mealPlanData,
           selectedTargetCalories: 2222,
         }),
       );
+      setTimeout(() => {
+        setIsNewLoading(false);
+      }, 1000);
     }
-    setLoadingGenerateButton(false);
+    // setLoadingGenerateButton(false);
   };
 
   return (
@@ -93,19 +111,86 @@ export function MealPlanScreen() {
             style={{ position: 'absolute' }}
           />
         </TouchableOpacity>
-        {isLoading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <MealPlanItem
-            mealPlanDetails={mealPlanDetails}
-            mealPlan={mealPlan}
-            key={'3'}
-            onAddPress={addMealPlan}
-            isLoading={loadingAddButton}
-            isGenerateButtonLoading={loadingGenerateButton}
-            onGeneratePress={generateNewPlan}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+            paddingTop: 15,
+          }}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 20,
+              paddingVertical: 8,
+              borderRadius: 15,
+              backgroundColor: 'green',
+              justifyContent: 'center',
+              alignItems: 'center',
+              shadowColor: 'black',
+              shadowRadius: 2,
+              shadowOffset: {
+                width: 2,
+                height: 2,
+              },
+              shadowOpacity: 0.4,
+            }}
+            onPress={generateNewPlan}>
+            {loadingGenerateButton ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={{ color: 'white', fontWeight: '500' }}>
+                Generate new plan
+              </Text>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 20,
+              paddingVertical: 8,
+              borderRadius: 15,
+              backgroundColor: '#4659b8',
+              justifyContent: 'center',
+              alignItems: 'center',
+              shadowColor: 'black',
+              shadowRadius: 2,
+              shadowOffset: {
+                width: 2,
+                height: 2,
+              },
+              shadowOpacity: 0.4,
+            }}
+            onPress={addMealPlan}>
+            {loadingAddButton ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={{ color: 'white', fontWeight: '500' }}>
+                Add plan
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+        {isLoading || isNewLoading ? (
+          <ActivityIndicator
+            size="large"
+            style={{ position: 'absolute', bottom: 300, right: 170 }}
           />
+        ) : (
+          <ScrollView>
+            <MealPlanItem
+              mealPlanDetails={mealPlanDetails}
+              mealPlan={mealPlan}
+              key={'3'}
+              onAddPress={addMealPlan}
+              isLoading={loadingAddButton}
+              isGenerateButtonLoading={loadingGenerateButton}
+              onGeneratePress={generateNewPlan}
+            />
+          </ScrollView>
         )}
+        <Toast />
       </View>
     </Layout>
   );
