@@ -85,7 +85,7 @@ export function CustomizeMealPlanScreen() {
             },
             shadowOpacity: 0.2,
           }}>
-          <Option
+          {/* <Option
             title="Day"
             style={{
               borderTopRightRadius: 0,
@@ -95,8 +95,8 @@ export function CustomizeMealPlanScreen() {
             }}
             isSelected={timeframeOption === 0 ? true : false}
             onPress={() => setTimeframeOption(0)}
-          />
-          <Option
+          /> */}
+          {/* <Option
             title="Week"
             style={{
               borderTopLeftRadius: 0,
@@ -106,7 +106,7 @@ export function CustomizeMealPlanScreen() {
             }}
             isSelected={timeframeOption === 1 ? true : false}
             onPress={() => setTimeframeOption(1)}
-          />
+          /> */}
         </OptionGroup>
         <InputDropdown
           value={targetCalories}

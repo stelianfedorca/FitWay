@@ -27,7 +27,7 @@ import { MealPlanScreenNavigationProp } from './MealPlan.types';
 import { Title } from './MealPlanScreen.style';
 
 import { mappedTimeFrame } from './CustomizeMealPlanScreen';
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast, BaseToastProps } from 'react-native-toast-message';
 import { Routes } from '../../navigators';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MealPlanStackParams } from '../../navigators/TabNavigator';
@@ -104,6 +104,25 @@ export function MealPlanScreen({ route }: MealPlanScreenProps) {
       }, 1000);
     }
     // setLoadingGenerateButton(false);
+  };
+
+  const toastConfig = {
+    success: (props: BaseToastProps) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: 'green' }}
+        contentContainerStyle={{
+          paddingHorizontal: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '500',
+          color: 'white',
+        }}
+      />
+    ),
   };
 
   return (
@@ -212,7 +231,7 @@ export function MealPlanScreen({ route }: MealPlanScreenProps) {
             />
           </ScrollView>
         )}
-        <Toast />
+        <Toast config={toastConfig} />
       </View>
     </Layout>
   );

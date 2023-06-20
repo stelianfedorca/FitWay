@@ -30,6 +30,11 @@ import { useSelector } from 'react-redux';
 import { selectUid } from '../../redux/slices/userSlice';
 import { selectCurrentDate } from '../../redux/slices/dateSlice';
 import { FoodFirestore } from '../../types/types';
+import Toast, {
+  SuccessToast,
+  BaseToast,
+  BaseToastProps,
+} from 'react-native-toast-message';
 interface DetailScreenProps
   extends NativeStackScreenProps<RootStackParams, Routes.MealDetails> {
   // other props ...
@@ -52,6 +57,7 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
   const params = route.params;
   const [steps, setSteps] = useState<Step[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const uid = useSelector(selectUid);
   const selectedCurrentDate = useSelector(selectCurrentDate);
@@ -69,7 +75,27 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
     })[0];
   };
 
+  const toastConfig = {
+    success: (props: BaseToastProps) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: 'green' }}
+        contentContainerStyle={{
+          paddingHorizontal: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '500',
+          color: 'white',
+        }}
+      />
+    ),
+  };
+
   const addMeal = async () => {
+    setIsButtonLoading(true);
     const meal: FoodFirestore = {
       id: String(mealDetails.id),
       name: mealDetails.title,
@@ -98,7 +124,15 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
       },
       isMeal: true,
     };
-    await addMealInDiary(uid, selectedCurrentDate, meal);
+    const added = await addMealInDiary(uid, selectedCurrentDate, meal);
+    if (added) {
+      setIsButtonLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Meal added in diary',
+        position: 'bottom',
+      });
+    }
   };
 
   useEffect(() => {
@@ -176,9 +210,13 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
               shadowOpacity: 0.3,
             }}
             onPress={addMeal}>
-            <Text style={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
-              Add Meal
-            </Text>
+            {isButtonLoading ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
+                Add Meal
+              </Text>
+            )}
           </TouchableOpacity>
         )}
         <Image
@@ -328,7 +366,7 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
                     padding: 10,
                     borderBottomWidth: 0.3,
                   }}
-                  key={item.number}>
+                  key={`${item.number}_${item.step}`}>
                   <View
                     style={{
                       height: '100%',
@@ -354,13 +392,8 @@ export function DetailsScreen({ route, navigation }: DetailScreenProps) {
             })}
           </ScrollView>
         )}
-
-        {/* <FlatList
-          data={steps}
-          renderItem={_renderItem}
-          ListEmptyComponent={EmptyList}
-        /> */}
       </ScrollView>
+      <Toast config={toastConfig} />
     </Layout>
   );
 }

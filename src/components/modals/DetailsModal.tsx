@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
   Pressable,
   Text,
   TextInput,
@@ -9,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { CircularProgressComponent } from '../CircularProgressComponent';
 import {
   ContentContainer,
   HeaderContainer,
@@ -46,6 +44,8 @@ import {
   calculateCaloriesByServing,
   calculateMacronutrientsByServing,
 } from '../../utils/calculator';
+
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 export type DetailsModalProps = {
   selectedFood?: Product;
@@ -184,17 +184,29 @@ export function DetailsModal({
         </QuantityContainer>
 
         <MacrosDetails>
-          <CircularProgressComponent
-            progressTitle="calories"
-            progressValue={total}
-            max={total}
+          <CircularProgress
+            value={total}
+            progressValueFontSize={16}
             radius={40}
-            activeStrokeColorWidth={6}
-            duration={0}
+            duration={500}
+            progressValueColor="black"
+            maxValue={total}
+            inActiveStrokeColor="#465cc9"
             activeStrokeColor="#465cc9"
-            inactiveStrokeColor="#465cc9"
-            // inActiveStrokeWidth={0}
+            activeStrokeWidth={6}
+            inActiveStrokeWidth={6}
+            title="Calories"
+            titleFontSize={12}
+            titleColor="#c3c4c7"
+            subtitleColor="white"
+            progressValueStyle={{
+              backgroundColor: 'white',
+              color: 'white',
+              fontSize: 22,
+              fontWeight: '500',
+            }}
           />
+
           <View
             style={{
               width: 200,

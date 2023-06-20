@@ -155,7 +155,10 @@ export async function addMealInDiary(
       .doc(date)
       .collection(LOGS_COLLECTION)
       .add(meal);
+
+    return true;
   } catch (error) {
+    return false;
     console.error(error);
   }
 }

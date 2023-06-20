@@ -63,7 +63,7 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 
 export type SavedMealPlansStackParams = {
   [Routes.SavedMealPlansDay]: undefined;
-  [Routes.SavedMealPlansWeek]: undefined;
+  // [Routes.SavedMealPlansWeek]: undefined;
 };
 
 const SavedMealPlansTabs =
@@ -77,11 +77,11 @@ function SavedMealPlansTabsScreen() {
         component={SavedMealPlansDayScreen}
         options={{ tabBarLabel: 'Day' }}
       />
-      <SavedMealPlansTabs.Screen
+      {/* <SavedMealPlansTabs.Screen
         name={Routes.SavedMealPlansWeek}
         component={SavedMealPlansWeekScreen}
         options={{ tabBarLabel: 'Week' }}
-      />
+      /> */}
     </SavedMealPlansTabs.Navigator>
   );
 }

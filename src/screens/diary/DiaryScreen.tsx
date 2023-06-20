@@ -25,7 +25,6 @@ export function DiaryScreen() {
   const diaryFoodDinner = diaryFood.filter(food => food.type === 'Dinner');
 
   const totalCalories = calculateCalories(diaryFood);
-  console.log('total in diary: ', totalCalories);
   // const totalConsumedCalories = diaryFood.reduce((accumulator, currentItem) => {
   //   return (
   //     accumulator +
