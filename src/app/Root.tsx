@@ -87,6 +87,10 @@ export function Root() {
                     carbs: 0,
                     protein: 0,
                   },
+                  startingWeight: data.profile?.startingWeight ?? '70',
+                  goalWeight: data.profile?.goalWeight ?? '70',
+                  age: data.profile?.age ?? '18',
+                  height: data.profile?.height ?? '180',
                 }),
               );
             }

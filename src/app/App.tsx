@@ -14,6 +14,11 @@ import { Root } from './Root';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs(true);
+
 const persistor = persistStore(store);
 export function App() {
   return (

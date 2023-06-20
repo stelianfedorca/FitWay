@@ -28,15 +28,18 @@ export function ItemList({ item, onPress }: ItemProps) {
             style={{
               fontSize: 16,
               fontWeight: '500',
+              color: 'black',
             }}>
             {item.food.label}
           </Text>
           <View style={{ flexDirection: 'row' }}>
-            <Text>{`${
+            <Text style={{ color: 'black' }}>{`${
               Math.round(item.food.nutrients.ENERC_KCAL) ?? '-'
             } calories / `}</Text>
-            <Text>{`${100} g, `}</Text>
-            <Text>{`${item.food.brand ?? '-'}`}</Text>
+            <Text style={{ color: 'black' }}>{`${100} g, `}</Text>
+            <Text style={{ color: 'black' }}>{`${
+              item.food.brand ?? '-'
+            }`}</Text>
           </View>
         </DetailsContainer>
       </View>

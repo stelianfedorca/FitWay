@@ -84,7 +84,7 @@ function Diary() {
 
 export type MealPlanStackParams = {
   [Routes.CustomizeMealPlan]: undefined;
-  [Routes.MealPlan]: undefined;
+  [Routes.MealPlan]: { caloricTarget: number } | undefined;
 };
 
 export const MealPlanStack = createNativeStackNavigator<MealPlanStackParams>();
@@ -122,15 +122,15 @@ export type ProfileStackParams = {
   // [Routes.SavedMealPlans]: undefined;
 };
 
-const ProfileStack = createBottomTabNavigator<ProfileStackParams>();
+const ProfileStack = createNativeStackNavigator<ProfileStackParams>();
 
 function Profile() {
   return (
     <ProfileStack.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarIcon: () => <View />,
+        // tabBarShowLabel: false,
+        // tabBarIcon: () => <View />,
       }}>
       <ProfileStack.Screen name={Routes.Profile} component={ProfileScreen} />
       {/* <ProfileStack.Screen

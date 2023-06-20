@@ -40,8 +40,6 @@ export function LoadingScreen() {
   const [isButtonShowing, setIsButtonShowing] = useState(false);
   const textOpacity = useSharedValue(0);
 
-  console.log('profile: ', profile);
-
   // const userId = auth().currentUser?.uid;
 
   const uid = useSelector(selectUid);

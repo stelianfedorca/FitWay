@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
 import {
@@ -29,7 +28,9 @@ export function IntroductionScreen() {
           paddingBottom: 250,
         }}>
         <View>
-          <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
+          <Text
+            variant="headlineLarge"
+            style={{ textAlign: 'center', color: 'black' }}>
             Almost There!
           </Text>
           <Text
@@ -38,6 +39,7 @@ export function IntroductionScreen() {
               marginTop: 15,
               textAlign: 'center',
               fontSize: 16,
+              color: 'black',
             }}>
             In order to proceed, we need a little more information about you.
           </Text>

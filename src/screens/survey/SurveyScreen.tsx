@@ -3,15 +3,20 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
+  Text as TextRn,
   TouchableOpacity,
   View,
-  Text as TextRn,
 } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { RAPIDAPI_HOST, RAPIDAPI_KEY } from '@env';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { InputRow } from '../../components/InputRow';
 import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators/Routes';
+import { selectFirstName, setProfile } from '../../redux/slices/profileSlice';
+import { selectEmail, selectUid } from '../../redux/slices/userSlice';
 import { updateUserInFirestore } from '../../services/user.service';
 import {
   CARBS_PROCENTAGE,
@@ -26,15 +31,6 @@ import {
   TitleButton,
 } from './SurveyScreen.style';
 import { SurveyScreenNavigationProp } from './SurveyScreen.types';
-import {
-  selectFirstName,
-  setIsSurveyCompleted,
-  setProfile,
-} from '../../redux/slices/profileSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectEmail, selectUid } from '../../redux/slices/userSlice';
-import axios from 'axios';
-import { RAPIDAPI_KEY, RAPIDAPI_HOST } from '@env';
 
 import { RulerPicker } from 'react-native-ruler-picker';
 import { InputDropdown } from '../../components';
@@ -126,8 +122,6 @@ export function SurveyScreen() {
         },
       },
     );
-
-    console.log(response);
   }
 
   async function handleContinue() {
@@ -242,7 +236,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="years old"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -253,7 +247,7 @@ export function SurveyScreen() {
           />
         </InputDropdown>
         <Divider bold />
-        <InputDropdown title="Weight" value={weight} unit="kg">
+        <InputDropdown title="Current Weight" value={weight} unit="kg">
           <RulerPicker
             max={200}
             min={14}
@@ -261,7 +255,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="kg"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -281,7 +275,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="cm"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}
@@ -294,7 +288,7 @@ export function SurveyScreen() {
 
         <Divider bold />
 
-        <InputDropdown title="Goal" value={goalWeight} unit="kg">
+        <InputDropdown title="Weight Goal" value={goalWeight} unit="kg">
           <RulerPicker
             max={200}
             min={14}
@@ -302,7 +296,7 @@ export function SurveyScreen() {
             indicatorHeight={25}
             indicatorColor="#457ad7"
             step={1}
-            unit=""
+            unit="kg"
             unitTextStyle={{ fontSize: 12 }}
             valueTextStyle={{ fontSize: 20, fontWeight: '400' }}
             fractionDigits={0}

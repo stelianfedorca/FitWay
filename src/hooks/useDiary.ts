@@ -17,6 +17,7 @@ import {
   calculateTotalProtein,
 } from '../utils/calculator';
 import { setProfile } from '../redux/slices/profileSlice';
+import { updateProfileInFiresotore } from '../services/user.service';
 
 // custom hook
 export function useDiary(date: string) {
@@ -31,7 +32,7 @@ export function useDiary(date: string) {
       .collection(DAILY_LOGS_COLLECTION)
       .doc(date)
       .collection(LOGS_COLLECTION)
-      .onSnapshot(querySnapshot => {
+      .onSnapshot(async querySnapshot => {
         const foodLogs: FoodFirestore[] = [];
 
         querySnapshot.forEach(documentSnapshot => {
@@ -39,18 +40,27 @@ export function useDiary(date: string) {
           foodLogs.push(foodData);
         });
         const calories = calculateCalories(foodLogs);
+        const fat = calculateTotalFat(foodLogs);
+        const carbs = calculateTotalCarbs(foodLogs);
+        const protein = calculateTotalProtein(foodLogs);
+
         setFoodLogs(foodLogs);
         dispatch(setDiaryFood(foodLogs));
         dispatch(
           setProfile({
             caloricIntake: calories,
             macrosIntake: {
-              fat: calculateTotalFat(foodLogs),
-              protein: calculateTotalProtein(foodLogs),
-              carbs: calculateTotalCarbs(foodLogs),
+              fat: fat,
+              protein: protein,
+              carbs: carbs,
             },
           }),
         );
+
+        await updateProfileInFiresotore(userId, {
+          caloricIntake: calories,
+          macrosIntake: { fat: fat, carbs: carbs, protein: protein },
+        });
       });
 
     // unsubscribe from events when no longer in use

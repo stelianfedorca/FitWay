@@ -1,6 +1,5 @@
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Text } from 'react-native-paper';
 
 export type ItemDetailsProps = {
   title: string;

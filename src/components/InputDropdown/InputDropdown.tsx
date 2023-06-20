@@ -19,6 +19,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { RulerPicker } from 'react-native-ruler-picker';
+import { Icon } from 'react-native-vector-icons/Icon';
 import { Label } from '../Label/Label';
 import { Option } from '../Option';
 
@@ -27,25 +28,29 @@ export type InputDropdownType = {
   defaultValue?: string | number;
   value: number;
   unit?: string;
+  expandHeight?: number;
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<ViewStyle>;
   childStyle?: StyleProp<ViewStyle>;
   unitLabel?: StyleProp<ViewStyle>;
+  icon?: Partial<Icon>;
 };
 export function InputDropdown({
   title,
   defaultValue,
   children,
   unit,
+  expandHeight,
   style,
   labelStyle,
   childStyle,
   unitLabel,
+  icon,
   value = 0,
 }: InputDropdownType) {
   const height = useSharedValue(0);
-
+  const Icon = icon;
   const expandedAnimation = useAnimatedStyle(() => {
     return {
       height: withTiming(height.value, {
@@ -57,7 +62,7 @@ export function InputDropdown({
 
   function handlePress() {
     if (height.value === 0) {
-      height.value = 75;
+      height.value = expandHeight ?? 75;
     } else {
       height.value = 0;
     }
@@ -76,9 +81,20 @@ export function InputDropdown({
           style,
         ]}
         onPress={handlePress}>
-        <Text style={{ color: 'black', fontSize: 16, fontWeight: '500' }}>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <>
+            {Icon}
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 16,
+                fontWeight: '500',
+                marginLeft: Icon ? 15 : 0,
+              }}>
+              {title}
+            </Text>
+          </>
+        </View>
 
         <View
           style={{

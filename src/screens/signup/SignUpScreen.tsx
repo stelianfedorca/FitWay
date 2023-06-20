@@ -1,19 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import auth from '@react-native-firebase/auth';
 
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   ImageBackground,
   Pressable,
-  ScrollView,
+  Text,
   TextInput,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SignUpBackgroundImage } from '../../assets/images';
+import { Layout } from '../../components/Layout';
 import { Routes } from '../../navigators';
 import { SignUpSchema } from './SignUpScreen.schema';
 import {
@@ -21,38 +22,22 @@ import {
   HeaderContainer,
   HeaderTitle,
   Link,
-  NextButton,
   SignInContainer,
   SignUpButton,
   StyledInput,
   styles,
   SubTitle,
-  TextButton,
   TextError,
   TextLink,
-  Title,
   TitleButton,
 } from './SignUpScreen.style';
 import { SignUpForm, SignUpScreenNavigationProp } from './SignUpScreen.types';
-import { useAuthStore, useProfileStore } from '../../stores';
-import { SignUpBackgroundImage } from '../../assets/images';
-import { Layout } from '../../components/Layout';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { signup } from '../../redux/slices/userSlice';
-import { setIsSurveyCompleted } from '../../redux/slices/profileSlice';
 import { createUserInFirestore } from '../../services/user.service';
-
-import database from '@react-native-firebase/database';
-import { firebase } from '@react-native-firebase/database';
-import { Text } from 'react-native-paper';
 
 export function SignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
-  const setProfile = useProfileStore(state => state.setProfile);
-  const setUser = useAuthStore(state => state.setUser);
-  const { height } = useWindowDimensions();
 
   const [loading, setLoading] = useState(false);
 
@@ -142,7 +127,7 @@ export function SignUpScreen() {
           }}
           scrollEnabled={false}>
           <HeaderContainer>
-            <HeaderTitle variant="headlineLarge">Create Account</HeaderTitle>
+            <HeaderTitle>Create Account</HeaderTitle>
             <Text style={{ marginTop: 4 }}>Sign up to join</Text>
           </HeaderContainer>
           <Controller
@@ -164,6 +149,7 @@ export function SignUpScreen() {
                   autoCorrect={true}
                   mode="outlined"
                   label="Name"
+                  textColor="black"
                   theme={{ roundness: 15 }}
                 />
                 {!!errors.firstName && (
@@ -200,8 +186,10 @@ export function SignUpScreen() {
                   autoComplete="email"
                   mode="outlined"
                   label="Email"
-                  theme={{ roundness: 15 }}
-                  style={{}}
+                  textColor="black"
+                  theme={{
+                    roundness: 15,
+                  }}
                 />
                 {!!errors.email && (
                   <View
@@ -232,11 +220,11 @@ export function SignUpScreen() {
                   ref={passwordInputRef}
                   secureTextEntry={true}
                   autoCorrect={false}
-                  textContentType="newPassword"
                   keyboardType="default"
                   returnKeyType="done"
                   mode="outlined"
                   label="Password"
+                  textColor="black"
                   theme={{ roundness: 15 }}
                 />
                 {!!errors.password && (

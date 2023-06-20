@@ -5,7 +5,6 @@ import {
 } from './CircularProgressComponent.style';
 
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { Badge } from 'react-native-paper';
 
 export type CircularProgressComponentProps = {
   textTop?: string;
@@ -34,7 +33,6 @@ export function CircularProgressComponent({
   inactiveStrokeColor,
   inActiveStrokeWidth,
 }: CircularProgressComponentProps) {
-  console.log('circular: ', max);
   return (
     <Container>
       <TextTop color={activeStrokeColor}>{textTop}</TextTop>

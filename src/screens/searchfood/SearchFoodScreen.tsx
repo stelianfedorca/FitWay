@@ -1,39 +1,33 @@
 import {
   ActivityIndicator,
+  Keyboard,
   Pressable,
   Text,
   View,
-  Keyboard,
 } from 'react-native';
 import { Layout } from '../../components/Layout';
 import { List } from '../../components/List';
 import { SearchBar } from '../../components/SearchBar';
-import { useFoodCollection } from '../../hooks';
 import { styles } from './SearchFoodScreen.style';
 
-import Modal from 'react-native-modal';
-import { DetailsModal } from '../../components/modals';
-import { useEffect, useState } from 'react';
-import {
-  getProductInformation,
-  searchProduct,
-} from '../../services/food.service';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectSearch } from '../../redux/slices/searchSlice';
-import { Product } from '../../types/types';
-import { IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { SearchNavigationProp } from './Search.types';
-import { selectLoading, setLoading } from '../../redux/slices/loadingSlice';
-import Toast from 'react-native-toast-message';
+import { useEffect, useState } from 'react';
+import Modal from 'react-native-modal';
+import { IconButton } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { DetailsModal } from '../../components/modals';
 import { selectFood, setFood } from '../../redux/slices/foodSlice';
+import { selectLoading, setLoading } from '../../redux/slices/loadingSlice';
+import { selectSearch } from '../../redux/slices/searchSlice';
+import { searchProduct } from '../../services/food.service';
+import { Product } from '../../types/types';
+import { SearchNavigationProp } from './Search.types';
 
 export function isEmpty(str: string) {
   return !str || str.length === 0;
 }
 
 export function SearchFoodScreen() {
-  // const result = useFoodCollection();
   const [products, setProducts] = useState<Product[]>([]);
   const dispatch = useDispatch();
   const search = useSelector(selectSearch);
@@ -44,8 +38,8 @@ export function SearchFoodScreen() {
   const [isVisible, setIsVisible] = useState(false);
 
   function handleItemPress(item: Product) {
-    setIsVisible(!isVisible);
     dispatch(setFood(item));
+    setIsVisible(!isVisible);
   }
 
   function goBack() {

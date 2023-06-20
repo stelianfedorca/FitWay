@@ -71,6 +71,7 @@ export interface FoodFirestore {
   brand: string;
   type: string;
   nutrition: Nutrition;
+  isMeal?: boolean;
 }
 
 export type Nutrition = {

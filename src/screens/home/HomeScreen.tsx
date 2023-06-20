@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  Text as AnotherText,
 } from 'react-native';
 import { FAB, Text } from 'react-native-paper';
 import { Layout } from '../../components/Layout';
@@ -63,16 +64,9 @@ export function HomeScreen() {
   const month = format(date, 'LLLL');
 
   const remainingCalories = getRemainingCalories(
-    userProfile.caloricIntake ?? 0,
+    calculateCalories(diaryFood),
     tdee,
   );
-
-  // const { fat, protein, carbs } = calculateMacros(diaryFood);
-  const totalMacrosConsumed = {
-    fat: 10,
-    protein: 23,
-    carbs: 18,
-  };
 
   return (
     <Layout style={styles.container} paddingTop>
@@ -84,11 +78,14 @@ export function HomeScreen() {
         }}>
         <HeaderContainer>
           <View>
-            <Text
+            {/* <Text
               variant="titleMedium"
               style={{ fontWeight: '500', fontSize: 18, letterSpacing: 0.8 }}>
               {`Hi, ${userProfileName}`}
-            </Text>
+            </Text> */}
+            <AnotherText style={{ fontSize: 18 }}>
+              {`Hi, ${userProfileName}`}
+            </AnotherText>
             <Text
               variant="labelLarge"
               style={{

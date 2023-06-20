@@ -1,16 +1,13 @@
 import {
-  View,
+  ActivityIndicator,
+  Keyboard,
+  Pressable,
   Text,
   TextInput,
-  Keyboard,
-  KeyboardEventName,
-  Pressable,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { useFoodStore } from '../../stores';
-import { CircularProgressComponent } from '../CircularProgressComponent';
 import {
   ContentContainer,
   HeaderContainer,
@@ -26,33 +23,29 @@ import {
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
+import { format } from 'date-fns';
+import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { addMeal, MealData } from '../../services/meals.service';
-import { useEffect, useState } from 'react';
-import { FoodType } from '../../stores/food';
 import { useSelector } from 'react-redux';
+import { selectCurrentDate } from '../../redux/slices/dateSlice';
 import { selectFood } from '../../redux/slices/foodSlice';
-import { FoodFirestore, Product } from '../../types/types';
-import { addFoodToDiary } from '../../services/food.service';
 import {
   selectCaloricIntake,
   selectMacrosIntake,
-  selectProfile,
 } from '../../redux/slices/profileSlice';
 import { selectUid } from '../../redux/slices/userSlice';
-import { Option } from '../Option';
+import { addFoodToDiary } from '../../services/food.service';
 import {
   updateCaloriesIntake,
   updateMacrosIntake,
 } from '../../services/user.service';
-import { Accordion, AccordionItem } from '../Accordion/Accordion';
-import { useFocusEffect } from '@react-navigation/native';
+import { FoodFirestore, Product } from '../../types/types';
 import {
   calculateCaloriesByServing,
   calculateMacronutrientsByServing,
 } from '../../utils/calculator';
-import { selectCurrentDate } from '../../redux/slices/dateSlice';
-import { format } from 'date-fns';
+
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 export type DetailsModalProps = {
   selectedFood?: Product;
@@ -89,9 +82,6 @@ export function DetailsModal({
     selectedFood?.food.nutrients.ENERC_KCAL ?? 100,
     servingSize,
   );
-
-  console.log('total: ', total);
-  console.log('sleec: ', selectedFood.food.label);
 
   const handleAddFood = async () => {
     setIsLoading(true);
@@ -192,37 +182,31 @@ export function DetailsModal({
             <Text style={{ fontSize: 16 }}>grams</Text>
           </View>
         </QuantityContainer>
-        <View
-          style={{
-            alignItems: 'flex-start',
-            marginTop: 5,
-          }}>
-          <Text style={{ fontSize: 16 }}>Type of meal</Text>
-          <DropDownPicker
-            open={isDropdownOpen}
-            value={value}
-            items={items}
-            setOpen={setDropdownOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder="Breakfast"
-            modalTitle="Type of meal"
-            style={{ marginTop: 10 }}
-            dropDownDirection="TOP"
-          />
-        </View>
+
         <MacrosDetails>
-          <CircularProgressComponent
-            progressTitle="calories"
-            progressValue={total}
-            max={total}
+          <CircularProgress
+            value={total}
+            progressValueFontSize={16}
             radius={40}
-            activeStrokeColorWidth={6}
-            duration={0}
+            duration={500}
+            progressValueColor="black"
+            maxValue={total}
+            inActiveStrokeColor="#465cc9"
             activeStrokeColor="#465cc9"
-            inactiveStrokeColor="#465cc9"
-            // inActiveStrokeWidth={0}
+            activeStrokeWidth={6}
+            inActiveStrokeWidth={6}
+            title="Calories"
+            titleFontSize={12}
+            titleColor="#c3c4c7"
+            subtitleColor="white"
+            progressValueStyle={{
+              backgroundColor: 'white',
+              color: 'white',
+              fontSize: 22,
+              fontWeight: '500',
+            }}
           />
+
           <View
             style={{
               width: 200,
@@ -268,6 +252,25 @@ export function DetailsModal({
             </MacrosItem>
           </View>
         </MacrosDetails>
+        <View
+          style={{
+            alignItems: 'flex-start',
+            marginTop: 5,
+          }}>
+          <Text style={{ fontSize: 16 }}>Type of meal</Text>
+          <DropDownPicker
+            open={isDropdownOpen}
+            value={value}
+            items={items}
+            setOpen={setDropdownOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder="Breakfast"
+            modalTitle="Type of meal"
+            style={{ marginTop: 10 }}
+            dropDownDirection="BOTTOM"
+          />
+        </View>
       </ContentContainer>
 
       <TouchableOpacity style={styles.addIcon} onPress={handleAddFood}>

@@ -14,7 +14,6 @@ const API_HOST = 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com';
 
 export function SearchRecommendation() {
   const [data, setData] = useState([]);
-  // const result = useFoodCollection();
 
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

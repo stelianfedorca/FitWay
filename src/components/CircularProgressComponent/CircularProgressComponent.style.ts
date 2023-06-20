@@ -1,5 +1,4 @@
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { View, Text } from 'react-native';
 import styled from 'styled-components';
 
 export const Container = styled(View)`

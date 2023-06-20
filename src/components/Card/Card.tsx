@@ -1,4 +1,11 @@
-import { Pressable, Text, Image, View, TouchableOpacity } from 'react-native';
+import {
+  Pressable,
+  Text,
+  Image,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import CircularProgress, {
   CircularProgressBase,
 } from 'react-native-circular-progress-indicator';
@@ -9,13 +16,18 @@ import { FoodImage } from '../../assets/images';
 
 export type CardProps = {
   data: MealPlanDetails | null;
+  onItemPress?: (item: MealPlanDetails) => void;
 };
-export function Card({ data }: CardProps) {
+export function Card({ data, onItemPress }: CardProps) {
   function capitalizeFirstLetter(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  console.log(data?.nutrition.weightPerServing.amount);
+  function handleItemPress(event: GestureResponderEvent) {
+    if (data) {
+      onItemPress?.(data);
+    }
+  }
 
   const imageSource = data?.image ? { uri: data?.image } : FoodImage;
   return (
@@ -29,7 +41,7 @@ export function Card({ data }: CardProps) {
         paddingTop: 5,
         borderBottomWidth: 0.2,
       }}
-      onPress={() => console.log('ds')}
+      onPress={handleItemPress}
       key={data?.id}>
       <Image
         source={imageSource}
@@ -65,7 +77,19 @@ export function Card({ data }: CardProps) {
               color: '#414141',
               // marginTop: 5,
             }}>
-            {capitalizeFirstLetter(data?.dishTypes[0]!)}
+            {capitalizeFirstLetter(
+              data?.dishTypes.filter(value => {
+                if (
+                  value === 'breakfast' ||
+                  value === 'dinner' ||
+                  value === 'lunch'
+                ) {
+                  return true;
+                }
+
+                return false;
+              })[0]!,
+            )}
           </Text>
           <View
             style={{

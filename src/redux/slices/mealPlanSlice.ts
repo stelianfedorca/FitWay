@@ -15,6 +15,7 @@ export interface Meal {
       };
     };
   };
+  analyzedInstructions?: AnalyzedInstructions[];
 }
 
 // the meal plan for a day
@@ -26,6 +27,7 @@ export type MealPlanDay = {
     fat: number;
     protein: number;
   };
+  analyzedInstructions?: AnalyzedInstructions[];
 };
 
 // the meal plan for a week
@@ -36,6 +38,22 @@ type Nutrient = {
   amount: number;
   unit: string;
   percentOfDailyNeeds: number;
+};
+
+export type Ingredient = {
+  id: number;
+  name: string;
+};
+
+export type Step = {
+  number: number;
+  step: string;
+  ingredients: Ingredient[];
+};
+
+export type AnalyzedInstructions = {
+  name: string;
+  steps: Step[];
 };
 
 export type MealPlanDetails = {
@@ -59,6 +77,7 @@ export type MealPlanDetails = {
   };
   diets: string[];
   dishTypes: string[];
+  analyzedInstructions?: Record<number, AnalyzedInstructions>;
 };
 
 export interface MealPlanState {

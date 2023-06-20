@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { MealPlanDay, MealPlanDetails } from '../redux/slices/mealPlanSlice';
 import { getMealDetails } from '../services/mealplan.service';
+import { MealPlanDayFirestore } from '../types/types';
 
-export function useMealPlanDetails(mealPlan: MealPlanDay) {
+export function useMealPlanDetails(
+  mealPlan: MealPlanDay | MealPlanDayFirestore,
+) {
   const [mealPlanDetails, setMealPlanDetails] = useState<
     (MealPlanDetails | null)[]
   >([]);

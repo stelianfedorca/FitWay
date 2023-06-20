@@ -1,9 +1,16 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
-export const Container = styled(View)`
+export const Container = styled(KeyboardAwareScrollView)`
   flex: 1;
   background-color: #f2f2f3;
   /* padding-horizontal: 20px; */
@@ -11,7 +18,7 @@ export const Container = styled(View)`
   border-top-right-radius: 20px;
   position: absolute;
   width: 100%;
-  height: 600px;
+  min-height: 600px;
   bottom: 50px;
   /* justify-content: center; */
 `;
@@ -82,7 +89,7 @@ export const HeaderContainer = styled(View)`
 `;
 export const HeaderTitle = styled(Text)`
   font-weight: 500;
-  /* font-size: 40px; */
+  font-size: 30px;
 `;
 export const styles = StyleSheet.create({
   shadowButton: {
