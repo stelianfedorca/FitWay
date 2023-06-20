@@ -10,11 +10,13 @@ import {
 import { MealPlanDay, MealPlanDetails } from '../../redux/slices/mealPlanSlice';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
+import { MealPlanDayFirestore } from '../../types/types';
 export type SavedMealPlansItemProps = {
-  mealPlan: MealPlanDay;
+  mealPlan: MealPlanDay | MealPlanDayFirestore;
   mealPlanDetails: (MealPlanDetails | null)[];
   isLoading?: boolean;
   onAddPress?: () => void;
+  onItemPress?: (item: MealPlanDetails) => void;
   style?: StyleProp<ViewStyle>;
 };
 export function SavedMealPlansItem({
@@ -22,6 +24,7 @@ export function SavedMealPlansItem({
   mealPlanDetails,
   isLoading,
   onAddPress,
+  onItemPress,
   style,
 }: SavedMealPlansItemProps) {
   return (
@@ -90,7 +93,11 @@ export function SavedMealPlansItem({
           bounces={false}
           showsVerticalScrollIndicator={false}>
           {mealPlanDetails.map(mealPlanDetail => (
-            <Card data={mealPlanDetail} key={mealPlanDetail?.id} />
+            <Card
+              data={mealPlanDetail}
+              key={mealPlanDetail?.id}
+              onItemPress={onItemPress}
+            />
           ))}
         </ScrollView>
       )}

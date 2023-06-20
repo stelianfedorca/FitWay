@@ -17,6 +17,7 @@ export type MealPlanItemProps = {
   isGenerateButtonLoading?: boolean;
   onAddPress?: () => void;
   onGeneratePress?: () => void;
+  onItemPress: (item: MealPlanDetails) => void;
   style?: StyleProp<ViewStyle>;
 };
 export function MealPlanItem({
@@ -26,6 +27,7 @@ export function MealPlanItem({
   isGenerateButtonLoading,
   onAddPress,
   onGeneratePress,
+  onItemPress,
   style,
 }: MealPlanItemProps) {
   return (
@@ -84,7 +86,11 @@ export function MealPlanItem({
         bounces={false}
         showsVerticalScrollIndicator={false}>
         {mealPlanDetails.map(mealPlanDetail => (
-          <Card data={mealPlanDetail} key={mealPlanDetail?.id} />
+          <Card
+            data={mealPlanDetail}
+            key={mealPlanDetail?.id}
+            onItemPress={onItemPress}
+          />
         ))}
       </ScrollView>
       <View

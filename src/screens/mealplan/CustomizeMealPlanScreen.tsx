@@ -55,7 +55,7 @@ export function CustomizeMealPlanScreen() {
           selectedTargetCalories: targetCalories,
         }),
       );
-      navigation.navigate(Routes.MealPlan);
+      navigation.navigate(Routes.MealPlan, { caloricTarget: targetCalories });
     }
   }
 

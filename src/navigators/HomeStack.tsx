@@ -22,6 +22,8 @@ import { SavedMealPlansDayScreen } from '../screens/saved_meal_plans_day/SavedMe
 import { SavedMealPlansWeekScreen } from '../screens/saved_meal_plans_week/SavedMealPlansWeekScreen';
 import { selectCurrentDate, setCurrentDate } from '../redux/slices/dateSlice';
 import { isEmpty } from '../screens/searchfood/SearchFoodScreen';
+import { MealPlanDetails } from '../redux/slices/mealPlanSlice';
+import { DetailsScreen } from '../screens/details';
 
 export type SurveyStackParams = {
   [Routes.Survey]: undefined;
@@ -54,6 +56,7 @@ export type RootStackParams = {
   [Routes.Search]: undefined;
   [Routes.Recommendation]: undefined;
   [Routes.SavedMealPlans]: undefined;
+  [Routes.MealDetails]: { item: MealPlanDetails; saved: boolean };
 };
 
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -136,6 +139,16 @@ const HomeStack = () => {
           headerShown: true,
           headerShadowVisible: false,
           headerTitle: 'Meal Plans',
+        }}
+      />
+
+      <Stack.Screen
+        name={Routes.MealDetails}
+        component={DetailsScreen}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+          headerTitle: 'Details',
         }}
       />
     </Stack.Navigator>

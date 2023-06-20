@@ -10,6 +10,7 @@ export enum Routes {
   SavedMealPlans = 'SAVED_MEAL_PLANS',
   SavedMealPlansDay = 'SAVED_MEAL_PLANS_DAY',
   SavedMealPlansWeek = 'SAVED_MEAL_PLANS_WEEK',
+  MealDetails = 'MEAL_DETAILS',
 
   // Survey Stack
   Survey = 'SURVEY',

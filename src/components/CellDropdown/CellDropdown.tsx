@@ -33,6 +33,7 @@ export function CellDropdown({
   const isDataAvailable = data.length > 0;
 
   const totalCaloriesFood = calculateCalories(data);
+  console.log('total in dropdown: ', totalCaloriesFood);
   // data.length > 0
   //   ? data.reduce((accumulator, currentElement) => {
   //       return (

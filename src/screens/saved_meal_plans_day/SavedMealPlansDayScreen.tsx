@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  StyleSheet,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Layout } from '../../components/Layout';
@@ -19,11 +20,21 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { ProfileScreenNavigationProp } from '../profile/ProfileScreen.types';
 import { SavedMealPlansItem } from '../../components/SavedMealPlansItem/SavedMealPlansItem';
+import { MealPlanDetails } from '../../redux/slices/mealPlanSlice';
+
+import Modal from 'react-native-modal';
+import { DetailsModal } from '../../components/modals';
+import { getMealDetails } from '../../services/mealplan.service';
+import { Routes } from '../../navigators';
 
 export type SavedMealPlansItemListProps = {
   mealPlan: MealPlanDayFirestore;
+  onItemPress: (item: MealPlanDetails) => void;
 };
-function SavedMealPlansItemList({ mealPlan }: SavedMealPlansItemListProps) {
+function SavedMealPlansItemList({
+  mealPlan,
+  onItemPress,
+}: SavedMealPlansItemListProps) {
   const mealPlanDetails = useMealPlanDetails(mealPlan);
 
   return (
@@ -31,6 +42,7 @@ function SavedMealPlansItemList({ mealPlan }: SavedMealPlansItemListProps) {
       mealPlan={mealPlan}
       mealPlanDetails={mealPlanDetails}
       isLoading={mealPlanDetails.length > 0 ? false : true}
+      onItemPress={onItemPress}
     />
   );
 }
@@ -55,8 +67,16 @@ export function SavedMealPlansDayScreen() {
   const savedMealPlans = useSavedMealPlans(uid);
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleItemPress = async (item: MealPlanDetails) => {
+    navigation.navigate(Routes.MealDetails, { item: item, saved: true });
+  };
+
   const _renderItem: ListRenderItem<MealPlanDayFirestore> = ({ item }) => {
-    return <SavedMealPlansItemList mealPlan={item} />;
+    return (
+      <SavedMealPlansItemList mealPlan={item} onItemPress={handleItemPress} />
+    );
   };
 
   const goBack = () => {
@@ -80,7 +100,28 @@ export function SavedMealPlansDayScreen() {
           ItemSeparatorComponent={() => <View style={{ marginTop: 20 }} />}
           ListEmptyComponent={EmptyList}
         />
+
+        {/* <Modal
+          isVisible={isVisible}
+          useNativeDriver
+          backdropOpacity={0.3}
+          onBackdropPress={() => setIsVisible(false)}
+          animationOutTiming={700}
+          animationInTiming={350}
+          style={styles.modal}>
+          <DetailsModal
+            setModalVisible={setIsVisible}
+            selectedFood={selectedFood}
+          />
+        </Modal> */}
       </Pressable>
     </Layout>
   );
 }
+
+export const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+    justifyContent: 'flex-end',
+  },
+});

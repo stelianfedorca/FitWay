@@ -28,13 +28,16 @@ export function ScrollViewItem({ item, index }: ScrollViewItemProps) {
         style={{
           marginLeft: 20,
           justifyContent: 'space-between',
+          flex: 1,
         }}>
         <Text style={{ fontWeight: '600', marginBottom: 5 }}>{item.name}</Text>
-        <Text style={{ color: 'grey' }}>
-          {calculateCaloriesByServing(
-            item.nutrition.calories,
-            item.nutrition.servings.size,
-          )}{' '}
+        <Text style={{ color: 'grey', flexWrap: 'wrap' }}>
+          {item.isMeal
+            ? Math.round(item.nutrition.calories)
+            : calculateCaloriesByServing(
+                item.nutrition.calories,
+                item.nutrition.servings.size,
+              )}{' '}
           kcal
         </Text>
       </View>

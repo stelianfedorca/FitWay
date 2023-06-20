@@ -14,6 +14,7 @@ import { Layout } from '../../components/Layout';
 import { MealPlanItem } from '../../components/MealPlanItem/MealPlanItem';
 import { useMealPlanDetails } from '../../hooks/useMealPlanDetails';
 import {
+  MealPlanDetails,
   selectMealPlanPerDay,
   setMealPlan,
 } from '../../redux/slices/mealPlanSlice';
@@ -27,13 +28,26 @@ import { Title } from './MealPlanScreen.style';
 
 import { mappedTimeFrame } from './CustomizeMealPlanScreen';
 import Toast from 'react-native-toast-message';
+import { Routes } from '../../navigators';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MealPlanStackParams } from '../../navigators/TabNavigator';
+import { selectTdee } from '../../redux/slices/profileSlice';
 
-export function MealPlanScreen() {
+interface MealPlanScreenProps
+  extends NativeStackScreenProps<MealPlanStackParams, Routes.MealPlan> {
+  // other props ...
+}
+
+export function MealPlanScreen({ route }: MealPlanScreenProps) {
+  const params = route.params;
+  const caloricTarget = params?.caloricTarget;
+
   const mealPlan = useSelector(selectMealPlanPerDay);
   const [isLoading, setIsLoading] = useState(true);
   const [isNewLoading, setIsNewLoading] = useState(false);
   const [loadingAddButton, setLoadingAddButton] = useState(false);
   const [loadingGenerateButton, setLoadingGenerateButton] = useState(false);
+  const tdee = useSelector(selectTdee);
   const uid = useSelector(selectUid);
   const dispatch = useDispatch();
 
@@ -49,6 +63,10 @@ export function MealPlanScreen() {
 
   const goBack = () => {
     navigation.goBack();
+  };
+
+  const handleItemPress = (item: MealPlanDetails) => {
+    navigation.navigate(Routes.MealDetails, { item: item, saved: false });
   };
 
   const addMealPlan = async () => {
@@ -69,7 +87,10 @@ export function MealPlanScreen() {
     setIsNewLoading(true);
     // setLoadingGenerateButton(true);
 
-    const mealPlanData = await getMealPlan(mappedTimeFrame[0], 2222);
+    const mealPlanData = await getMealPlan(
+      mappedTimeFrame[0],
+      caloricTarget ?? tdee,
+    );
 
     if (mealPlanData) {
       dispatch(
@@ -187,6 +208,7 @@ export function MealPlanScreen() {
               isLoading={loadingAddButton}
               isGenerateButtonLoading={loadingGenerateButton}
               onGeneratePress={generateNewPlan}
+              onItemPress={handleItemPress}
             />
           </ScrollView>
         )}

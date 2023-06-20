@@ -84,7 +84,7 @@ function Diary() {
 
 export type MealPlanStackParams = {
   [Routes.CustomizeMealPlan]: undefined;
-  [Routes.MealPlan]: undefined;
+  [Routes.MealPlan]: { caloricTarget: number } | undefined;
 };
 
 export const MealPlanStack = createNativeStackNavigator<MealPlanStackParams>();

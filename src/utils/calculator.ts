@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit';
 import { FoodFirestore } from '../types/types';
 
 export type CalculatorProps = {
@@ -97,13 +98,17 @@ export function calculateCalories(data: FoodFirestore[]): number {
   const totalCalories =
     data.length > 0
       ? data.reduce((acc, currentItem) => {
-          return (
-            acc +
-            calculateCaloriesByServing(
-              currentItem.nutrition.calories,
-              currentItem.nutrition.servings.size,
-            )
-          );
+          if (currentItem.isMeal) {
+            return acc + currentItem.nutrition.calories;
+          } else {
+            return (
+              acc +
+              calculateCaloriesByServing(
+                currentItem.nutrition.calories,
+                currentItem.nutrition.servings.size,
+              )
+            );
+          }
         }, 0)
       : 0;
 
