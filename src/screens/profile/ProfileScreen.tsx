@@ -220,6 +220,22 @@ export function ProfileScreen() {
           </InputDropdown>
           <Divider />
 
+          <InputDropdown
+            title="Height"
+            value={Number(profile.height) ?? 180}
+            unit="cm"
+            icon={
+              <Ionicons
+                name="ios-information-circle-outline"
+                size={24}
+                color="#4659b8"
+              />
+            }
+            expandHeight={0}
+            childStyle={{ alignItems: 'center' }}
+          />
+          <Divider />
+
           <View
             style={{
               justifyContent: 'space-between',
