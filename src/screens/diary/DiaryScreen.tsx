@@ -10,13 +10,38 @@ import { Container } from './DiaryScreen.style';
 import { useNavigation } from '@react-navigation/native';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Routes } from '../../navigators';
-import { calculateCalories } from '../../utils/calculator';
+import {
+  calculateCalories,
+  calculateCaloriesByServing,
+  calculateMacronutrientsByServing,
+} from '../../utils/calculator';
 import { DiaryScreenNavigationProp } from './DiaryScreen.types';
+import { FoodFirestore } from '../../types/types';
+import {
+  updateCaloriesIntake,
+  updateMacrosIntake,
+} from '../../services/user.service';
+import { selectUid } from '../../redux/slices/userSlice';
+import {
+  selectCaloricIntake,
+  selectMacrosIntake,
+} from '../../redux/slices/profileSlice';
+import { deleteFoodFromDiary } from '../../services/food.service';
+import { selectCurrentDate } from '../../redux/slices/dateSlice';
+import Toast, {
+  SuccessToast,
+  BaseToast,
+  BaseToastProps,
+} from 'react-native-toast-message';
 
 export function DiaryScreen() {
   const currentDate = format(new Date(), 'dd-MM-yyyy');
   const diaryFood = useSelector(selectDiaryFood);
   const navigation = useNavigation<DiaryScreenNavigationProp>();
+  const uid = useSelector(selectUid);
+  const caloricIntake = useSelector(selectCaloricIntake);
+  const macrosIntake = useSelector(selectMacrosIntake);
+  const selectedCurrentDate = useSelector(selectCurrentDate);
 
   const diaryFoodBreakfast = diaryFood.filter(
     food => food.type === 'Breakfast',
@@ -25,15 +50,74 @@ export function DiaryScreen() {
   const diaryFoodDinner = diaryFood.filter(food => food.type === 'Dinner');
 
   const totalCalories = calculateCalories(diaryFood);
-  // const totalConsumedCalories = diaryFood.reduce((accumulator, currentItem) => {
-  //   return (
-  //     accumulator +
-  //     currentItem.nutrition.calories * currentItem.nutrition.servings.number
-  //   );
-  // }, 0);
 
   function openSearch() {
     navigation.navigate(Routes.Search);
+  }
+
+  const toastConfig = {
+    success: (props: BaseToastProps) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: 'green' }}
+        contentContainerStyle={{
+          paddingHorizontal: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '500',
+          color: 'white',
+        }}
+      />
+    ),
+  };
+
+  async function handleDeleteItem(item: FoodFirestore) {
+    await deleteFoodFromDiary(uid, item, selectedCurrentDate);
+    await updateCaloriesIntake(
+      uid,
+      Math.round(
+        caloricIntake -
+          calculateCaloriesByServing(
+            item.nutrition.calories,
+            item.nutrition.servings.size,
+          ),
+      ),
+    );
+    await updateMacrosIntake(uid, {
+      fat: Math.round(
+        macrosIntake.fat -
+          calculateMacronutrientsByServing(
+            Number(item.nutrition.fat),
+            item.nutrition.servings.size,
+          ),
+      ),
+      protein: Math.round(
+        Number(
+          macrosIntake.protein -
+            calculateMacronutrientsByServing(
+              Number(item.nutrition.protein),
+              item.nutrition.servings.size,
+            ),
+        ),
+      ),
+      carbs: Math.round(
+        macrosIntake.carbs -
+          calculateMacronutrientsByServing(
+            Number(Number(item.nutrition.carbs)),
+            item.nutrition.servings.size,
+          ),
+      ),
+    });
+
+    Toast.show({
+      type: 'success',
+      text1: 'Food removed successfully',
+      position: 'bottom',
+      visibilityTime: 1500,
+    });
   }
 
   return (
@@ -98,21 +182,25 @@ export function DiaryScreen() {
             mealType="BREAKFAST"
             data={diaryFoodBreakfast}
             onPress={openSearch}
+            onDeleteItem={handleDeleteItem}
           />
           <CellDropdown
             calories={222}
             mealType="LUNCH"
             data={diaryFoodLunch}
             onPress={openSearch}
+            onDeleteItem={handleDeleteItem}
           />
           <CellDropdown
             calories={123}
             mealType="DINNER"
             data={diaryFoodDinner}
             onPress={openSearch}
+            onDeleteItem={handleDeleteItem}
           />
         </ScrollView>
       </Container>
+      <Toast config={toastConfig} />
     </Layout>
   );
 }

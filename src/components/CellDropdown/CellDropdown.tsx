@@ -21,6 +21,7 @@ export type CellDropdownProps = {
   calories: number;
   data: FoodFirestore[];
   onPress?: () => void;
+  onDeleteItem?: (item: FoodFirestore) => void;
 };
 
 const INITIAL_HEIGHT = 100;
@@ -28,20 +29,12 @@ export function CellDropdown({
   mealType,
   calories,
   onPress,
+  onDeleteItem,
   data,
 }: CellDropdownProps) {
   const isDataAvailable = data.length > 0;
 
   const totalCaloriesFood = calculateCalories(data);
-  // data.length > 0
-  //   ? data.reduce((accumulator, currentElement) => {
-  //       return (
-  //         accumulator +
-  //         currentElement.nutrition.calories *
-  //           currentElement.nutrition.servings.number
-  //       );
-  //     }, 0)
-  //   : 0;
 
   return (
     <Pressable style={styles.container}>
@@ -82,7 +75,12 @@ export function CellDropdown({
       ) : (
         <ScrollView style={{ padding: 10, paddingHorizontal: 15 }}>
           {data.map((item, index) => (
-            <ScrollViewItem item={item} index={item.id} key={item.id} />
+            <ScrollViewItem
+              onDeleteItem={onDeleteItem}
+              item={item}
+              index={item.id}
+              key={item.id}
+            />
           ))}
         </ScrollView>
       )}

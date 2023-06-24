@@ -80,3 +80,18 @@ export async function addFoodToDiary(
     .doc(food.id)
     .set(food, { merge: true });
 }
+
+export async function deleteFoodFromDiary(
+  userId: string,
+  food: FoodFirestore,
+  date: string,
+) {
+  await firestore()
+    .collection(DIARY_COLLECTION)
+    .doc(userId)
+    .collection(DAILY_LOGS_COLLECTION)
+    .doc(date)
+    .collection(LOGS_COLLECTION)
+    .doc(food.id)
+    .delete();
+}

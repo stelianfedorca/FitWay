@@ -1,15 +1,26 @@
-import { Pressable, Image, Text, View } from 'react-native';
+import { Pressable, Image, Text, View, TouchableOpacity } from 'react-native';
 import { FoodImage } from '../../assets/images';
 import { FoodFirestore } from '../../types/types';
 import { calculateCaloriesByServing } from '../../utils/calculator';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { IconButton } from 'react-native-paper';
 
 export type ScrollViewItemProps = {
   item: FoodFirestore;
   index: number | string;
+  onDeleteItem?: (item: FoodFirestore) => void;
 };
 
-export function ScrollViewItem({ item, index }: ScrollViewItemProps) {
+export function ScrollViewItem({
+  item,
+  index,
+  onDeleteItem,
+}: ScrollViewItemProps) {
   const imageSource = item.image ? { uri: item.image } : FoodImage;
+
+  const handleDeleteItem = () => {
+    onDeleteItem?.(item);
+  };
   return (
     <Pressable
       style={{
@@ -41,6 +52,13 @@ export function ScrollViewItem({ item, index }: ScrollViewItemProps) {
           kcal
         </Text>
       </View>
+      <IconButton
+        icon="delete"
+        size={16}
+        style={{ backgroundColor: 'grey' }}
+        iconColor="white"
+        onPress={handleDeleteItem}
+      />
     </Pressable>
   );
 }

@@ -180,32 +180,6 @@ export function HomeScreen() {
           size={24}
         />
       </TouchableOpacity>
-
-      {/* <FAB.Group
-        open={isOpen}
-        visible
-        icon={isOpen ? 'close' : 'plus'}
-        actions={[
-          {
-            icon: 'food',
-            label: 'Recommend meals',
-            onPress: () => navigation.navigate(Routes.Recommendation),
-          },
-          {
-            icon: 'food',
-            label: 'Search for a food',
-            onPress: () => navigation.navigate(Routes.Search),
-          },
-        ]}
-        onStateChange={handleStateChange}
-        fabStyle={{
-          backgroundColor: '#4659b8',
-          borderRadius: 30,
-        }}
-        color="white"
-        style={{ bottom: -20 }}
-        onPress={() => navigation.navigate(Routes.Search)}
-      /> */}
     </Layout>
   );
 }
