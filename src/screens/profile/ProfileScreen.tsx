@@ -162,7 +162,7 @@ export function ProfileScreen() {
               valueTextStyle={{ fontSize: 18, fontWeight: '400' }}
               fractionDigits={0}
               gapBetweenSteps={25}
-              initialValue={Number(profile.goalWeight)}
+              initialValue={Number(profile.startingWeight)}
               shortStepHeight={10}
               onValueChange={value => setCurrentWeight(Number(value))}
             />
