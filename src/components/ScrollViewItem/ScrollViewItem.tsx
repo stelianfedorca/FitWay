@@ -25,7 +25,7 @@ export function ScrollViewItem({
     <Pressable
       style={{
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 15,
         alignItems: 'center',
       }}
       key={index}
@@ -41,7 +41,9 @@ export function ScrollViewItem({
           justifyContent: 'space-between',
           flex: 1,
         }}>
-        <Text style={{ fontWeight: '600', marginBottom: 5 }}>{item.name}</Text>
+        <Text style={{ fontWeight: '600', marginBottom: 5, fontSize: 16 }}>
+          {item.name}
+        </Text>
         <Text style={{ color: 'grey', flexWrap: 'wrap' }}>
           {item.isMeal
             ? Math.round(item.nutrition.calories)
@@ -50,6 +52,10 @@ export function ScrollViewItem({
                 item.nutrition.servings.size,
               )}{' '}
           kcal
+        </Text>
+        <Text style={{ fontSize: 14, marginTop: 2 }}>
+          {item.nutrition.servings.size}
+          {' g'}
         </Text>
       </View>
       <IconButton
