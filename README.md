@@ -1,3 +1,3 @@
 # FitWay - aplicatie pentru gestionarea caloriilor din alimenentele consumate
 
-https://github.com/stelianfedorca/FitWay.git
+Adresa repository-ului: https://github.com/stelianfedorca/FitWay.git
