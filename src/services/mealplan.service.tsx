@@ -154,7 +154,8 @@ export async function addMealInDiary(
       .collection(DAILY_LOGS_COLLECTION)
       .doc(date)
       .collection(LOGS_COLLECTION)
-      .add(meal);
+      .doc(meal.id)
+      .set(meal, { merge: true });
 
     return true;
   } catch (error) {
