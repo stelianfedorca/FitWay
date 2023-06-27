@@ -124,35 +124,47 @@ export function calculateMacronutrientsByServing(
 // trb modificate
 export function calculateTotalFat(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return (
-      acc +
-      calculateMacronutrientsByServing(
-        Number(item.nutrition.fat),
-        item.nutrition.servings.size,
-      )
-    );
+    if (item.isMeal) {
+      return acc + Number(item.nutrition.fat);
+    } else {
+      return (
+        acc +
+        calculateMacronutrientsByServing(
+          Number(item.nutrition.fat),
+          item.nutrition.servings.size,
+        )
+      );
+    }
   }, 0);
 }
 export function calculateTotalProtein(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return (
-      acc +
-      calculateMacronutrientsByServing(
-        Number(item.nutrition.protein),
-        item.nutrition.servings.size,
-      )
-    );
+    if (item.isMeal) {
+      return acc + Number(item.nutrition.protein);
+    } else {
+      return (
+        acc +
+        calculateMacronutrientsByServing(
+          Number(item.nutrition.protein),
+          item.nutrition.servings.size,
+        )
+      );
+    }
   }, 0);
 }
 export function calculateTotalCarbs(diaryFood: FoodFirestore[]) {
   return diaryFood.reduce((acc, item) => {
-    return (
-      acc +
-      calculateMacronutrientsByServing(
-        Number(item.nutrition.carbs),
-        item.nutrition.servings.size,
-      )
-    );
+    if (item.isMeal) {
+      return acc + Number(item.nutrition.carbs);
+    } else {
+      return (
+        acc +
+        calculateMacronutrientsByServing(
+          Number(item.nutrition.carbs),
+          item.nutrition.servings.size,
+        )
+      );
+    }
   }, 0);
 }
 

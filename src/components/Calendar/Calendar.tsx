@@ -71,7 +71,7 @@ export function Calendar({ onPress, style }: CalendarProps) {
         animated: true,
       });
     }, 10);
-  }, []);
+  }, [selectedCurrentDate]);
 
   const _renderItem: ListRenderItem<FormatedData> = ({ item }) => {
     const date = format(item.data, 'dd');
