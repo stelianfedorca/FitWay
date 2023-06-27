@@ -24,10 +24,12 @@ import {
   signOut,
   updateProfileInFiresotore,
 } from '../../services/user.service';
-import { calculateBMI } from '../../utils/calculator';
+import { calculateBMI, calculateTDEE } from '../../utils/calculator';
 import { ProfileScreenNavigationProp } from './ProfileScreen.types';
 import { InputDropdown } from '../../components';
 import { RulerPicker } from 'react-native-ruler-picker';
+import { InputRow } from '../../components/InputRow';
+
 export function ProfileScreen() {
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
@@ -36,12 +38,12 @@ export function ProfileScreen() {
   const [goalWeight, setGoalWeight] = useState(
     Number(profile.goalWeight) ?? 70,
   );
-
   const [currentWeight, setCurrentWeight] = useState(
     profile.startingWeight ?? 70,
   );
-
   const [calories, setCalories] = useState(profile?.tdee ?? 2000);
+  const [height, setHeight] = useState(profile?.height ?? 180);
+  const [age, setAge] = useState(profile?.age ?? 18);
 
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
@@ -61,11 +63,33 @@ export function ProfileScreen() {
     dispatch(setProfile({ tdee: calories }));
   }
 
+  async function handleSaveAge() {
+    await updateProfileInFiresotore(uid, { age: String(age) });
+    dispatch(
+      setProfile({
+        age: String(age),
+      }),
+    );
+  }
+
+  async function handleSaveHeight() {
+    await updateProfileInFiresotore(uid, { height: String(height) });
+    dispatch(
+      setProfile({
+        height: String(height),
+      }),
+    );
+  }
+
   async function handleSaveCurrentWeight() {
     await updateProfileInFiresotore(uid, {
       startingWeight: String(currentWeight),
     });
-    dispatch(setProfile({ startingWeight: String(currentWeight) }));
+    dispatch(
+      setProfile({
+        startingWeight: String(currentWeight),
+      }),
+    );
   }
 
   async function handleSaveWeightGoal() {
@@ -105,6 +129,44 @@ export function ProfileScreen() {
           </DetailsContainer>
         </ProfileDetailsContainer>
         <SettingsContainer>
+          <InputDropdown
+            title="Age"
+            value={Number(profile.age)}
+            unit="yo"
+            icon={<MaterialIcons name="edit" size={20} color="#4659b8" />}
+            expandHeight={120}
+            childStyle={{ alignItems: 'center' }}>
+            <RulerPicker
+              max={100}
+              min={14}
+              height={50}
+              indicatorHeight={25}
+              indicatorColor="#457ad7"
+              step={1}
+              unit="years old"
+              unitTextStyle={{ fontSize: 12 }}
+              valueTextStyle={{ fontSize: 18, fontWeight: '400' }}
+              fractionDigits={0}
+              gapBetweenSteps={25}
+              initialValue={Number(profile.age)}
+              shortStepHeight={10}
+              onValueChange={value => setAge(Number(value))}
+            />
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'green',
+                padding: 5,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 70,
+                marginVertical: 10,
+              }}
+              onPress={handleSaveAge}>
+              <Text style={{ color: 'white', fontWeight: '500' }}>Save</Text>
+            </TouchableOpacity>
+          </InputDropdown>
+          <Divider />
           <InputDropdown
             title="Weight Goal"
             value={Number(profile.goalWeight)}
@@ -224,6 +286,44 @@ export function ProfileScreen() {
             title="Height"
             value={Number(profile.height) ?? 180}
             unit="cm"
+            icon={<MaterialIcons name="edit" size={20} color="#4659b8" />}
+            expandHeight={120}
+            childStyle={{ alignItems: 'center' }}>
+            <RulerPicker
+              max={400}
+              min={100}
+              height={50}
+              indicatorHeight={25}
+              indicatorColor="#457ad7"
+              step={0.5}
+              unit="cm"
+              unitTextStyle={{ fontSize: 12 }}
+              valueTextStyle={{ fontSize: 18, fontWeight: '400' }}
+              fractionDigits={1}
+              gapBetweenSteps={25}
+              initialValue={Number(profile.height) ?? 180}
+              shortStepHeight={10}
+              onValueChange={value => setHeight(Number(value))}
+            />
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'green',
+                padding: 5,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 70,
+                marginVertical: 10,
+              }}
+              onPress={handleSaveHeight}>
+              <Text style={{ color: 'white', fontWeight: '500' }}>Save</Text>
+            </TouchableOpacity>
+          </InputDropdown>
+          <Divider />
+          {/* <InputDropdown
+            title="Height"
+            value={Number(profile.height) ?? 180}
+            unit="cm"
             icon={
               <Ionicons
                 name="ios-information-circle-outline"
@@ -234,7 +334,7 @@ export function ProfileScreen() {
             expandHeight={0}
             childStyle={{ alignItems: 'center' }}
           />
-          <Divider />
+          <Divider /> */}
 
           <View
             style={{

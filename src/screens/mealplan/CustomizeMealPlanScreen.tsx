@@ -69,7 +69,7 @@ export function CustomizeMealPlanScreen() {
           justifyContent: 'flex-start',
         }}>
         <Title>
-          Generate a meal plan with three meals per day (breakfast, lunch, and
+          Generate a meal plan with three meals per day (breakfast, lunch and
           dinner)
         </Title>
         <OptionGroup
